@@ -428,6 +428,8 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
 .lsocw{background:#25D366;color:#fff}
 .lfoot{text-align:center;margin-top:24px;font-size:13px;color:var(--mut)}
 .lfoot a{color:var(--acc);cursor:pointer;font-weight:600}
+.formerr{font-size:12px;color:var(--err);background:rgba(242,139,130,.08);border:1px solid rgba(242,139,130,.25);
+  border-radius:10px;padding:9px 12px;margin:-6px 0 14px;line-height:1.5}
 
 /* ── PORTAL ── */
 #vp{flex-direction:row;min-height:100vh}
