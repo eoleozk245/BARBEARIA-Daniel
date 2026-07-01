@@ -1,6 +1,13 @@
 import { signUp, signIn, signInAdmin, signOut, resetPassword, getCurrentProfile } from './auth/auth.js';
 import { renderPublicServices, renderPublicTeam } from './pages/public.js';
-import { renderPortalServices, applyClientProfileToUI } from './pages/portal.js';
+import {
+  renderPortalServices,
+  applyClientProfileToUI,
+  renderClientAppointments,
+  renderMiniCalendar,
+  subscribeClientAppointments,
+} from './pages/portal.js';
+import { setBookingSession } from './pages/booking.js';
 import {
   renderCfgSvcReal,
   renderCfgEqReal,
@@ -8,6 +15,7 @@ import {
   addNewBarber,
   applyAdminProfileToUI,
 } from './pages/admin/configuracoes.js';
+import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi } from './pages/admin/agenda.js';
 import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js';
 
 function showError(id, message) {
@@ -20,11 +28,16 @@ function showError(id, message) {
 /* ══ SITE PÚBLICO — Serviços/Equipe reais (substituem SVC/BAR mock) ══ */
 renderPublicServices(rvObs);
 renderPublicTeam(rvObs);
+setBookingSession(null); // estado padrão (visitante) até a sessão ser restaurada, se houver
 
 /* ══ ENTRAR NO PORTAL DO CLIENTE (após login/cadastro real) ══ */
 async function enterPortal(profile) {
   applyClientProfileToUI(profile);
+  setBookingSession(profile);
   await renderPortalServices();
+  await renderClientAppointments();
+  await renderMiniCalendar();
+  subscribeClientAppointments(profile.id);
   showV('vp');
   pGo('dashboard');
 }
@@ -32,10 +45,14 @@ async function enterPortal(profile) {
 /* ══ ENTRAR NO PAINEL ADMIN (após login real) ══ */
 async function enterAdmin(profile) {
   applyAdminProfileToUI(profile);
+  setBookingSession(profile);
   showV('va');
   adminInit();
   await renderCfgSvcReal();
   await renderCfgEqReal();
+  await renderAdminAgenda();
+  await renderAppointmentsKpi();
+  subscribeAdminAgenda();
   aGo('dash');
 }
 
@@ -107,10 +124,12 @@ async function handleForgotPassword() {
 /* ══ LOGOUT ══ */
 async function handleClientLogout() {
   await signOut();
+  setBookingSession(null);
   showV('vl');
 }
 async function handleAdminLogout() {
   await signOut();
+  setBookingSession(null);
   showV('val');
 }
 
