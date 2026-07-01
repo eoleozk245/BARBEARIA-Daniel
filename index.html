@@ -288,11 +288,11 @@
         <label>E-mail</label>
         <div class="inpw">
           <span class="ms inpico">mail</span>
-          <input type="email" class="linp" placeholder="voce@email.com" aria-label="E-mail">
+          <input type="email" class="linp" id="lemail" placeholder="voce@email.com" aria-label="E-mail">
         </div>
       </div>
       <div class="lfg">
-        <label>Senha <span class="lfgt">Esqueci minha senha</span></label>
+        <label>Senha <span class="lfgt" onclick="handleForgotPassword()" style="cursor:pointer">Esqueci minha senha</span></label>
         <div class="inpw">
           <span class="ms inpico">lock</span>
           <input type="password" class="linp" id="lpw" placeholder="••••••••" aria-label="Senha">
@@ -301,7 +301,8 @@
           </button>
         </div>
       </div>
-      <button class="lbtnp" onclick="goPortal()">
+      <div id="lerr" class="formerr" style="display:none"></div>
+      <button class="lbtnp" onclick="handleClientLogin()">
         Entrar <span class="ms" style="font-size:18px">arrow_forward</span>
       </button>
       <div class="ldiv"><span>OU CONTINUE COM</span></div>
@@ -337,21 +338,21 @@
         <label>Nome completo</label>
         <div class="inpw">
           <span class="ms inpico">person</span>
-          <input type="text" class="linp" placeholder="Seu nome completo" aria-label="Nome">
+          <input type="text" class="linp" id="cname" placeholder="Seu nome completo" aria-label="Nome">
         </div>
       </div>
       <div class="lfg">
         <label>E-mail</label>
         <div class="inpw">
           <span class="ms inpico">mail</span>
-          <input type="email" class="linp" placeholder="seu@email.com" aria-label="E-mail">
+          <input type="email" class="linp" id="cemail" placeholder="seu@email.com" aria-label="E-mail">
         </div>
       </div>
       <div class="lfg">
         <label>Telefone / WhatsApp</label>
         <div class="inpw">
           <span class="ms inpico">phone</span>
-          <input type="tel" class="linp" placeholder="(84) 99999-0000" aria-label="Telefone">
+          <input type="tel" class="linp" id="cphone" placeholder="(84) 99999-0000" aria-label="Telefone">
         </div>
       </div>
       <div class="lfg">
@@ -374,7 +375,8 @@
           </button>
         </div>
       </div>
-      <button class="lbtnp" onclick="goPortal()">
+      <div id="cerr" class="formerr" style="display:none"></div>
+      <button class="lbtnp" onclick="handleSignup()">
         Criar conta <span class="ms" style="font-size:18px">arrow_forward</span>
       </button>
       <div class="lfoot">Já tem uma conta? <a onclick="showV('vl')" style="cursor:pointer">Entrar</a></div>
@@ -411,7 +413,7 @@
         <label>E-mail administrativo</label>
         <div class="inpw">
           <span class="ms inpico">admin_panel_settings</span>
-          <input type="email" class="linp" placeholder="daniel@barbearia.com" aria-label="E-mail admin">
+          <input type="email" class="linp" id="aemail" placeholder="daniel@barbearia.com" aria-label="E-mail admin">
         </div>
       </div>
       <div class="lfg">
@@ -422,7 +424,8 @@
           <button class="inpeye" onclick="togApw()" aria-label="Ver senha"><span class="ms" id="apweye">visibility</span></button>
         </div>
       </div>
-      <button class="lbtnp" onclick="goAdmin()" style="background:linear-gradient(135deg,var(--dim),var(--acc2));box-shadow:0 6px 24px -4px rgba(var(--ar),.35)">
+      <div id="aerr" class="formerr" style="display:none"></div>
+      <button class="lbtnp" onclick="handleAdminLogin()" style="background:linear-gradient(135deg,var(--dim),var(--acc2));box-shadow:0 6px 24px -4px rgba(var(--ar),.35)">
         <span class="ms" style="font-size:18px">admin_panel_settings</span> Entrar como Administrador
       </button>
       <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.07);text-align:center">
@@ -461,9 +464,9 @@
     <div class="sbbot">
       <div class="ni" onclick="showV('vs')"><span class="ms">home</span><span class="nlbl">Voltar ao site</span></div>
       <div class="ni"><span class="ms">help_outline</span><span class="nlbl">Suporte</span></div>
-      <div class="ni" onclick="showV('vl')" style="color:var(--err)"><span class="ms" style="color:var(--err)">logout</span><span class="nlbl">Sair da conta</span></div>
+      <div class="ni" onclick="handleClientLogout()" style="color:var(--err)"><span class="ms" style="color:var(--err)">logout</span><span class="nlbl">Sair da conta</span></div>
       <div style="margin-top:6px;border-top:1px solid var(--gbd);padding-top:8px">
-        <div class="sbusr"><div class="sbav">AC</div><div class="sbui"><div class="sbun">Alexandre Costa</div><div class="sbur">Cliente VIP</div></div></div>
+        <div class="sbusr"><div class="sbav" id="p-sbav">AC</div><div class="sbui"><div class="sbun" id="p-sbun">Alexandre Costa</div><div class="sbur">Cliente</div></div></div>
       </div>
     </div>
   </aside>
@@ -471,7 +474,7 @@
 
     <!-- DASHBOARD -->
     <section class="psec on" id="psec-dashboard">
-      <div class="dwelc"><h2>Bem-vindo de volta, Alexandre 👋</h2><p>Aqui está um resumo da sua conta.</p></div>
+      <div class="dwelc"><h2>Bem-vindo de volta, <span id="p-dname">Alexandre</span> 👋</h2><p>Aqui está um resumo da sua conta.</p></div>
       <div class="dstats2">
         <div class="dstat"><div class="dstatv">47</div><div class="dstatl">Cortes realizados</div></div>
         <div class="dstat"><div class="dstatv">8/10</div><div class="dstatl">Pontos de fidelidade</div></div>
@@ -675,7 +678,7 @@
   </main>
 </div>
 
-<script src="aureum-barber.js"></script>
+<script type="module" src="js/main.js"></script>
 
 <!-- ══════════ VIEW: PAINEL ADMIN ══════════ -->
 <div id="va" class="view">
@@ -711,11 +714,11 @@
     </nav>
     <div class="sbbot">
       <div class="ni" onclick="showV('vs')"><span class="ms">home</span><span class="nlbl">Voltar ao site</span></div>
-      <div class="ni" onclick="showV('val')" style="color:var(--err)"><span class="ms" style="color:var(--err)">logout</span><span class="nlbl">Sair</span></div>
+      <div class="ni" onclick="handleAdminLogout()" style="color:var(--err)"><span class="ms" style="color:var(--err)">logout</span><span class="nlbl">Sair</span></div>
       <div style="margin-top:6px;border-top:1px solid var(--gbd);padding-top:8px">
         <div class="sbusr">
-          <div class="sbav" style="background:linear-gradient(135deg,var(--acc2),var(--acc3));color:#1a1400;font-weight:800">DN</div>
-          <div class="sbui"><div class="sbun">Daniel</div><div class="sbur" style="color:var(--acc)">Administrador</div></div>
+          <div class="sbav" id="a-sbav" style="background:linear-gradient(135deg,var(--acc2),var(--acc3));color:#1a1400;font-weight:800">DN</div>
+          <div class="sbui"><div class="sbun" id="a-sbun">Daniel</div><div class="sbur" style="color:var(--acc)">Administrador</div></div>
         </div>
       </div>
     </div>
@@ -729,7 +732,7 @@
       <div class="awelc">
         <div>
           <div class="admbadge"><span class="ms">admin_panel_settings</span> Administrador</div>
-          <h2>Olá, Daniel 👋</h2>
+          <h2>Olá, <span id="a-dname">Daniel</span> 👋</h2>
           <p>Aqui está o resumo financeiro e operacional da barbearia.</p>
         </div>
         <div style="text-align:right;flex-shrink:0">
@@ -945,7 +948,7 @@
         <div class="acfg-tc" id="cfg-svc">
           <div class="acfg-sect"><h3>Tabela de Serviços e Preços</h3><p>Edite nomes, preços e duração dos serviços.</p>
             <div id="cfg-svc-list"></div>
-            <button class="abtn-o" style="margin-top:12px;display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;font-family:inherit;font-size:12px"><span class="ms" style="font-size:16px">add</span> Adicionar serviço</button>
+            <button class="abtn-o" onclick="addNewService()" style="margin-top:12px;display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;font-family:inherit;font-size:12px"><span class="ms" style="font-size:16px">add</span> Adicionar serviço</button>
           </div>
           <div style="display:flex;justify-content:flex-end"><button class="abtn abtn-g" style="padding:11px 24px;border-radius:999px;font-size:13px;font-weight:700">Salvar serviços</button></div>
         </div>
@@ -953,7 +956,7 @@
         <div class="acfg-tc" id="cfg-equipe">
           <div class="acfg-sect"><h3>Gestão de Barbeiros</h3><p>Configure permissões e acesso de cada membro.</p>
             <div id="cfg-eq-list"></div>
-            <button class="abtn-o" style="margin-top:12px;display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;font-family:inherit;font-size:12px"><span class="ms" style="font-size:16px">person_add</span> Adicionar barbeiro</button>
+            <button class="abtn-o" onclick="addNewBarber()" style="margin-top:12px;display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;font-family:inherit;font-size:12px"><span class="ms" style="font-size:16px">person_add</span> Adicionar barbeiro</button>
           </div>
         </div>
         <!-- INTEGRAÇÕES -->

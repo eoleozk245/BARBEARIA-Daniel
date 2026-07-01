@@ -1,4 +1,15 @@
-﻿/* DATA */
+/*
+ * Lógica ainda não migrada para o backend real (Fases 2/3 do plano Supabase):
+ * wizard de agendamento (mock), dados mock do admin (Agenda/Clientes/Feedbacks/Histórico/
+ * gráficos do Dashboard) e microinterações decorativas. Serviços/Equipe/autenticação já
+ * foram migrados para módulos próprios (pages/public.js, pages/portal.js,
+ * pages/admin/configuracoes.js, auth/auth.js) — por isso não aparecem mais aqui.
+ *
+ * SVC/BAR abaixo são mantidos apenas como dado de apoio para o wizard de agendamento
+ * (ainda mock) — serão substituídos por dados reais na Fase 2.
+ */
+
+/* DATA (mock — Fase 2 substitui) */
 const SVC=[
   {n:"Corte Clássico",d:"Acabamento preciso e tradicional com técnica refinada.",p:"R$ 35",t:"30 min",i:"ti-cut"},
   {n:"Corte + Barba",d:"O combo completo para o visual perfeito.",p:"R$ 55",t:"50 min",i:"ti-mood-smile"},
@@ -39,14 +50,6 @@ const HRS=["09:00","09:30","10:00","10:30","11:00","14:00","14:30","15:00","15:3
 const OCP=new Set([2,5,8]);
 const DTS=["Ter, 24 Jun","Qua, 25 Jun","Qui, 26 Jun","Sex, 27 Jun","Sáb, 28 Jun"];
 const STEPS=["Serviço","Barbeiro","Horário","Confirmado"];
-const PSRV=[
-  {n:"Corte Clássico",d:"Tesoura ou máquina, acabamento impecável com navalha e finalização profissional.",p:"R$ 35",t:"30 min",i:"content_cut"},
-  {n:"Corte + Barba",d:"O combo completo. Alinhamento de perfil, toalha quente e massagem facial.",p:"R$ 55",t:"50 min",i:"face"},
-  {n:"Barba Completa",d:"Modelagem tradicional com navalha, hidratação profunda e óleos essenciais.",p:"R$ 30",t:"25 min",i:"face_retouching_natural"},
-  {n:"Degradê",d:"Fade perfeito com transição suave, finalizado com pigmentação opcional.",p:"R$ 40",t:"35 min",i:"auto_fix_high"},
-  {n:"Hidratação",d:"Tratamento capilar intensivo utilizando produtos premium de marcas exclusivas.",p:"R$ 45",t:"40 min",i:"water_drop"},
-  {n:"Sobrancelha",d:"Design masculino limpo e natural utilizando navalha de precisão.",p:"R$ 15",t:"15 min",i:"visibility"},
-];
 
 /* VIEW SYSTEM */
 function showV(id){
@@ -110,8 +113,7 @@ const rvObs=new IntersectionObserver(entries=>{
 },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.rv').forEach(el=>rvObs.observe(el));
 
-/* LOGIN / PORTAL */
-function goPortal(){showV('vp');pGo('dashboard');}
+/* LOGIN — toggles de visibilidade de senha (autenticação real está em auth/auth.js) */
 function togglePw(){
   const i=document.getElementById('lpw'),e=document.getElementById('lpweye');
   i.type=i.type==='password'?'text':'password';
@@ -150,31 +152,7 @@ function pPTab(id,btn){
 }
 function selBar(el){document.querySelectorAll('.baropt').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');}
 
-/* SITE RENDERS */
-function renderSvc(){
-  document.getElementById('srvgrid').innerHTML=SVC.map((s,i)=>`
-    <div class="srvc rv rv${(i%3)+1}">
-      <div class="sico"><i class="ti ${s.i}"></i></div>
-      <div class="stop"><span class="sname">${s.n}</span><span class="spric">${s.p}</span></div>
-      <p class="sdesc">${s.d}</p>
-      <div class="sfoot">
-        <span class="stim"><i class="ti ti-clock"></i> ${s.t}</span>
-        <span class="sarr">Agendar <i class="ti ti-arrow-right"></i></span>
-      </div>
-    </div>`).join('');
-  document.querySelectorAll('#srvgrid .rv').forEach(el=>rvObs.observe(el));
-}
-function renderTeam(){
-  document.getElementById('tgrid').innerHTML=BAR.map((b,i)=>`
-    <div class="tcard rv rv${(i%4)+1}">
-      <div class="tavw"><div class="tav">${b.i}</div></div>
-      <div class="tnm">${b.n}</div><div class="trl">${b.r}</div>
-      <div class="tex">${b.e} de experiência</div>
-      <div class="trate"><span class="tstar">★</span>${b.rt}</div>
-      <div class="tsp">${b.s}</div>
-    </div>`).join('');
-  document.querySelectorAll('#tgrid .rv').forEach(el=>rvObs.observe(el));
-}
+/* SITE RENDERS — Galeria e Avaliações (Serviços/Equipe migrados para pages/public.js) */
 function renderGal(){
   document.getElementById('ggrid').innerHTML=GAL.map(g=>`
     <div class="gi ${g.c}">
@@ -201,7 +179,7 @@ function renderRev(p=0){
     <button class="rdot ${i===p?'on':''}" onclick="renderRev(${i})" aria-label="Página ${i+1}"></button>`).join('');
 }
 
-/* BOOKING */
+/* BOOKING (mock — Fase 2 substitui por agendamento real com checagem de conflito) */
 let bk={v:null,b:null,d:null,h:null};
 function renderStInd(cur){
   document.getElementById('stind').innerHTML=STEPS.map((l,i)=>`
@@ -253,19 +231,7 @@ function bkPD(d){bk.d=d;renderBkTime();}
 function bkPH(h){bk.h=h;renderBkTime();}
 function bkReset(){bk={v:null,b:null,d:null,h:null};bkGo(1);renderBkSvc();}
 
-/* PORTAL SERVICES */
-function renderPSrv(){
-  document.getElementById('psrvgrid').innerHTML=PSRV.map(s=>`
-    <div class="psrv">
-      <div class="psrvico"><span class="ms">${s.i}</span></div>
-      <div class="psrvtop"><span class="psrvnm">${s.n}</span><span class="psrvpr">${s.p}</span></div>
-      <p class="psrvds">${s.d}</p>
-      <div class="psrvdur"><span class="ms">schedule</span>${s.t}</div>
-      <button class="psrvbook">Agendar este serviço</button>
-    </div>`).join('');
-}
-
-/* MINI CALENDAR */
+/* MINI CALENDAR (mock — Fase 2 substitui por dados reais de appointments) */
 function renderCal(){
   const D=['D','S','T','Q','Q','S','S'],AP=[15,22],TD=25,ST=6,TOT=30;
   let h=D.map(d=>`<div class="mcdn">${d}</div>`).join('');
@@ -277,8 +243,8 @@ function renderCal(){
   document.getElementById('mcgrid').innerHTML=h;
 }
 
-/* INIT */
-renderSvc();renderTeam();renderGal();renderRev(0);renderStInd(1);renderBkSvc();renderPSrv();renderCal();
+/* INIT — Serviços/Equipe agora são renderizados por pages/public.js (ver main.js) */
+renderGal();renderRev(0);renderStInd(1);renderBkSvc();renderCal();
 
 /* ══ MICROINTERAÇÕES PREMIUM ══ */
 
@@ -334,18 +300,18 @@ renderSvc();renderTeam();renderGal();renderRev(0);renderStInd(1);renderBkSvc();r
 
 // Partículas decorativas no painel esquerdo do login
 (function(){
-  const ll=document.querySelector('#vl .ll');
-  if(!ll)return;
-  const pts=[{x:'15%',y:'30%',s:4,d:0},{x:'75%',y:'25%',s:3,d:2},{x:'60%',y:'70%',s:5,d:4},{x:'25%',y:'65%',s:3,d:1}];
-  pts.forEach(p=>{
-    const el=document.createElement('div');
-    el.className='ll-particle';
-    el.style.cssText='left:'+p.x+';top:'+p.y+';width:'+p.s+'px;height:'+p.s+'px;animation-delay:'+p.d+'s;filter:blur(1px)';
-    ll.appendChild(el);
+  document.querySelectorAll('.ll').forEach(ll=>{
+    const pts=[{x:'15%',y:'30%',s:4,d:0},{x:'75%',y:'25%',s:3,d:2},{x:'60%',y:'70%',s:5,d:4},{x:'25%',y:'65%',s:3,d:1}];
+    pts.forEach(p=>{
+      const el=document.createElement('div');
+      el.className='ll-particle';
+      el.style.cssText='left:'+p.x+';top:'+p.y+';width:'+p.s+'px;height:'+p.s+'px;animation-delay:'+p.d+'s;filter:blur(1px)';
+      ll.appendChild(el);
+    });
   });
 })();
 
-/* FUNÇÕES SIGNUP */
+/* FUNÇÕES SIGNUP — toggles de visibilidade de senha */
 function toggleCpw(){
   const i=document.getElementById('cpw'),e=document.getElementById('cpweye');
   if(!i)return;
@@ -361,7 +327,7 @@ function toggleCpw2(){
 
 
 /* ════════════════════════════════════════
-   ADMIN — JAVASCRIPT
+   ADMIN — DADOS MOCK (Fase 3 substitui por payments/reviews/notifications/activity_log reais)
 ════════════════════════════════════════ */
 const ADM_DATA={
   monthly:{
@@ -430,7 +396,6 @@ function togApw(){
   if(!i)return;i.type=i.type==='password'?'text':'password';
   e.textContent=i.type==='password'?'visibility':'visibility_off';
 }
-function goAdmin(){showV('va');adminInit();}
 
 /* CLOCK */
 function admClock(){
@@ -543,20 +508,12 @@ function renderHist(){
   el.innerHTML=HIST_A.map(h=>'<div class="atl-item"><div class="atl-dot '+cm[h.c]+'"><span class="ms">'+h.ic+'</span></div><div class="atl-act">'+h.a+'</div><div class="atl-meta"><span><span class="ms">person</span>'+h.u+'</span><span><span class="ms">schedule</span>'+h.t+'</span></div></div>').join('');
 }
 
-/* CONFIG */
+/* CONFIG — troca de aba (as listas de Serviços/Equipe são reais, ver pages/admin/configuracoes.js) */
 function cfgT(id,btn){
   document.querySelectorAll('.acfg-tc').forEach(t=>t.classList.remove('on'));
   document.getElementById('cfg-'+id)?.classList.add('on');
   btn.closest('.acfg-tabs').querySelectorAll('.acfg-tab').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
-}
-function renderCfgSvc(){
-  const el=document.getElementById('cfg-svc-list');if(!el)return;
-  el.innerHTML=SVC.map(s=>'<div class="asvc-row"><span class="asvc-n">'+s.n+'</span><input class="asvc-inp" value="'+s.p+'" style="color:var(--acc)"><input class="asvc-inp" value="'+s.t+'" style="color:var(--mut)"><button class="abtn abtn-r" style="padding:6px 10px;border-radius:8px;font-size:11px">Remover</button></div>').join('');
-}
-function renderCfgEq(){
-  const el=document.getElementById('cfg-eq-list');if(!el)return;
-  el.innerHTML=BAR.map(b=>'<div class="asvc-row"><div style="width:34px;height:34px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(var(--ar),.2),rgba(var(--ar),.06));border:1px solid rgba(var(--ar),.2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--acc)">'+b.i+'</div><span class="asvc-n">'+b.n+'</span><span style="font-size:11px;color:var(--mut)">'+b.r+'</span><select class="afsel" style="width:110px;padding:6px 10px;border-radius:8px;font-size:11px"><option>Barbeiro</option><option>Gerente</option><option>Admin</option></select></div>').join('');
 }
 
 /* NOTIF */
@@ -570,7 +527,8 @@ function selTpl(el,nome){
   ns.style.fontWeight='600';
 }
 
-/* ADMIN INIT — chamado ao entrar no painel */
+/* ADMIN INIT (mock) — chamado ao entrar no painel; as listas reais (Serviços/Equipe) são
+   disparadas separadamente por main.js junto com esta função. */
 function adminInit(){
   admClock();
   renderRevChart('mensal');
@@ -581,6 +539,15 @@ function adminInit(){
   renderClis();
   renderFbs();
   renderHist();
-  renderCfgSvc();
-  renderCfgEq();
 }
+
+/* Expõe no escopo global as funções referenciadas via onclick="..." no HTML
+   (necessário porque este arquivo agora é um ES module — módulos não vazam
+   suas declarações para `window` automaticamente). */
+Object.assign(window, {
+  showV, sto, bkGo, bkReset, bkPS, bkPB, bkPD, bkPH, togglePw,
+  toggleCpw, toggleCpw2, togSb, pGo, pTab, pPTab, selBar, togAdSb, aGo,
+  togApw, swChartPeriod, selTpl, cfgT, confAp, cancAp, renderRev, adminInit,
+});
+
+export { rvObs, showV, pGo, aGo, adminInit };
