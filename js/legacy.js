@@ -1,29 +1,12 @@
 /*
- * Lógica ainda não migrada para o backend real (Fases 2/3 do plano Supabase):
- * wizard de agendamento (mock), dados mock do admin (Agenda/Clientes/Feedbacks/Histórico/
- * gráficos do Dashboard) e microinterações decorativas. Serviços/Equipe/autenticação já
- * foram migrados para módulos próprios (pages/public.js, pages/portal.js,
- * pages/admin/configuracoes.js, auth/auth.js) — por isso não aparecem mais aqui.
- *
- * SVC/BAR abaixo são mantidos apenas como dado de apoio para o wizard de agendamento
- * (ainda mock) — serão substituídos por dados reais na Fase 2.
+ * Lógica ainda não migrada para o backend real (Fase 3 do plano Supabase):
+ * dados mock do admin (Clientes/Feedbacks/Histórico/gráficos financeiros do Dashboard)
+ * e microinterações decorativas. Serviços/Equipe/autenticação/Agendamentos já foram
+ * migrados para módulos próprios (pages/public.js, pages/portal.js, pages/booking.js,
+ * pages/admin/configuracoes.js, pages/admin/agenda.js, auth/auth.js) — por isso não
+ * aparecem mais aqui.
  */
 
-/* DATA (mock — Fase 2 substitui) */
-const SVC=[
-  {n:"Corte Clássico",d:"Acabamento preciso e tradicional com técnica refinada.",p:"R$ 35",t:"30 min",i:"ti-cut"},
-  {n:"Corte + Barba",d:"O combo completo para o visual perfeito.",p:"R$ 55",t:"50 min",i:"ti-mood-smile"},
-  {n:"Barba Completa",d:"Modelagem com navalha e toalha quente.",p:"R$ 30",t:"25 min",i:"ti-razor"},
-  {n:"Degradê",d:"Fade suave com transições precisas e modernas.",p:"R$ 40",t:"35 min",i:"ti-wand"},
-  {n:"Hidratação",d:"Tratamento capilar especial com produtos premium.",p:"R$ 45",t:"40 min",i:"ti-droplet"},
-  {n:"Sobrancelha",d:"Design e alinhamento perfeito com precisão.",p:"R$ 15",t:"15 min",i:"ti-eye"},
-];
-const BAR=[
-  {i:"CS",n:"Carlos Silva",r:"Master Barber",e:"12 anos",s:"Degradê & Navalhado",rt:4.9},
-  {i:"RM",n:"Rafael Mendes",r:"Senior Barber",e:"8 anos",s:"Barba Clássica",rt:4.8},
-  {i:"DC",n:"Diego Costa",r:"Barber",e:"5 anos",s:"Cortes Modernos",rt:4.7},
-  {i:"LF",n:"Lucas Ferreira",r:"Junior Barber",e:"3 anos",s:"Coloração",rt:4.6},
-];
 const AVAL=[
   {n:"João Paulo",t:"Melhor barbearia da cidade! Atendimento nota 10 e resultado impecável em todos os cortes.",q:"há 2 semanas"},
   {n:"Marcos Oliveira",t:"Sou cliente há 3 anos. O Carlos é incrível, nunca decepcionou. Recomendo de olhos fechados.",q:"há 1 mês"},
@@ -46,11 +29,6 @@ const PT=[
   "radial-gradient(circle at 20% 60%,rgba(230,195,100,.11) 0%,transparent 50%)",
   "repeating-linear-gradient(90deg,rgba(230,195,100,.07) 0,rgba(230,195,100,.07) 1px,transparent 1px,transparent 16px)",
 ];
-const HRS=["09:00","09:30","10:00","10:30","11:00","14:00","14:30","15:00","15:30","16:00","17:00","17:30"];
-const OCP=new Set([2,5,8]);
-const DTS=["Ter, 24 Jun","Qua, 25 Jun","Qui, 26 Jun","Sex, 27 Jun","Sáb, 28 Jun"];
-const STEPS=["Serviço","Barbeiro","Horário","Confirmado"];
-
 /* VIEW SYSTEM */
 function showV(id){
   document.querySelectorAll('.view').forEach(v=>{v.style.display='none';v.classList.remove('on')});
@@ -179,72 +157,8 @@ function renderRev(p=0){
     <button class="rdot ${i===p?'on':''}" onclick="renderRev(${i})" aria-label="Página ${i+1}"></button>`).join('');
 }
 
-/* BOOKING (mock — Fase 2 substitui por agendamento real com checagem de conflito) */
-let bk={v:null,b:null,d:null,h:null};
-function renderStInd(cur){
-  document.getElementById('stind').innerHTML=STEPS.map((l,i)=>`
-    <div class="stcol">
-      <div class="stc ${i<cur-1?'done':''} ${i===cur-1?'cur':''}">
-        ${i<cur-1?'<i class="ti ti-check" style="font-size:13px"></i>':i+1}
-      </div>
-      <div class="stl ${i===cur-1?'cur':''}">${l}</div>
-    </div>
-    ${i<3?`<div class="stline ${i<cur-1?'done':''}"></div>`:''}`).join('');
-}
-function renderBkSvc(){
-  document.getElementById('bksvclist').innerHTML=SVC.map((s,i)=>`
-    <div class="bksvc ${bk.v===i?'on':''}" onclick="bkPS(${i})">
-      <div><div class="bksvcn">${s.n}</div><div class="bksvcm">${s.d} · <i class="ti ti-clock" style="font-size:11px"></i> ${s.t}</div></div>
-      <span class="bksvcp">${s.p}</span>
-    </div>`).join('');
-}
-function renderBkBar(){
-  document.getElementById('bkbar').innerHTML=BAR.map((b,i)=>`
-    <div class="bkbarc ${bk.b===i?'on':''}" onclick="bkPB(${i})">
-      <div class="bkbav">${b.i}</div>
-      <div><div class="bkbn">${b.n}</div><div class="bkbr">${b.r}</div><div class="bkbrate">★ ${b.rt}</div></div>
-    </div>`).join('');
-}
-function renderBkTime(){
-  document.getElementById('bkdates').innerHTML=DTS.map(d=>`
-    <button class="bkd ${bk.d===d?'on':''}" onclick="bkPD('${d}')">${d}</button>`).join('');
-  document.getElementById('bktimes').innerHTML=HRS.map((h,i)=>`
-    <button class="bkh ${bk.h===h?'on':''}" ${OCP.has(i)?'disabled':''} onclick="bkPH('${h}')">${h}</button>`).join('');
-  const cb=document.getElementById('bkconfirm');
-  if(cb)cb.style.display=(bk.d&&bk.h)?'flex':'none';
-}
-function bkGo(n){
-  document.querySelectorAll('.bkstep').forEach((s,i)=>s.classList.toggle('show',i===n-1));
-  renderStInd(n);
-  if(n===2)renderBkBar();
-  if(n===3)renderBkTime();
-  if(n===4){
-    document.getElementById('bksum').innerHTML=[
-      ['Serviço',bk.v!==null?SVC[bk.v].n:'—'],['Barbeiro',bk.b!==null?BAR[bk.b].n:'—'],
-      ['Data',bk.d||'—'],['Horário',bk.h||'—']
-    ].map(([k,v])=>`<div class="bksr"><span class="bksl">${k}</span><span class="bksv">${v}</span></div>`).join('');
-  }
-}
-function bkPS(i){bk.v=i;bkGo(2);}
-function bkPB(i){bk.b=i;bkGo(3);}
-function bkPD(d){bk.d=d;renderBkTime();}
-function bkPH(h){bk.h=h;renderBkTime();}
-function bkReset(){bk={v:null,b:null,d:null,h:null};bkGo(1);renderBkSvc();}
-
-/* MINI CALENDAR (mock — Fase 2 substitui por dados reais de appointments) */
-function renderCal(){
-  const D=['D','S','T','Q','Q','S','S'],AP=[15,22],TD=25,ST=6,TOT=30;
-  let h=D.map(d=>`<div class="mcdn">${d}</div>`).join('');
-  for(let i=0;i<ST;i++)h+=`<div class="mcd empty"></div>`;
-  for(let d=1;d<=TOT;d++){
-    let c='mcd';if(d===TD)c+=' today';if(AP.includes(d))c+=' ha';
-    h+=`<div class="${c}">${d}</div>`;
-  }
-  document.getElementById('mcgrid').innerHTML=h;
-}
-
-/* INIT — Serviços/Equipe agora são renderizados por pages/public.js (ver main.js) */
-renderGal();renderRev(0);renderStInd(1);renderBkSvc();renderCal();
+/* INIT — Serviços/Equipe/Agendamentos agora são renderizados por pages/*.js (ver main.js) */
+renderGal();renderRev(0);
 
 /* ══ MICROINTERAÇÕES PREMIUM ══ */
 
@@ -340,16 +254,6 @@ const ADM_DATA={
   svcs:[{l:'Corte Clássico',p:42,c:'#e6c364'},{l:'Corte + Barba',p:28,c:'#c9a84c'},{l:'Barba',p:18,c:'rgba(230,195,100,.5)'},{l:'Outros',p:12,c:'rgba(230,195,100,.25)'}],
   topCli:[{i:'RA',n:'Rodrigo Alves',v:20,b:'VIP'},{i:'BL',n:'Bruno Lima',v:15,b:'VIP'},{i:'JP',n:'João Paulo',v:12,b:'VIP'},{i:'MO',n:'Marcos Oliveira',v:8,b:'Regular'},{i:'FR',n:'Felipe Rocha',v:5,b:'Regular'}]
 };
-const APPTS=[
-  {id:1,c:'João Paulo',s:'Corte Degradê',b:'Carlos Silva',d:'15 Jun',t:'14:30',p:'R$ 40',st:'confirmed'},
-  {id:2,c:'Marcos Oliveira',s:'Barba Completa',b:'Rafael Mendes',d:'15 Jun',t:'16:00',p:'R$ 30',st:'confirmed'},
-  {id:3,c:'Felipe Rocha',s:'Corte + Barba',b:'Diego Costa',d:'16 Jun',t:'09:30',p:'R$ 55',st:'pending'},
-  {id:4,c:'Bruno Lima',s:'Hidratação',b:'Carlos Silva',d:'16 Jun',t:'11:00',p:'R$ 45',st:'pending'},
-  {id:5,c:'André Santos',s:'Corte Clássico',b:'Lucas Ferreira',d:'17 Jun',t:'10:00',p:'R$ 35',st:'confirmed'},
-  {id:6,c:'Rodrigo Alves',s:'Sobrancelha',b:'Rafael Mendes',d:'17 Jun',t:'14:00',p:'R$ 15',st:'cancelled'},
-  {id:7,c:'Carlos Lima',s:'Degradê',b:'Diego Costa',d:'18 Jun',t:'15:30',p:'R$ 40',st:'pending'},
-  {id:8,c:'Thiago Santos',s:'Corte Clássico',b:'Carlos Silva',d:'18 Jun',t:'17:00',p:'R$ 35',st:'confirmed'},
-];
 const CLIS_A=[
   {i:'JP',n:'João Paulo',e:'joao@email.com',v:12,sp:'R$ 480',l:'15 Jun',ly:10,b:'VIP'},
   {i:'MO',n:'Marcos Oliveira',e:'marcos@email.com',v:8,sp:'R$ 320',l:'10 Jun',ly:8,b:'Regular'},
@@ -463,26 +367,6 @@ function renderTopCli(){
   el.innerHTML=ADM_DATA.topCli.map((c,i)=>'<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span style="font-size:12px;font-weight:700;color:var(--mut);width:14px;text-align:center">'+(i+1)+'</span><div style="width:32px;height:32px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(var(--ar),.2),rgba(var(--ar),.07));border:1.5px solid rgba(var(--ar),.25);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--acc)">'+c.i+'</div><div style="flex:1"><div style="font-size:13px;font-weight:600">'+c.n+'</div><div style="font-size:11px;color:var(--mut)">'+c.v+' visitas</div></div><span class="cbdg '+(c.b==='VIP'?'cbdg-vip':'cbdg-reg')+'">'+c.b+'</span></div>').join('');
 }
 
-/* AGENDA */
-function renderAg(){
-  const sq=(document.getElementById('ag-search')?.value||'').toLowerCase();
-  const br=document.getElementById('ag-bar')?.value||'';
-  const st=document.getElementById('ag-st')?.value||'';
-  const dt=document.getElementById('ag-dt')?.value||'';
-  const f=APPTS.filter(a=>{
-    if(sq&&!a.c.toLowerCase().includes(sq)&&!a.s.toLowerCase().includes(sq))return false;
-    if(br&&a.b!==br)return false;
-    if(st&&a.st!==st)return false;
-    if(dt&&a.d!==dt)return false;
-    return true;
-  });
-  const sm={confirmed:{cl:'ast-ok',lb:'Confirmado',ic:'check_circle'},pending:{cl:'ast-pnd',lb:'Pendente',ic:'schedule'},cancelled:{cl:'ast-cncl',lb:'Cancelado',ic:'cancel'}};
-  const tb=document.getElementById('ag-tbody');if(!tb)return;
-  tb.innerHTML=f.map(a=>{const s=sm[a.st];return '<tr><td style="color:var(--mut);font-size:12px">#'+a.id+'</td><td><strong>'+a.c+'</strong></td><td>'+a.s+'</td><td style="color:var(--mut)">'+a.b+'</td><td style="color:var(--mut)">'+a.d+'</td><td>'+a.t+'</td><td style="font-weight:700;color:var(--acc)">'+a.p+'</td><td><span class="ast '+s.cl+'"><span class="ms">'+s.ic+'</span>'+s.lb+'</span></td><td><div class="aact">'+(a.st==='pending'?'<button class="abtn abtn-g" onclick="confAp('+a.id+')">Confirmar</button>':'')+(a.st!=='cancelled'?'<button class="abtn abtn-r" onclick="cancAp('+a.id+')">Cancelar</button>':'')+'</div></td></tr>';}).join('');
-}
-function confAp(id){const a=APPTS.find(x=>x.id===id);if(a)a.st='confirmed';renderAg();}
-function cancAp(id){const a=APPTS.find(x=>x.id===id);if(a)a.st='cancelled';renderAg();}
-
 /* CLIENTES */
 function renderClis(){
   const sq=(document.getElementById('cli-s')?.value||'').toLowerCase();
@@ -527,15 +411,14 @@ function selTpl(el,nome){
   ns.style.fontWeight='600';
 }
 
-/* ADMIN INIT (mock) — chamado ao entrar no painel; as listas reais (Serviços/Equipe) são
-   disparadas separadamente por main.js junto com esta função. */
+/* ADMIN INIT (parte mock) — chamado ao entrar no painel; Serviços/Equipe/Agenda reais são
+   disparados separadamente por main.js junto com esta função. */
 function adminInit(){
   admClock();
   renderRevChart('mensal');
   renderDonut();
   renderWeekly();
   renderTopCli();
-  renderAg();
   renderClis();
   renderFbs();
   renderHist();
@@ -545,9 +428,9 @@ function adminInit(){
    (necessário porque este arquivo agora é um ES module — módulos não vazam
    suas declarações para `window` automaticamente). */
 Object.assign(window, {
-  showV, sto, bkGo, bkReset, bkPS, bkPB, bkPD, bkPH, togglePw,
+  showV, sto, togglePw,
   toggleCpw, toggleCpw2, togSb, pGo, pTab, pPTab, selBar, togAdSb, aGo,
-  togApw, swChartPeriod, selTpl, cfgT, confAp, cancAp, renderRev, adminInit,
+  togApw, swChartPeriod, selTpl, cfgT, renderRev, adminInit,
 });
 
 export { rvObs, showV, pGo, aGo, adminInit };

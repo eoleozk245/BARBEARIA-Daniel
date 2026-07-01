@@ -146,6 +146,11 @@
         <p class="ssub">Rápido e fácil. Em menos de 2 minutos você garante seu espaço.</p>
       </div>
       <div class="bkw rv">
+        <div id="bk-guest-prompt" style="display:none;text-align:center;padding:48px 24px;background:var(--gb);backdrop-filter:var(--blur);border:1px solid var(--gbd);border-radius:var(--rx)">
+          <div style="font-size:16px;font-weight:700;margin-bottom:8px">Entre na sua conta para agendar</div>
+          <p style="font-size:13px;color:var(--mut);margin-bottom:20px">Crie uma conta gratuita ou faça login para escolher serviço, barbeiro e horário.</p>
+          <button class="btn btng" onclick="showV('vl')" style="display:inline-flex"><i class="ti ti-login"></i> Entrar ou cadastrar-se</button>
+        </div>
         <div class="stind" id="stind"></div>
         <div class="bkcard">
           <div class="bkstep show" id="bk1">
@@ -164,7 +169,7 @@
             <div class="bkdts" id="bkdates"></div>
             <div class="bksub">Horários disponíveis:</div>
             <div class="bkhrs" id="bktimes"></div>
-            <button class="btn btng" id="bkconfirm" onclick="bkGo(4)"
+            <button class="btn btng" id="bkconfirm" onclick="bkConfirm()"
               style="width:100%;justify-content:center;margin-top:18px;display:none">
               <i class="ti ti-check"></i> Confirmar agendamento
             </button>
@@ -450,7 +455,7 @@
       </button>
     </div>
     <div class="sbctaw">
-      <button class="sbnew" onclick="pGo('agendamentos')">
+      <button class="sbnew" onclick="showV('vs');sto('booking')">
         <span class="ms" style="font-size:18px;flex-shrink:0">add</span>
         <span class="lbl">Novo Agendamento</span>
       </button>
@@ -497,7 +502,7 @@
         <div>
           <div class="qac" style="margin-bottom:12px">
             <h3>Ações rápidas</h3>
-            <button class="pbtn pbtng" onclick="pGo('agendamentos')"><span class="ms" style="font-size:17px">add</span> Novo Agendamento</button>
+            <button class="pbtn pbtng" onclick="showV('vs');sto('booking')"><span class="ms" style="font-size:17px">add</span> Novo Agendamento</button>
             <button class="pbtn pbtno" onclick="pGo('servicos')"><span class="ms" style="font-size:17px">design_services</span> Ver Serviços</button>
           </div>
           <div class="loy">
@@ -522,7 +527,7 @@
     <section class="psec" id="psec-agendamentos">
       <div class="pph">
         <div><h1>Meus Agendamentos</h1><p>Gerencie suas próximas sessões e histórico de cortes.</p></div>
-        <button class="pbtn pbtng"><span class="ms" style="font-size:17px">add</span> Novo Agendamento</button>
+        <button class="pbtn pbtng" onclick="showV('vs');sto('booking')"><span class="ms" style="font-size:17px">add</span> Novo Agendamento</button>
       </div>
       <div class="apptl">
         <div>
@@ -761,9 +766,9 @@
         </div>
         <div class="akpi">
           <div class="akpi-ico"><span class="ms">content_cut</span></div>
-          <div class="akpi-v">47</div>
-          <div class="akpi-l">Atendimentos — Novembro</div>
-          <div class="akpi-trend aup"><span class="ms">arrow_upward</span> +5 vs. outubro</div>
+          <div class="akpi-v" id="kpi-appts-count">—</div>
+          <div class="akpi-l">Atendimentos este mês</div>
+          <div class="akpi-trend" style="color:var(--mut)"><span class="ms">event</span> dado real (agendamentos)</div>
         </div>
       </div>
       <div class="chart-row">
@@ -809,9 +814,9 @@
       </div>
       <div class="afbar">
         <div class="asinp-w"><span class="ms asinp-ico">search</span><input type="text" class="asinp" placeholder="Buscar cliente ou serviço..." id="ag-search" oninput="renderAg()"></div>
-        <select class="afsel" id="ag-bar" onchange="renderAg()"><option value="">Todos os barbeiros</option><option>Carlos Silva</option><option>Rafael Mendes</option><option>Diego Costa</option><option>Lucas Ferreira</option></select>
-        <select class="afsel" id="ag-st" onchange="renderAg()"><option value="">Todos os status</option><option value="confirmed">Confirmado</option><option value="pending">Pendente</option><option value="cancelled">Cancelado</option></select>
-        <select class="afsel" id="ag-dt" onchange="renderAg()"><option value="">Todas as datas</option><option>15 Jun</option><option>16 Jun</option><option>17 Jun</option><option>18 Jun</option></select>
+        <select class="afsel" id="ag-bar" onchange="renderAg()"><option value="">Todos os barbeiros</option></select>
+        <select class="afsel" id="ag-st" onchange="renderAg()"><option value="">Todos os status</option><option value="scheduled">Agendado</option><option value="confirmed">Confirmado</option><option value="completed">Concluído</option><option value="cancelled">Cancelado</option></select>
+        <select class="afsel" id="ag-dt" onchange="renderAg()"><option value="">Todas as datas</option></select>
       </div>
       <div class="atbl-w"><table class="atbl">
         <thead><tr><th>#</th><th>Cliente</th><th>Serviço</th><th>Barbeiro</th><th>Data</th><th>Hora</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
