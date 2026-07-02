@@ -52,7 +52,7 @@ document.querySelectorAll('.ntab,.dtab').forEach(b=>{
 });
 
 /* SCROLLSPY */
-const SECS=['home','services','team','gallery','reviews','booking','contact'];
+const SECS=['home','services','team','gallery','reviews','contact'];
 function setAct(id){
   document.querySelectorAll('.ntab').forEach(t=>t.classList.toggle('on',t.dataset.target===id));
   document.querySelectorAll('.dtab').forEach(t=>t.classList.toggle('on',t.dataset.target===id));
@@ -106,7 +106,7 @@ function togSb(){
   document.getElementById('pmain').classList.toggle('col',sbC);
   document.getElementById('sbico').textContent=sbC?'chevron_right':'chevron_left';
 }
-const NIMAP={dashboard:'nid',agendamentos:'nia',servicos:'nis',perfil:'nip'};
+const NIMAP={dashboard:'nid',agendamentos:'nia','novo-agendamento':'nino',servicos:'nis',perfil:'nip'};
 function pGo(id){
   document.querySelectorAll('.psec').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
