@@ -16,6 +16,7 @@ import {
   applyAdminProfileToUI,
 } from './pages/admin/configuracoes.js';
 import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi } from './pages/admin/agenda.js';
+import { renderAdminClients } from './pages/admin/clientes.js';
 import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js';
 
 function showError(id, message) {
@@ -50,6 +51,7 @@ async function enterAdmin(profile) {
   await renderCfgEqReal();
   await renderAdminAgenda();
   await renderAppointmentsKpi();
+  await renderAdminClients();
   subscribeAdminAgenda();
   aGo('dash');
 }

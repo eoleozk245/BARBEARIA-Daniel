@@ -254,14 +254,6 @@ const ADM_DATA={
   svcs:[{l:'Corte Clássico',p:42,c:'#e6c364'},{l:'Corte + Barba',p:28,c:'#c9a84c'},{l:'Barba',p:18,c:'rgba(230,195,100,.5)'},{l:'Outros',p:12,c:'rgba(230,195,100,.25)'}],
   topCli:[{i:'RA',n:'Rodrigo Alves',v:20,b:'VIP'},{i:'BL',n:'Bruno Lima',v:15,b:'VIP'},{i:'JP',n:'João Paulo',v:12,b:'VIP'},{i:'MO',n:'Marcos Oliveira',v:8,b:'Regular'},{i:'FR',n:'Felipe Rocha',v:5,b:'Regular'}]
 };
-const CLIS_A=[
-  {i:'JP',n:'João Paulo',e:'joao@email.com',v:12,sp:'R$ 480',l:'15 Jun',ly:10,b:'VIP'},
-  {i:'MO',n:'Marcos Oliveira',e:'marcos@email.com',v:8,sp:'R$ 320',l:'10 Jun',ly:8,b:'Regular'},
-  {i:'FR',n:'Felipe Rocha',e:'felipe@email.com',v:5,sp:'R$ 200',l:'08 Jun',ly:5,b:'Regular'},
-  {i:'BL',n:'Bruno Lima',e:'bruno@email.com',v:15,sp:'R$ 675',l:'12 Jun',ly:10,b:'VIP'},
-  {i:'AS',n:'André Santos',e:'andre@email.com',v:3,sp:'R$ 120',l:'01 Jun',ly:3,b:'Novo'},
-  {i:'RA',n:'Rodrigo Alves',e:'rodrigo@email.com',v:20,sp:'R$ 860',l:'17 Jun',ly:10,b:'VIP'},
-];
 const FBS_A=[
   {i:'JP',n:'João Paulo',s:'Corte Degradê',b:'Carlos Silva',r:5,tx:'Melhor barbearia da cidade! Atendimento nota 10 e resultado impecável em todos os cortes.',d:'15 Jun',rep:false},
   {i:'MO',n:'Marcos Oliveira',s:'Barba Completa',b:'Rafael Mendes',r:5,tx:'Sou cliente há 3 anos. O Carlos é incrível, nunca decepcionou.',d:'10 Jun',rep:true},
@@ -367,18 +359,6 @@ function renderTopCli(){
   el.innerHTML=ADM_DATA.topCli.map((c,i)=>'<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span style="font-size:12px;font-weight:700;color:var(--mut);width:14px;text-align:center">'+(i+1)+'</span><div style="width:32px;height:32px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(var(--ar),.2),rgba(var(--ar),.07));border:1.5px solid rgba(var(--ar),.25);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--acc)">'+c.i+'</div><div style="flex:1"><div style="font-size:13px;font-weight:600">'+c.n+'</div><div style="font-size:11px;color:var(--mut)">'+c.v+' visitas</div></div><span class="cbdg '+(c.b==='VIP'?'cbdg-vip':'cbdg-reg')+'">'+c.b+'</span></div>').join('');
 }
 
-/* CLIENTES */
-function renderClis(){
-  const sq=(document.getElementById('cli-s')?.value||'').toLowerCase();
-  const bg=document.getElementById('cli-b')?.value||'';
-  const f=CLIS_A.filter(c=>{
-    if(sq&&!c.n.toLowerCase().includes(sq)&&!c.e.toLowerCase().includes(sq))return false;
-    if(bg&&c.b!==bg)return false;return true;
-  });
-  const g=document.getElementById('cli-grid');if(!g)return;
-  g.innerHTML=f.map(c=>'<div class="acli"><div class="acli-top"><div class="acli-av">'+c.i+'</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:8px;margin-bottom:2px"><div class="acli-nm">'+c.n+'</div><span class="cbdg '+(c.b==='VIP'?'cbdg-vip':c.b==='Novo'?'cbdg-new':'cbdg-reg')+'">'+c.b+'</span></div><div class="acli-em">'+c.e+'</div></div></div><div class="acli-stats"><div class="acli-st"><div class="acli-stv">'+c.v+'</div><div class="acli-stl">Visitas</div></div><div class="acli-st"><div class="acli-stv" style="font-size:12px">'+c.sp+'</div><div class="acli-stl">Total</div></div><div class="acli-st"><div class="acli-stv">'+c.ly+'/10</div><div class="acli-stl">Fidelidade</div></div></div><div style="padding-top:12px;margin-top:2px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:var(--mut)">Última visita: '+c.l+'</span><button class="abtn abtn-o" style="font-size:11px;padding:5px 12px;border-radius:8px">Ver histórico</button></div></div>').join('');
-}
-
 /* FEEDBACKS */
 function renderFbs(){
   const el=document.getElementById('fb-list');if(!el)return;
@@ -419,7 +399,6 @@ function adminInit(){
   renderDonut();
   renderWeekly();
   renderTopCli();
-  renderClis();
   renderFbs();
   renderHist();
 }
