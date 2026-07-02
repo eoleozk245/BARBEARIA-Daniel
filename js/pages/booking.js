@@ -3,6 +3,8 @@ import { listBarbers } from '../services/barbers.js';
 import { getAvailableSlots, createAppointment } from '../services/appointments.js';
 import { formatCurrency, formatDuration } from '../utils/format.js';
 import { escapeHtml } from '../utils/dom.js';
+import { pGo } from '../legacy.js';
+import { renderClientAppointments, renderMiniCalendar } from './portal.js';
 
 const STEPS = ['Serviço', 'Barbeiro', 'Horário', 'Confirmado'];
 
@@ -15,23 +17,19 @@ function el(id) {
   return document.getElementById(id);
 }
 
-/** Mostra o wizard real (logado) ou o convite para entrar (visitante). Chame ao logar/deslogar. */
+/**
+ * Prepara o wizard para o cliente logado (a seção só é alcançável de dentro do
+ * painel autenticado, então não há mais "modo visitante" a considerar aqui).
+ * Chame ao entrar no portal e ao deslogar (com profile=null para limpar o estado).
+ */
 export function setBookingSession(profile) {
   currentClientId = profile ? profile.id : null;
-  const guest = el('bk-guest-prompt');
-  const card = document.querySelector('#booking .bkcard');
-  const stind = el('stind');
-  if (!guest || !card) return;
-  if (currentClientId) {
-    guest.style.display = 'none';
-    card.style.display = '';
-    if (stind) stind.style.display = '';
-    bkReset();
-  } else {
-    guest.style.display = 'block';
-    card.style.display = 'none';
-    if (stind) stind.style.display = 'none';
-  }
+  if (currentClientId) bkReset();
+}
+
+/** Volta para "Meus Agendamentos" (dados já atualizados via Realtime/refresh explícito). */
+function bkGoToAgendamentos() {
+  pGo('agendamentos');
 }
 
 function renderStInd(cur) {
@@ -120,7 +118,7 @@ async function renderBkTime() {
 }
 
 function bkGo(n) {
-  document.querySelectorAll('#booking .bkstep').forEach((s, i) => s.classList.toggle('show', i === n - 1));
+  document.querySelectorAll('#psec-novo-agendamento .bkstep').forEach((s, i) => s.classList.toggle('show', i === n - 1));
   renderStInd(n);
   if (n === 2) renderBkBar();
   if (n === 3) renderBkTime();
@@ -172,6 +170,9 @@ async function bkConfirm() {
       .map(([k, v]) => `<div class="bksr"><span class="bksl">${k}</span><span class="bksv">${escapeHtml(String(v))}</span></div>`)
       .join('');
     bkGo(4);
+    // Atualiza a lista real de "Meus Agendamentos" e o mini calendário sem esperar o Realtime.
+    await renderClientAppointments();
+    await renderMiniCalendar();
   } catch (err) {
     alert(err.message || 'Não foi possível concluir o agendamento.');
   } finally {
@@ -179,4 +180,4 @@ async function bkConfirm() {
   }
 }
 
-Object.assign(window, { bkPickService, bkPickBarber, bkPickDate, bkPickTime, bkConfirm, bkReset, bkGo });
+Object.assign(window, { bkPickService, bkPickBarber, bkPickDate, bkPickTime, bkConfirm, bkReset, bkGo, bkGoToAgendamentos });

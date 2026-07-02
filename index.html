@@ -33,7 +33,7 @@
         <button class="ntab" data-target="team">Equipe</button>
         <button class="ntab" data-target="gallery">Galeria</button>
         <button class="ntab" data-target="reviews">Avaliações</button>
-        <button class="ntab" data-target="booking">Agendar</button>
+        <button class="ntab" onclick="showV('vl')">Agendar</button>
         <button class="ntab" data-target="contact">Contato</button>
       </div>
       <button class="nlogin" onclick="showV('vl')"><i class="ti ti-user"></i> Entrar</button>
@@ -49,7 +49,7 @@
     <button class="dtab" data-target="team"><span class="ms" aria-hidden="true">groups</span> Equipe</button>
     <button class="dtab" data-target="gallery"><span class="ms" aria-hidden="true">photo_library</span> Galeria</button>
     <button class="dtab" data-target="reviews"><span class="ms" aria-hidden="true">star</span> Avaliações</button>
-    <button class="dtab" data-target="booking"><span class="ms" aria-hidden="true">calendar_month</span> Agendar</button>
+    <button class="dtab" onclick="showV('vl')"><span class="ms" aria-hidden="true">calendar_month</span> Agendar</button>
     <button class="dtab" data-target="contact"><span class="ms" aria-hidden="true">mail</span> Contato</button>
     <button class="dlogin" onclick="showV('vl')"><span class="ms" aria-hidden="true" style="font-size:16px">login</span> Entrar</button>
   </div>
@@ -69,7 +69,7 @@
             <h1 class="hh1">Arte em cada<br><span class="gd">detalhe.</span></h1>
             <p class="hp">Mais de 14 anos transformando estilos com técnica, cuidado e atenção que você merece.</p>
             <div class="hctas">
-              <button class="btn btng" onclick="sto('booking')"><i class="ti ti-calendar"></i> Agendar agora</button>
+              <button class="btn btng" onclick="showV('vl')"><i class="ti ti-calendar"></i> Agendar agora</button>
               <button class="btn btno" onclick="sto('services')">Ver serviços <i class="ti ti-arrow-right"></i></button>
             </div>
           </div>
@@ -84,7 +84,7 @@
               <div class="hcs"><div class="hcsv">R$ 40</div><div class="hcsl">A partir de</div></div>
               <div class="hcs"><div class="hcsv">4,9 ★</div><div class="hcsl">Avaliação</div></div>
             </div>
-            <button class="btn btng" style="width:100%;justify-content:center" onclick="sto('booking')">
+            <button class="btn btng" style="width:100%;justify-content:center" onclick="showV('vl')">
               <i class="ti ti-bolt"></i> Reservar este horário
             </button>
           </div>
@@ -137,52 +137,6 @@
       </div>
       <div class="rgrid" id="rgrid"></div>
       <div class="rpag" id="rpag"></div>
-    </section>
-
-    <!-- BOOKING -->
-    <section class="sec" id="booking">
-      <div class="shd rv"><div class="stag"><div class="stag-d"></div><span class="stag-t">Agendamento Online</span></div>
-        <h2 class="sh2">Reserve seu <span class="gd">horário</span></h2>
-        <p class="ssub">Rápido e fácil. Em menos de 2 minutos você garante seu espaço.</p>
-      </div>
-      <div class="bkw rv">
-        <div id="bk-guest-prompt" style="display:none;text-align:center;padding:48px 24px;background:var(--gb);backdrop-filter:var(--blur);border:1px solid var(--gbd);border-radius:var(--rx)">
-          <div style="font-size:16px;font-weight:700;margin-bottom:8px">Entre na sua conta para agendar</div>
-          <p style="font-size:13px;color:var(--mut);margin-bottom:20px">Crie uma conta gratuita ou faça login para escolher serviço, barbeiro e horário.</p>
-          <button class="btn btng" onclick="showV('vl')" style="display:inline-flex"><i class="ti ti-login"></i> Entrar ou cadastrar-se</button>
-        </div>
-        <div class="stind" id="stind"></div>
-        <div class="bkcard">
-          <div class="bkstep show" id="bk1">
-            <div class="bktit">Escolha o serviço</div>
-            <div id="bksvclist"></div>
-          </div>
-          <div class="bkstep" id="bk2">
-            <button class="bkback" onclick="bkGo(1)"><i class="ti ti-arrow-left"></i> Voltar</button>
-            <div class="bktit">Escolha o barbeiro</div>
-            <div class="bkbar" id="bkbar"></div>
-          </div>
-          <div class="bkstep" id="bk3">
-            <button class="bkback" onclick="bkGo(2)"><i class="ti ti-arrow-left"></i> Voltar</button>
-            <div class="bktit">Data e horário</div>
-            <div class="bksub">Selecione uma data:</div>
-            <div class="bkdts" id="bkdates"></div>
-            <div class="bksub">Horários disponíveis:</div>
-            <div class="bkhrs" id="bktimes"></div>
-            <button class="btn btng" id="bkconfirm" onclick="bkConfirm()"
-              style="width:100%;justify-content:center;margin-top:18px;display:none">
-              <i class="ti ti-check"></i> Confirmar agendamento
-            </button>
-          </div>
-          <div class="bkstep" id="bk4" style="text-align:center;padding:8px 0">
-            <div class="bkokico"><i class="ti ti-check"></i></div>
-            <div style="font-size:20px;font-weight:800;margin-bottom:8px;letter-spacing:-.02em">Agendamento confirmado!</div>
-            <p style="font-size:13px;color:var(--mut);margin-bottom:20px">Você receberá confirmação por e-mail e WhatsApp em breve.</p>
-            <div class="bksum" id="bksum"></div>
-            <button class="btn btno" onclick="bkReset()">Fazer novo agendamento</button>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- CONTACT -->
@@ -242,7 +196,7 @@
           <a class="fl" onclick="sto('services')">Serviços</a>
           <a class="fl" onclick="sto('team')">Equipe</a>
           <a class="fl" onclick="sto('gallery')">Galeria</a>
-          <a class="fl" onclick="sto('booking')">Agendar</a>
+          <a class="fl" onclick="showV('vl')">Agendar</a>
         </div>
         <div>
           <div class="fct">Serviços</div>
@@ -455,7 +409,7 @@
       </button>
     </div>
     <div class="sbctaw">
-      <button class="sbnew" onclick="showV('vs');sto('booking')">
+      <button class="sbnew" onclick="pGo('novo-agendamento')">
         <span class="ms" style="font-size:18px;flex-shrink:0">add</span>
         <span class="lbl">Novo Agendamento</span>
       </button>
@@ -463,6 +417,7 @@
     <nav class="sbnav">
       <div class="ni on" id="nid" onclick="pGo('dashboard')"><span class="ms">grid_view</span><span class="nlbl">Dashboard</span></div>
       <div class="ni" id="nia" onclick="pGo('agendamentos')"><span class="ms">calendar_month</span><span class="nlbl">Meus Agendamentos</span></div>
+      <div class="ni" id="nino" onclick="pGo('novo-agendamento')"><span class="ms">add_circle</span><span class="nlbl">Novo Agendamento</span></div>
       <div class="ni" id="nis" onclick="pGo('servicos')"><span class="ms">design_services</span><span class="nlbl">Serviços</span></div>
       <div class="ni" id="nip" onclick="pGo('perfil')"><span class="ms">person</span><span class="nlbl">Meu Perfil</span></div>
     </nav>
@@ -502,7 +457,7 @@
         <div>
           <div class="qac" style="margin-bottom:12px">
             <h3>Ações rápidas</h3>
-            <button class="pbtn pbtng" onclick="showV('vs');sto('booking')"><span class="ms" style="font-size:17px">add</span> Novo Agendamento</button>
+            <button class="pbtn pbtng" onclick="pGo('novo-agendamento')"><span class="ms" style="font-size:17px">add</span> Novo Agendamento</button>
             <button class="pbtn pbtno" onclick="pGo('servicos')"><span class="ms" style="font-size:17px">design_services</span> Ver Serviços</button>
           </div>
           <div class="loy">
@@ -527,7 +482,7 @@
     <section class="psec" id="psec-agendamentos">
       <div class="pph">
         <div><h1>Meus Agendamentos</h1><p>Gerencie suas próximas sessões e histórico de cortes.</p></div>
-        <button class="pbtn pbtng" onclick="showV('vs');sto('booking')"><span class="ms" style="font-size:17px">add</span> Novo Agendamento</button>
+        <button class="pbtn pbtng" onclick="pGo('novo-agendamento')"><span class="ms" style="font-size:17px">add</span> Novo Agendamento</button>
       </div>
       <div class="apptl">
         <div>
@@ -584,6 +539,47 @@
             <div class="loybar"><div class="loyf" style="width:80%"></div></div>
             <div class="loyms">Faltam <strong>2 cortes</strong> para um serviço gratuito.</div>
             <button class="btnloy">Ver Detalhes</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOVO AGENDAMENTO (dentro do painel do cliente) -->
+    <section class="psec" id="psec-novo-agendamento">
+      <div class="pph">
+        <div><h1>Novo Agendamento</h1><p>Escolha o serviço, o barbeiro e o horário — leva menos de 2 minutos.</p></div>
+      </div>
+      <div class="bkw rv in">
+        <div class="stind" id="stind"></div>
+        <div class="bkcard">
+          <div class="bkstep show" id="bk1">
+            <div class="bktit">Escolha o serviço</div>
+            <div id="bksvclist"></div>
+          </div>
+          <div class="bkstep" id="bk2">
+            <button class="bkback" onclick="bkGo(1)"><i class="ti ti-arrow-left"></i> Voltar</button>
+            <div class="bktit">Escolha o barbeiro</div>
+            <div class="bkbar" id="bkbar"></div>
+          </div>
+          <div class="bkstep" id="bk3">
+            <button class="bkback" onclick="bkGo(2)"><i class="ti ti-arrow-left"></i> Voltar</button>
+            <div class="bktit">Data e horário</div>
+            <div class="bksub">Selecione uma data:</div>
+            <div class="bkdts" id="bkdates"></div>
+            <div class="bksub">Horários disponíveis:</div>
+            <div class="bkhrs" id="bktimes"></div>
+            <button class="btn btng" id="bkconfirm" onclick="bkConfirm()"
+              style="width:100%;justify-content:center;margin-top:18px;display:none">
+              <i class="ti ti-check"></i> Confirmar agendamento
+            </button>
+          </div>
+          <div class="bkstep" id="bk4" style="text-align:center;padding:8px 0">
+            <div class="bkokico"><i class="ti ti-check"></i></div>
+            <div style="font-size:20px;font-weight:800;margin-bottom:8px;letter-spacing:-.02em">Agendamento confirmado!</div>
+            <p style="font-size:13px;color:var(--mut);margin-bottom:20px">Você pode acompanhar o status em "Meus Agendamentos".</p>
+            <div class="bksum" id="bksum"></div>
+            <button class="btn btno" onclick="bkGoToAgendamentos()">Ver meus agendamentos</button>
+            <button class="btn btno" onclick="bkReset()">Fazer novo agendamento</button>
           </div>
         </div>
       </div>

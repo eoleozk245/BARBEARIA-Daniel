@@ -28,7 +28,6 @@ function showError(id, message) {
 /* ══ SITE PÚBLICO — Serviços/Equipe reais (substituem SVC/BAR mock) ══ */
 renderPublicServices(rvObs);
 renderPublicTeam(rvObs);
-setBookingSession(null); // estado padrão (visitante) até a sessão ser restaurada, se houver
 
 /* ══ ENTRAR NO PORTAL DO CLIENTE (após login/cadastro real) ══ */
 async function enterPortal(profile) {
@@ -45,7 +44,6 @@ async function enterPortal(profile) {
 /* ══ ENTRAR NO PAINEL ADMIN (após login real) ══ */
 async function enterAdmin(profile) {
   applyAdminProfileToUI(profile);
-  setBookingSession(profile);
   showV('va');
   adminInit();
   await renderCfgSvcReal();
@@ -129,7 +127,6 @@ async function handleClientLogout() {
 }
 async function handleAdminLogout() {
   await signOut();
-  setBookingSession(null);
   showV('val');
 }
 
