@@ -824,13 +824,47 @@
     <section class="asec" id="asec-clientes">
       <div class="aph">
         <div><h1>Clientes</h1><p>Gestão completa da base de clientes.</p></div>
-        <button class="abtn abtn-g" style="padding:10px 20px;border-radius:999px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:7px"><span class="ms" style="font-size:17px">person_add</span> Novo Cliente</button>
+        <button class="abtn abtn-g" onclick="openClientModal()" style="padding:10px 20px;border-radius:999px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:7px"><span class="ms" style="font-size:17px">person_add</span> Novo Cliente</button>
       </div>
       <div class="afbar" style="margin-bottom:20px">
         <div class="asinp-w" style="flex:1"><span class="ms asinp-ico">search</span><input type="text" class="asinp" placeholder="Buscar por nome ou e-mail..." id="cli-s" oninput="renderClis()"></div>
         <select class="afsel" id="cli-b" onchange="renderClis()"><option value="">Todos os perfis</option><option>VIP</option><option>Regular</option><option>Novo</option></select>
       </div>
       <div class="acli-grid" id="cli-grid"></div>
+
+      <!-- Modal Novo Cliente / Editar Cliente -->
+      <div class="cmodal-overlay" id="cli-modal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="cli-modal-title">
+        <div class="cmodal">
+          <div class="cmodal-hdr">
+            <h3 id="cli-modal-title">Novo Cliente</h3>
+            <button class="cmodal-x" onclick="closeClientModal()" aria-label="Fechar"><span class="ms">close</span></button>
+          </div>
+          <div class="cmodal-body">
+            <div class="cmodal-fg">
+              <label class="acfg-lbl" for="cm-name">Nome completo</label>
+              <input class="acfg-inp" id="cm-name" type="text" placeholder="Nome do cliente">
+            </div>
+            <div class="cmodal-fg">
+              <label class="acfg-lbl" for="cm-email">E-mail</label>
+              <input class="acfg-inp" id="cm-email" type="email" placeholder="cliente@email.com">
+            </div>
+            <div class="cmodal-fg">
+              <label class="acfg-lbl" for="cm-phone">Telefone / WhatsApp</label>
+              <input class="acfg-inp" id="cm-phone" type="tel" placeholder="(84) 99999-0000">
+            </div>
+            <div class="cmodal-fg" id="cm-pw-group">
+              <label class="acfg-lbl" for="cm-password">Senha inicial (opcional)</label>
+              <input class="acfg-inp" id="cm-password" type="password" placeholder="Deixe em branco para gerar automaticamente">
+              <p class="cmodal-hint">Se deixar em branco, o cliente define a senha dele usando "Esqueci minha senha" na tela de login.</p>
+            </div>
+            <div id="cm-err" class="formerr" style="display:none"></div>
+          </div>
+          <div class="cmodal-foot">
+            <button class="abtn-o cmodal-cancel" onclick="closeClientModal()">Cancelar</button>
+            <button class="abtn abtn-g cmodal-save" id="cm-save" onclick="saveClientModal()">Salvar cliente</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ═ FEEDBACKS ═ -->
