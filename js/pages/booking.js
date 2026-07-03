@@ -74,7 +74,8 @@ async function renderBkBar() {
     .join('');
 }
 
-function nextDates(count = 10) {
+// MODO TESTE — reverter depois: count era 10, ampliado para permitir escolher qualquer dia dentro de ~3 meses.
+function nextDates(count = 90) {
   const dates = [];
   const d = new Date();
   dates.push(new Date(d));

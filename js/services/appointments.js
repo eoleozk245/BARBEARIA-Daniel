@@ -45,18 +45,13 @@ function minutesToTime(mins) {
  * (scheduled/confirmed) e a duração do serviço escolhido.
  */
 export async function getAvailableSlots(barberId, serviceId, dateStr) {
-  const date = new Date(dateStr + 'T00:00:00');
-  const weekday = date.getDay();
-
-  const [{ data: hours, error: hoursErr }, { data: service, error: svcErr }, { data: settings }] =
-    await Promise.all([
-      supabase.from('barber_hours').select('start_time,end_time').eq('barber_id', barberId).eq('weekday', weekday),
-      supabase.from('services').select('duration_minutes').eq('id', serviceId).single(),
-      supabase.from('business_settings').select('slot_interval_minutes').eq('id', true).single(),
-    ]);
-  if (hoursErr) throw hoursErr;
+  // MODO TESTE — reverter depois: ignora barber_hours e libera o dia inteiro (00:00–23:45).
+  const hours = [{ start_time: '00:00', end_time: '23:45' }];
+  const [{ data: service, error: svcErr }, { data: settings }] = await Promise.all([
+    supabase.from('services').select('duration_minutes').eq('id', serviceId).single(),
+    supabase.from('business_settings').select('slot_interval_minutes').eq('id', true).single(),
+  ]);
   if (svcErr) throw svcErr;
-  if (!hours || hours.length === 0) return [];
 
   const { data: busy, error: apptErr } = await supabase
     .from('appointments')
