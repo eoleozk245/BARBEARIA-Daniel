@@ -45,13 +45,18 @@ function minutesToTime(mins) {
  * (scheduled/confirmed) e a duração do serviço escolhido.
  */
 export async function getAvailableSlots(barberId, serviceId, dateStr) {
-  // MODO TESTE — reverter depois: ignora barber_hours e libera o dia inteiro (00:00–23:45).
-  const hours = [{ start_time: '00:00', end_time: '23:45' }];
-  const [{ data: service, error: svcErr }, { data: settings }] = await Promise.all([
-    supabase.from('services').select('duration_minutes').eq('id', serviceId).single(),
-    supabase.from('business_settings').select('slot_interval_minutes').eq('id', true).single(),
-  ]);
+  const date = new Date(dateStr + 'T00:00:00');
+  const weekday = date.getDay();
+
+  const [{ data: hours, error: hoursErr }, { data: service, error: svcErr }, { data: settings }] =
+    await Promise.all([
+      supabase.from('barber_hours').select('start_time,end_time').eq('barber_id', barberId).eq('weekday', weekday),
+      supabase.from('services').select('duration_minutes').eq('id', serviceId).single(),
+      supabase.from('business_settings').select('slot_interval_minutes').eq('id', true).single(),
+    ]);
+  if (hoursErr) throw hoursErr;
   if (svcErr) throw svcErr;
+  if (!hours || hours.length === 0) return [];
 
   const { data: busy, error: apptErr } = await supabase
     .from('appointments')
@@ -64,13 +69,16 @@ export async function getAvailableSlots(barberId, serviceId, dateStr) {
   const duration = service.duration_minutes;
   const step = settings?.slot_interval_minutes || 30;
   const busyRanges = busy.map((b) => [timeToMinutes(b.start_time), timeToMinutes(b.end_time)]);
+  const now = new Date();
+  const isToday = now.toISOString().slice(0, 10) === dateStr;
+  const nowMinutes = now.getHours() * 60 + now.getMinutes();
 
   const slots = [];
   for (const h of hours) {
     const dayStart = timeToMinutes(h.start_time);
     const dayEnd = timeToMinutes(h.end_time);
     for (let start = dayStart; start + duration <= dayEnd; start += step) {
-      // MODO TESTE — reverter depois: sem o filtro de "hora já passou hoje", libera qualquer hora do dia.
+      if (isToday && start <= nowMinutes) continue;
       const end = start + duration;
       const overlaps = busyRanges.some(([bStart, bEnd]) => start < bEnd && end > bStart);
       if (!overlaps) slots.push({ start_time: minutesToTime(start), end_time: minutesToTime(end) });
