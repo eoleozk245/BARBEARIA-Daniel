@@ -39,6 +39,25 @@ export async function listClientStats() {
 }
 
 /**
+ * Admin-only: cadastro manual de cliente (cria a conta de login via Edge Function —
+ * precisa de service_role para criar em auth.users; o trigger handle_new_user()
+ * cria o perfil a partir do metadata). Senha em branco = gerada aleatoriamente,
+ * cliente define a própria via "Esqueci minha senha".
+ */
+export async function createClientAccount({ name, email, phone, password }) {
+  const { data, error } = await supabase.functions.invoke('create-client', {
+    body: { name, email, phone, password: password || undefined },
+  });
+  if (error) {
+    // FunctionsHttpError esconde o corpo — tenta extrair a mensagem real da resposta.
+    const ctx = await error.context?.json?.().catch(() => null);
+    throw new Error(ctx?.error || error.message || 'Não foi possível criar o cliente.');
+  }
+  if (data?.error) throw new Error(data.error);
+  return data;
+}
+
+/**
  * Admin-only: exclusão permanente do cliente (login + todos os dados relacionados,
  * via Edge Function — precisa de service_role para apagar de auth.users).
  */

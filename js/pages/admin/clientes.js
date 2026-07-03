@@ -1,4 +1,4 @@
-import { listClientStats, deleteClient } from '../../services/profiles.js';
+import { listClientStats, deleteClient, createClientAccount, updateProfile } from '../../services/profiles.js';
 import { escapeHtml } from '../../utils/dom.js';
 
 const SEGMENT_META = {
@@ -59,7 +59,10 @@ export async function renderAdminClients() {
       </div>
       <div style="padding-top:12px;margin-top:2px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center;gap:8px">
         <span style="font-size:11px;color:var(--mut)">Última visita: ${lastVisit || 'ainda nenhuma'}</span>
-        <button class="abtn abtn-r" data-delete="${c.client_id}" style="font-size:11px;padding:5px 12px;border-radius:8px">Excluir</button>
+        <div style="display:flex;gap:6px">
+          <button class="abtn abtn-o" data-edit="${c.client_id}" style="font-size:11px;padding:5px 12px;border-radius:8px">Editar</button>
+          <button class="abtn abtn-r" data-delete="${c.client_id}" style="font-size:11px;padding:5px 12px;border-radius:8px">Excluir</button>
+        </div>
       </div>
     </div>`;
         })
@@ -68,6 +71,9 @@ export async function renderAdminClients() {
 
   grid.querySelectorAll('[data-delete]').forEach((btn) => {
     btn.addEventListener('click', () => handleDeleteClient(btn.dataset.delete));
+  });
+  grid.querySelectorAll('[data-edit]').forEach((btn) => {
+    btn.addEventListener('click', () => openClientModal(btn.dataset.edit));
   });
 }
 
@@ -85,4 +91,86 @@ async function handleDeleteClient(clientId) {
   }
 }
 
-Object.assign(window, { renderClis: renderAdminClients });
+/* ══ Modal Novo Cliente / Editar Cliente ══ */
+
+let editingClientId = null; // null = modo criação
+
+function modalErr(message) {
+  const el = document.getElementById('cm-err');
+  if (!el) return;
+  el.textContent = message;
+  el.style.display = message ? 'block' : 'none';
+}
+
+/** Abre o modal — sem id = criar; com id = editar (nome/telefone; e-mail travado). */
+export function openClientModal(clientId = null) {
+  editingClientId = clientId || null;
+  const overlay = document.getElementById('cli-modal');
+  if (!overlay) return;
+
+  const title = document.getElementById('cli-modal-title');
+  const nameInp = document.getElementById('cm-name');
+  const emailInp = document.getElementById('cm-email');
+  const phoneInp = document.getElementById('cm-phone');
+  const pwGroup = document.getElementById('cm-pw-group');
+  const pwInp = document.getElementById('cm-password');
+  modalErr('');
+  pwInp.value = '';
+
+  if (editingClientId) {
+    const client = cachedClients.find((c) => c.client_id === editingClientId);
+    if (!client) return;
+    title.textContent = 'Editar Cliente';
+    nameInp.value = client.name;
+    emailInp.value = client.email;
+    emailInp.disabled = true; // trocar e-mail exige alterar o login (fase futura)
+    phoneInp.value = client.phone || '';
+    pwGroup.style.display = 'none';
+  } else {
+    title.textContent = 'Novo Cliente';
+    nameInp.value = '';
+    emailInp.value = '';
+    emailInp.disabled = false;
+    phoneInp.value = '';
+    pwGroup.style.display = '';
+  }
+
+  overlay.style.display = 'flex';
+  nameInp.focus();
+}
+
+export function closeClientModal() {
+  const overlay = document.getElementById('cli-modal');
+  if (overlay) overlay.style.display = 'none';
+  editingClientId = null;
+}
+
+export async function saveClientModal() {
+  modalErr('');
+  const name = document.getElementById('cm-name')?.value.trim();
+  const email = document.getElementById('cm-email')?.value.trim();
+  const phone = document.getElementById('cm-phone')?.value.trim();
+  const password = document.getElementById('cm-password')?.value;
+
+  if (!name) return modalErr('Informe o nome do cliente.');
+  if (!editingClientId && !email) return modalErr('Informe o e-mail do cliente.');
+  if (!editingClientId && password && password.length < 8) return modalErr('A senha deve ter no mínimo 8 caracteres.');
+
+  const saveBtn = document.getElementById('cm-save');
+  if (saveBtn) saveBtn.disabled = true;
+  try {
+    if (editingClientId) {
+      await updateProfile(editingClientId, { name, phone: phone || null });
+    } else {
+      await createClientAccount({ name, email, phone, password });
+    }
+    closeClientModal();
+    await renderAdminClients();
+  } catch (err) {
+    modalErr(err.message || 'Não foi possível salvar. Tente novamente.');
+  } finally {
+    if (saveBtn) saveBtn.disabled = false;
+  }
+}
+
+Object.assign(window, { renderClis: renderAdminClients, openClientModal, closeClientModal, saveClientModal });

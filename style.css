@@ -1000,6 +1000,35 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
 .cbdg-reg{background:rgba(255,255,255,.07);border:1px solid var(--gbd);color:var(--mut)}
 .cbdg-new{background:rgba(76,175,130,.12);color:var(--ok);border:1px solid rgba(76,175,130,.22)}
 
+/* Modal de cliente (Novo/Editar) */
+.cmodal-overlay{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;
+  padding:20px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px)}
+.cmodal{width:100%;max-width:440px;max-height:calc(100vh - 40px);overflow-y:auto;
+  background:var(--bg2);border:1px solid var(--gbd);border-radius:var(--rx);
+  box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 24px 70px rgba(0,0,0,.5)}
+.cmodal-hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0}
+.cmodal-hdr h3{font-size:17px;font-weight:800;letter-spacing:-.02em}
+.cmodal-x{width:30px;height:30px;border-radius:9px;background:var(--gb);border:1px solid var(--gbd);
+  display:flex;align-items:center;justify-content:center;color:var(--mut);cursor:pointer;transition:var(--tr)}
+.cmodal-x:hover{color:var(--txt);background:var(--gb2)}
+.cmodal-x .ms{font-size:17px}
+.cmodal-body{padding:18px 24px 4px}
+.cmodal-fg{margin-bottom:14px}
+.cmodal-hint{font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5}
+.cmodal-foot{display:flex;justify-content:flex-end;gap:10px;padding:12px 24px 22px}
+.cmodal-cancel{padding:10px 18px;border-radius:999px;background:var(--gb);border:1px solid var(--gbd);
+  color:var(--txt);cursor:pointer;font-family:inherit;font-size:12px;transition:var(--tr)}
+.cmodal-cancel:hover{background:var(--gb2)}
+.cmodal-save{padding:10px 22px;border-radius:999px;font-size:13px;font-weight:700}
+.cmodal-save:disabled{opacity:.6;cursor:wait}
+@media(max-width:480px){
+  .cmodal-overlay{padding:12px}
+  .cmodal-hdr{padding:16px 18px 0}
+  .cmodal-body{padding:14px 18px 4px}
+  .cmodal-foot{padding:10px 18px 18px;flex-direction:column-reverse}
+  .cmodal-foot button{width:100%}
+}
+
 /* Feedbacks */
 .afb-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
 .afb-kpi{padding:18px;border-radius:var(--rl);background:var(--gb);backdrop-filter:var(--blur);
