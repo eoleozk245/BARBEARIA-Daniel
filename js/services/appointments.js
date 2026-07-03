@@ -64,16 +64,13 @@ export async function getAvailableSlots(barberId, serviceId, dateStr) {
   const duration = service.duration_minutes;
   const step = settings?.slot_interval_minutes || 30;
   const busyRanges = busy.map((b) => [timeToMinutes(b.start_time), timeToMinutes(b.end_time)]);
-  const now = new Date();
-  const isToday = now.toISOString().slice(0, 10) === dateStr;
-  const nowMinutes = now.getHours() * 60 + now.getMinutes();
 
   const slots = [];
   for (const h of hours) {
     const dayStart = timeToMinutes(h.start_time);
     const dayEnd = timeToMinutes(h.end_time);
     for (let start = dayStart; start + duration <= dayEnd; start += step) {
-      if (isToday && start <= nowMinutes) continue;
+      // MODO TESTE — reverter depois: sem o filtro de "hora já passou hoje", libera qualquer hora do dia.
       const end = start + duration;
       const overlaps = busyRanges.some(([bStart, bEnd]) => start < bEnd && end > bStart);
       if (!overlaps) slots.push({ start_time: minutesToTime(start), end_time: minutesToTime(end) });
