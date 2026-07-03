@@ -398,6 +398,11 @@
 
 <!-- ══════════ VIEW 3: PORTAL ══════════ -->
 <div id="vp" class="view">
+  <div class="mobtop">
+    <button class="mobtogbtn" onclick="toggleMobSb('sb')" aria-label="Abrir menu"><span class="ms">menu</span></button>
+    <div class="mobtop-tt">Barbearia do Daniel</div>
+  </div>
+  <div class="sboverlay" id="sb-overlay" onclick="closeMobSb('sb')"></div>
   <aside class="sb" id="sb">
     <div class="sbhdr">
       <div class="sbbrand">
@@ -703,6 +708,12 @@
 
 <!-- ══════════ VIEW: PAINEL ADMIN ══════════ -->
 <div id="va" class="view">
+
+  <div class="mobtop">
+    <button class="mobtogbtn" onclick="toggleMobSb('asb')" aria-label="Abrir menu"><span class="ms">menu</span></button>
+    <div class="mobtop-tt">Painel Administrativo</div>
+  </div>
+  <div class="sboverlay" id="asb-overlay" onclick="closeMobSb('asb')"></div>
 
   <!-- SIDEBAR ADMIN -->
   <aside class="sb" id="asb">
