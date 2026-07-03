@@ -279,13 +279,15 @@ function togAdSb(){
   document.getElementById('apmain').classList.toggle('col',adCol);
   document.getElementById('asbico').textContent=adCol?'chevron_right':'chevron_left';
 }
-const ANIMAP={dash:'ani-dash',agenda:'ani-agenda',clientes:'ani-clientes',feedbacks:'ani-feedbacks',notif:'ani-notif',hist:'ani-hist',config:'ani-config'};
+const ANIMAP={dash:'ani-dash',agenda:'ani-agenda',scanner:'ani-scanner',clientes:'ani-clientes',feedbacks:'ani-feedbacks',notif:'ani-notif',hist:'ani-hist',config:'ani-config'};
 function aGo(id){
   document.querySelectorAll('.asec').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('#asb .ni').forEach(n=>n.classList.remove('on'));
   document.getElementById('asec-'+id)?.classList.add('on');
   document.getElementById(ANIMAP[id])?.classList.add('on');
   window.scrollTo(0,0);
+  if(id==='scanner') window.startQrScanner?.();
+  else window.stopQrScanner?.();
 }
 function togApw(){
   const i=document.getElementById('apw'),e=document.getElementById('apweye');
