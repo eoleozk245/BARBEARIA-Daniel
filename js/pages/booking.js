@@ -77,6 +77,7 @@ async function renderBkBar() {
 function nextDates(count = 10) {
   const dates = [];
   const d = new Date();
+  dates.push(new Date(d));
   while (dates.length < count) {
     d.setDate(d.getDate() + 1);
     dates.push(new Date(d));
@@ -93,10 +94,12 @@ function toISODate(d) {
 
 async function renderBkTime() {
   const dates = nextDates();
+  const todayIso = toISODate(new Date());
   el('bkdates').innerHTML = dates
     .map((d) => {
       const iso = toISODate(d);
-      return `<button class="bkd ${bk.date === iso ? 'on' : ''}" onclick="bkPickDate('${iso}')">${formatDateLabel(d)}</button>`;
+      const label = iso === todayIso ? 'Hoje' : formatDateLabel(d);
+      return `<button class="bkd ${bk.date === iso ? 'on' : ''}" onclick="bkPickDate('${iso}')">${label}</button>`;
     })
     .join('');
 
