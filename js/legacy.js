@@ -98,6 +98,17 @@ function togglePw(){
   e.textContent=i.type==='password'?'visibility':'visibility_off';
 }
 
+/* MENU MOBILE (gaveta) — usado pelo portal e pelo admin, mesmo padrão do drawer do site público */
+function toggleMobSb(id){
+  const opening=!document.getElementById(id)?.classList.contains('mopen');
+  document.getElementById(id)?.classList.toggle('mopen',opening);
+  document.getElementById(id+'-overlay')?.classList.toggle('on',opening);
+}
+function closeMobSb(id){
+  document.getElementById(id)?.classList.remove('mopen');
+  document.getElementById(id+'-overlay')?.classList.remove('on');
+}
+
 /* PORTAL NAV */
 let sbC=false;
 function togSb(){
@@ -112,6 +123,7 @@ function pGo(id){
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
   document.getElementById('psec-'+id)?.classList.add('on');
   document.getElementById(NIMAP[id])?.classList.add('on');
+  closeMobSb('sb');
   window.scrollTo(0,0);
 }
 
@@ -285,6 +297,7 @@ function aGo(id){
   document.querySelectorAll('#asb .ni').forEach(n=>n.classList.remove('on'));
   document.getElementById('asec-'+id)?.classList.add('on');
   document.getElementById(ANIMAP[id])?.classList.add('on');
+  closeMobSb('asb');
   window.scrollTo(0,0);
   if(id==='scanner') window.startQrScanner?.();
   else window.stopQrScanner?.();
@@ -412,6 +425,7 @@ Object.assign(window, {
   showV, sto, togglePw,
   toggleCpw, toggleCpw2, togSb, pGo, pTab, pPTab, selBar, togAdSb, aGo,
   togApw, swChartPeriod, selTpl, cfgT, renderRev, adminInit,
+  toggleMobSb, closeMobSb,
 });
 
 export { rvObs, showV, pGo, aGo, adminInit };
