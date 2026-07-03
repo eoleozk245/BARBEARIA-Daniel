@@ -5,6 +5,7 @@ import {
   applyClientProfileToUI,
   renderClientAppointments,
   renderMiniCalendar,
+  renderLoyaltyWidgets,
   subscribeClientAppointments,
 } from './pages/portal.js';
 import { setBookingSession } from './pages/booking.js';
@@ -17,6 +18,7 @@ import {
 } from './pages/admin/configuracoes.js';
 import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi } from './pages/admin/agenda.js';
 import { renderAdminClients } from './pages/admin/clientes.js';
+import './pages/admin/scanner.js';
 import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js';
 
 function showError(id, message) {
@@ -37,6 +39,7 @@ async function enterPortal(profile) {
   await renderPortalServices();
   await renderClientAppointments();
   await renderMiniCalendar();
+  await renderLoyaltyWidgets(profile.id);
   subscribeClientAppointments(profile.id);
   showV('vp');
   pGo('dashboard');

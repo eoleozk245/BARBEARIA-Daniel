@@ -462,9 +462,9 @@
           </div>
           <div class="loy">
             <div class="loyhdr"><div class="loytit"><span class="ms">star</span> Fidelidade</div><div class="loystamp"><span class="ms">military_tech</span></div></div>
-            <div class="loyn"><span class="n">8</span><span class="of">/10</span><span class="loylbl">cortes</span></div>
-            <div class="loybar"><div class="loyf" style="width:80%"></div></div>
-            <div class="loyms">Faltam <strong>2 cortes</strong> para um serviço gratuito!</div>
+            <div class="loyn"><span class="n">0</span><span class="of">/10</span><span class="loylbl">cortes</span></div>
+            <div class="loybar"><div class="loyf" style="width:0%"></div></div>
+            <div class="loyms">Faltam <strong>10 cortes</strong> para um serviço gratuito!</div>
             <button class="btnloy">Ver Detalhes</button>
           </div>
         </div>
@@ -535,14 +535,32 @@
           </div>
           <div class="loy">
             <div class="loyhdr"><div class="loytit"><span class="ms">star</span> Fidelidade</div><div class="loystamp"><span class="ms">military_tech</span></div></div>
-            <div class="loyn"><span class="n">8</span><span class="of">/10</span><span class="loylbl">cortes</span></div>
-            <div class="loybar"><div class="loyf" style="width:80%"></div></div>
-            <div class="loyms">Faltam <strong>2 cortes</strong> para um serviço gratuito.</div>
+            <div class="loyn"><span class="n">0</span><span class="of">/10</span><span class="loylbl">cortes</span></div>
+            <div class="loybar"><div class="loyf" style="width:0%"></div></div>
+            <div class="loyms">Faltam <strong>10 cortes</strong> para um serviço gratuito.</div>
             <button class="btnloy">Ver Detalhes</button>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- MODAL QR CODE DO AGENDAMENTO -->
+    <div class="cmodal-overlay" id="qr-modal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
+      <div class="cmodal">
+        <div class="cmodal-hdr">
+          <h3 id="qr-modal-title">QR Code do Agendamento</h3>
+          <button class="cmodal-x" onclick="closeQrModal()" aria-label="Fechar"><span class="ms">close</span></button>
+        </div>
+        <div class="cmodal-body" style="text-align:center">
+          <div id="qr-modal-info" style="margin-bottom:14px;font-size:13px;color:var(--mut)"></div>
+          <div id="qr-modal-canvas-wrap" style="display:flex;justify-content:center;margin-bottom:14px;min-height:200px;align-items:center"></div>
+          <div id="qr-modal-msg" style="font-size:13px;color:var(--mut)"></div>
+        </div>
+        <div class="cmodal-foot">
+          <button class="abtn-o cmodal-cancel" onclick="closeQrModal()">Fechar</button>
+        </div>
+      </div>
+    </div>
 
     <!-- NOVO AGENDAMENTO (dentro do painel do cliente) -->
     <section class="psec" id="psec-novo-agendamento">
@@ -667,9 +685,9 @@
           </div>
           <div class="loy">
             <div class="loyhdr"><div class="loytit"><span class="ms">star</span> Fidelidade</div><div class="loystamp"><span class="ms">military_tech</span></div></div>
-            <div class="loyn"><span class="n">8</span><span class="of">/10</span><span class="loylbl">cortes</span></div>
-            <div class="loybar"><div class="loyf" style="width:80%"></div></div>
-            <div class="loyms">Faltam <strong>2 cortes</strong> para um serviço gratuito.</div>
+            <div class="loyn"><span class="n">0</span><span class="of">/10</span><span class="loylbl">cortes</span></div>
+            <div class="loybar"><div class="loyf" style="width:0%"></div></div>
+            <div class="loyms">Faltam <strong>10 cortes</strong> para um serviço gratuito.</div>
             <button class="btnloy">Ver Detalhes</button>
           </div>
         </div>
@@ -679,6 +697,8 @@
   </main>
 </div>
 
+<script src="js/vendor/qrcode.min.js"></script>
+<script src="js/vendor/jsQR.min.js"></script>
 <script type="module" src="js/main.js"></script>
 
 <!-- ══════════ VIEW: PAINEL ADMIN ══════════ -->
@@ -703,10 +723,15 @@
         <span class="ms" style="font-size:18px;flex-shrink:0">add</span>
         <span class="lbl">Novo Agendamento</span>
       </button>
+      <button class="sbnew" onclick="aGo('scanner')" style="margin-top:8px;background:var(--ok)">
+        <span class="ms" style="font-size:18px;flex-shrink:0">qr_code_scanner</span>
+        <span class="lbl">Escanear QR Code</span>
+      </button>
     </div>
     <nav class="sbnav">
       <div class="ni on" id="ani-dash" onclick="aGo('dash')"><span class="ms">insights</span><span class="nlbl">Dashboard</span></div>
       <div class="ni" id="ani-agenda" onclick="aGo('agenda')"><span class="ms">calendar_month</span><span class="nlbl">Agenda</span></div>
+      <div class="ni" id="ani-scanner" onclick="aGo('scanner')"><span class="ms">qr_code_scanner</span><span class="nlbl">Escanear QR</span></div>
       <div class="ni" id="ani-clientes" onclick="aGo('clientes')"><span class="ms">group</span><span class="nlbl">Clientes</span></div>
       <div class="ni" id="ani-feedbacks" onclick="aGo('feedbacks')"><span class="ms">star_half</span><span class="nlbl">Feedbacks</span></div>
       <div class="ni" id="ani-notif" onclick="aGo('notif')"><span class="ms">notifications</span><span class="nlbl">Notificações</span></div>
@@ -818,6 +843,21 @@
         <thead><tr><th>#</th><th>Cliente</th><th>Serviço</th><th>Barbeiro</th><th>Data</th><th>Hora</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
         <tbody id="ag-tbody"></tbody>
       </table></div>
+    </section>
+
+    <!-- ═ ESCANEAR QR CODE ═ -->
+    <section class="asec" id="asec-scanner">
+      <div class="aph">
+        <div><h1>Escanear QR Code</h1><p>Confirme o atendimento apontando a câmera para o QR Code do cliente.</p></div>
+      </div>
+      <div class="qrsc-wrap">
+        <div class="qrsc-camw">
+          <video id="qrsc-video" class="qrsc-video" playsinline muted></video>
+          <canvas id="qrsc-canvas" style="display:none"></canvas>
+          <div class="qrsc-frame"></div>
+        </div>
+        <div id="qrsc-result" class="qrsc-result"></div>
+      </div>
     </section>
 
     <!-- ═ CLIENTES ═ -->

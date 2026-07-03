@@ -2,6 +2,7 @@ import { supabase } from '../supabaseClient.js';
 
 const SELECT_WITH_JOINS = `
   id, appointment_date, start_time, end_time, status, notes, created_at, updated_at,
+  qr_token, qr_used_at, confirmed_at, confirmed_by,
   service:services(id,name,price,duration_minutes),
   barber:barbers(id,name)
 `;

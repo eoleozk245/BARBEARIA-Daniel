@@ -1,4 +1,5 @@
 import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js';
+import { confirmAppointmentManually } from '../../services/loyalty.js';
 import { listBarbers } from '../../services/barbers.js';
 import { formatCurrency } from '../../utils/format.js';
 import { escapeHtml } from '../../utils/dom.js';
@@ -70,6 +71,7 @@ export async function renderAdminAgenda() {
         <td><span class="ast ${s.cls}"><span class="ms">${s.icon}</span>${s.label}</span></td>
         <td><div class="aact">
           ${a.status === 'scheduled' ? `<button class="abtn abtn-g" data-confirm="${a.id}">Confirmar</button>` : ''}
+          ${a.status !== 'cancelled' && a.status !== 'completed' ? `<button class="abtn abtn-o" data-complete="${a.id}" title="Use apenas se o QR Code não puder ser lido — não soma ponto de fidelidade">Concluir</button>` : ''}
           ${a.status !== 'cancelled' && a.status !== 'completed' ? `<button class="abtn abtn-r" data-cancel="${a.id}">Cancelar</button>` : ''}
         </div></td>
       </tr>`;
@@ -78,6 +80,12 @@ export async function renderAdminAgenda() {
 
   tbody.querySelectorAll('[data-confirm]').forEach((btn) => {
     btn.addEventListener('click', () => updateAppointmentStatus(btn.dataset.confirm, 'confirmed').catch((e) => alert(e.message)));
+  });
+  tbody.querySelectorAll('[data-complete]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (!confirm('Concluir manualmente este agendamento? Isso NÃO soma ponto de fidelidade — use apenas quando o QR Code não puder ser lido.')) return;
+      confirmAppointmentManually(btn.dataset.complete).catch((e) => alert(e.message));
+    });
   });
   tbody.querySelectorAll('[data-cancel]').forEach((btn) => {
     btn.addEventListener('click', () => {
