@@ -22,7 +22,7 @@ export async function listMyAppointments() {
 export async function listAllAppointments() {
   const { data, error } = await supabase
     .from('appointments')
-    .select(`${SELECT_WITH_JOINS}, client:profiles(id,name,email)`)
+    .select(`${SELECT_WITH_JOINS}, client:profiles!appointments_client_id_fkey(id,name,email)`)
     .order('appointment_date', { ascending: true })
     .order('start_time', { ascending: true });
   if (error) throw error;
