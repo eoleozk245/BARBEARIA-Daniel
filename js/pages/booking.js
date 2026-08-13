@@ -1,10 +1,10 @@
-import { listServices } from '../services/services.js?v=20260813a';
-import { listBarbers } from '../services/barbers.js?v=20260813a';
-import { getAvailableSlots, createAppointment } from '../services/appointments.js?v=20260813a';
-import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813a';
-import { escapeHtml } from '../utils/dom.js?v=20260813a';
-import { pGo } from '../legacy.js?v=20260813a';
-import { renderClientAppointments, renderMiniCalendar } from './portal.js?v=20260813a';
+import { listServices } from '../services/services.js?v=20260813b';
+import { listBarbers } from '../services/barbers.js?v=20260813b';
+import { getAvailableSlots, createAppointment } from '../services/appointments.js?v=20260813b';
+import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813b';
+import { escapeHtml } from '../utils/dom.js?v=20260813b';
+import { pGo } from '../legacy.js?v=20260813b';
+import { renderClientAppointments, renderMiniCalendar } from './portal.js?v=20260813b';
 
 const STEPS = ['Serviço', 'Barbeiro', 'Horário', 'Confirmado'];
 

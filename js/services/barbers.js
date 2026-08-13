@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js?v=20260813a';
+import { supabase } from '../supabaseClient.js?v=20260813b';
 
 export async function listBarbers({ onlyActive = true } = {}) {
   let query = supabase.from('barbers').select('*').order('name');

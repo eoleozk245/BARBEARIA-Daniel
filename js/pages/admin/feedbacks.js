@@ -1,5 +1,5 @@
-import { listAllReviews, replyToReview } from '../../services/reviews.js?v=20260813a';
-import { escapeHtml } from '../../utils/dom.js?v=20260813a';
+import { listAllReviews, replyToReview } from '../../services/reviews.js?v=20260813b';
+import { escapeHtml } from '../../utils/dom.js?v=20260813b';
 
 function initials(name) {
   return name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();

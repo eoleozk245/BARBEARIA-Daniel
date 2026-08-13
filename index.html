@@ -545,6 +545,7 @@
         <div class="cmodal-body" style="text-align:center">
           <div id="qr-modal-info" style="margin-bottom:14px;font-size:13px;color:var(--mut)"></div>
           <div id="qr-modal-canvas-wrap" style="display:flex;justify-content:center;margin-bottom:14px;min-height:200px;align-items:center"></div>
+          <!-- .qr-quiet dá a margem branca obrigatória ao redor do QR (ver style.css) -->
           <div id="qr-modal-code-wrap" style="display:none;margin-bottom:14px">
             <p style="font-size:11px;color:var(--mut);margin-bottom:6px">Câmera do barbeiro não lê? Mostre este código para ele digitar:</p>
             <code id="qr-modal-code" style="display:block;padding:8px 12px;background:var(--gb);border:1px solid var(--gbd);border-radius:8px;font-size:12px;user-select:all;word-break:break-all"></code>
@@ -693,9 +694,9 @@
 
 <!-- ?v= força o navegador a buscar o código novo em vez de usar o cache antigo.
      Ao publicar uma correção, troque a versão aqui e nos imports dos módulos. -->
-<script src="js/vendor/qrcode.min.js?v=20260813a"></script>
-<script src="js/vendor/jsQR.min.js?v=20260813a"></script>
-<script type="module" src="js/main.js?v=20260813a"></script>
+<script src="js/vendor/qrcode.min.js?v=20260813b"></script>
+<script src="js/vendor/jsQR.min.js?v=20260813b"></script>
+<script type="module" src="js/main.js?v=20260813b"></script>
 
 <!-- ══════════ VIEW: PAINEL ADMIN ══════════ -->
 <div id="va" class="view">
@@ -748,7 +749,7 @@
           <div class="sbav" id="a-sbav" style="background:linear-gradient(135deg,var(--acc2),var(--acc3));color:#1a1400;font-weight:800">DN</div>
           <div class="sbui"><div class="sbun" id="a-sbun">Daniel</div><div class="sbur" style="color:var(--acc)">Administrador</div></div>
         </div>
-        <div class="nlbl" style="font-size:9px;color:var(--dim);text-align:center;padding-top:4px">versão 20260813a</div>
+        <div class="nlbl" style="font-size:9px;color:var(--dim);text-align:center;padding-top:4px">versão 20260813b</div>
       </div>
     </div>
   </aside>
@@ -859,7 +860,18 @@
           <canvas id="qrsc-canvas" style="display:none"></canvas>
           <div class="qrsc-frame"></div>
         </div>
+        <div class="qrsc-ctrls">
+          <button class="qrsc-ctrl" id="qrsc-torch" style="display:none"><span class="ms">flashlight_on</span> Lanterna</button>
+          <div class="qrsc-ctrl qrsc-zoomw" id="qrsc-zoom-wrap" style="display:none">
+            <span class="ms">zoom_in</span>
+            <input type="range" id="qrsc-zoom" aria-label="Zoom da câmera">
+          </div>
+        </div>
         <div id="qrsc-result" class="qrsc-result"></div>
+        <div id="qrsc-hint" class="qrsc-hint" style="display:none">
+          Dica: afaste o celular ~20&nbsp;cm, deixe o brilho da tela do cliente no máximo e evite reflexo.
+          Se não ler, use a lista abaixo.
+        </div>
         <div class="qrsc-manual">
           <div class="qrsc-sect-tt"><span class="ms" style="font-size:16px">today</span> Clientes de hoje</div>
           <p style="font-size:11px;color:var(--mut);margin-bottom:10px">Toque em "Confirmar" quando o cliente chegar — vale o mesmo que ler o QR Code.</p>
