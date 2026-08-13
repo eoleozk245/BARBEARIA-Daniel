@@ -38,6 +38,17 @@ export async function listClientStats() {
   return data;
 }
 
+/** Admin-only: top clientes por visitas concluídas (para o card "Top Clientes" do dashboard). */
+export async function listTopClients(limit = 5) {
+  const { data, error } = await supabase
+    .from('vw_client_stats')
+    .select('*')
+    .order('completed_visits', { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return data;
+}
+
 /**
  * Admin-only: cadastro manual de cliente (cria a conta de login via Edge Function —
  * precisa de service_role para criar em auth.users; o trigger handle_new_user()

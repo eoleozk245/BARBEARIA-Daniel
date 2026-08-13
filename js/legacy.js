@@ -263,25 +263,8 @@ const ADM_DATA={
   weekly:{
     labels:['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
     rev:[580,920,760,1100,1350,1820,0]},
-  svcs:[{l:'Corte Clássico',p:42,c:'#e6c364'},{l:'Corte + Barba',p:28,c:'#c9a84c'},{l:'Barba',p:18,c:'rgba(230,195,100,.5)'},{l:'Outros',p:12,c:'rgba(230,195,100,.25)'}],
-  topCli:[{i:'RA',n:'Rodrigo Alves',v:20,b:'VIP'},{i:'BL',n:'Bruno Lima',v:15,b:'VIP'},{i:'JP',n:'João Paulo',v:12,b:'VIP'},{i:'MO',n:'Marcos Oliveira',v:8,b:'Regular'},{i:'FR',n:'Felipe Rocha',v:5,b:'Regular'}]
+  svcs:[{l:'Corte Clássico',p:42,c:'#e6c364'},{l:'Corte + Barba',p:28,c:'#c9a84c'},{l:'Barba',p:18,c:'rgba(230,195,100,.5)'},{l:'Outros',p:12,c:'rgba(230,195,100,.25)'}]
 };
-const FBS_A=[
-  {i:'JP',n:'João Paulo',s:'Corte Degradê',b:'Carlos Silva',r:5,tx:'Melhor barbearia da cidade! Atendimento nota 10 e resultado impecável em todos os cortes.',d:'15 Jun',rep:false},
-  {i:'MO',n:'Marcos Oliveira',s:'Barba Completa',b:'Rafael Mendes',r:5,tx:'Sou cliente há 3 anos. O Carlos é incrível, nunca decepcionou.',d:'10 Jun',rep:true},
-  {i:'FR',n:'Felipe Rocha',s:'Corte + Barba',b:'Diego Costa',r:4,tx:'Ótimo atendimento, ambiente limpo e profissional. Voltarei com certeza!',d:'08 Jun',rep:false},
-  {i:'BL',n:'Bruno Lima',s:'Hidratação',b:'Carlos Silva',r:5,tx:'Ambiente incrível, equipe top. Recomendo demais para quem busca qualidade.',d:'12 Jun',rep:true},
-];
-const HIST_A=[
-  {a:'Agendamento confirmado — João Paulo / Corte Degradê',u:'Daniel',t:'Hoje, 14:32',ic:'check_circle',c:'ok'},
-  {a:'Badge VIP atribuído — Rodrigo Alves',u:'Daniel',t:'Hoje, 11:20',ic:'person_add',c:'acc'},
-  {a:'Preço atualizado: Hidratação R$ 40 → R$ 45',u:'Daniel',t:'Ontem, 17:45',ic:'edit',c:'mut'},
-  {a:'Notificação "Promoção Semanal" enviada para 23 clientes',u:'Daniel',t:'Ontem, 10:00',ic:'notifications',c:'acc'},
-  {a:'Agendamento cancelado — Rodrigo Alves / Sobrancelha',u:'Daniel',t:'17 Jun, 15:30',ic:'cancel',c:'err'},
-  {a:'Resposta enviada à avaliação de João Paulo',u:'Daniel',t:'16 Jun, 09:15',ic:'star',c:'acc'},
-  {a:'Serviço "Sobrancelha" adicionado ao cardápio',u:'Daniel',t:'15 Jun, 14:00',ic:'add_circle',c:'acc'},
-  {a:'Backup automático do sistema realizado',u:'Sistema',t:'15 Jun, 00:00',ic:'backup',c:'mut'},
-];
 
 /* ADMIN NAV */
 let adCol=false;
@@ -369,24 +352,6 @@ function renderWeekly(){
   }).join('');
   el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" class="svg-chart"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f1d885"/><stop offset="100%" stop-color="#c9a84c"/></linearGradient></defs>'+bars+'</svg>';
 }
-function renderTopCli(){
-  const el=document.getElementById('top-cli');if(!el)return;
-  el.innerHTML=ADM_DATA.topCli.map((c,i)=>'<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span style="font-size:12px;font-weight:700;color:var(--mut);width:14px;text-align:center">'+(i+1)+'</span><div style="width:32px;height:32px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(var(--ar),.2),rgba(var(--ar),.07));border:1.5px solid rgba(var(--ar),.25);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--acc)">'+c.i+'</div><div style="flex:1"><div style="font-size:13px;font-weight:600">'+c.n+'</div><div style="font-size:11px;color:var(--mut)">'+c.v+' visitas</div></div><span class="cbdg '+(c.b==='VIP'?'cbdg-vip':'cbdg-reg')+'">'+c.b+'</span></div>').join('');
-}
-
-/* FEEDBACKS */
-function renderFbs(){
-  const el=document.getElementById('fb-list');if(!el)return;
-  el.innerHTML=FBS_A.map(f=>'<div class="afb-card"><div class="afb-top"><div style="display:flex;align-items:center;gap:10px"><div class="afb-av">'+f.i+'</div><div><div class="afb-nm">'+f.n+'</div><div class="afb-srv">'+f.s+' · '+f.b+' · '+f.d+'</div></div></div><div style="text-align:right"><div style="color:var(--acc);font-size:13px;letter-spacing:2px">'+'★'.repeat(f.r)+'☆'.repeat(5-f.r)+'</div>'+(f.rep?'<div class="afb-replied"><span class="ms">check_circle</span>Respondido</div>':'')+'</div></div><div class="afb-txt">'+f.tx+'</div>'+(f.rep?'<div style="font-size:12px;color:var(--mut);padding:8px 12px;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.06)">✓ Resposta já enviada para este cliente.</div>':'<textarea class="afb-resp" rows="2" placeholder="Escreva uma resposta pública..."></textarea><button class="abtn abtn-g" style="padding:8px 18px;border-radius:999px;font-size:12px;display:inline-flex;align-items:center;gap:6px"><span class="ms" style="font-size:15px">reply</span>Responder</button>')+'</div>').join('');
-}
-
-/* HISTÓRICO */
-function renderHist(){
-  const el=document.getElementById('atl-list');if(!el)return;
-  const cm={ok:'dot-ok',acc:'dot-acc',err:'dot-err',mut:'dot-mut'};
-  el.innerHTML=HIST_A.map(h=>'<div class="atl-item"><div class="atl-dot '+cm[h.c]+'"><span class="ms">'+h.ic+'</span></div><div class="atl-act">'+h.a+'</div><div class="atl-meta"><span><span class="ms">person</span>'+h.u+'</span><span><span class="ms">schedule</span>'+h.t+'</span></div></div>').join('');
-}
-
 /* CONFIG — troca de aba (as listas de Serviços/Equipe são reais, ver pages/admin/configuracoes.js) */
 function cfgT(id,btn){
   document.querySelectorAll('.acfg-tc').forEach(t=>t.classList.remove('on'));
@@ -408,14 +373,13 @@ function selTpl(el,nome){
 
 /* ADMIN INIT (parte mock) — chamado ao entrar no painel; Serviços/Equipe/Agenda reais são
    disparados separadamente por main.js junto com esta função. */
+/* Top Clientes/Feedbacks/Histórico agora são reais — ver pages/admin/clientes.js,
+   pages/admin/feedbacks.js e pages/admin/historico.js, chamados por main.js. */
 function adminInit(){
   admClock();
   renderRevChart('mensal');
   renderDonut();
   renderWeekly();
-  renderTopCli();
-  renderFbs();
-  renderHist();
 }
 
 /* Expõe no escopo global as funções referenciadas via onclick="..." no HTML

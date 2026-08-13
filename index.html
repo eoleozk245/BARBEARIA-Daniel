@@ -441,23 +441,13 @@
     <section class="psec on" id="psec-dashboard">
       <div class="dwelc"><h2>Bem-vindo de volta, <span id="p-dname">Alexandre</span> 👋</h2><p>Aqui está um resumo da sua conta.</p></div>
       <div class="dstats2">
-        <div class="dstat"><div class="dstatv">47</div><div class="dstatl">Cortes realizados</div></div>
-        <div class="dstat"><div class="dstatv">8/10</div><div class="dstatl">Pontos de fidelidade</div></div>
+        <div class="dstat"><div class="dstatv" id="dst-cortes">0</div><div class="dstatl">Cortes realizados</div></div>
+        <div class="dstat"><div class="dstatv" id="dst-pontos">0/10</div><div class="dstatl">Pontos de fidelidade</div></div>
       </div>
       <div class="dbot">
-        <div class="nxtc">
+        <div class="nxtc" id="nxtc-wrap">
           <div class="nxttag">Próximo agendamento</div>
-          <div class="ndb"><div class="ndbm">junho</div><div class="ndbd">15</div><div class="ndbt">14:30</div></div>
-          <div class="nxttit">Corte Degradê</div>
-          <div class="nxtmeta">
-            <div class="nxtrow"><span class="ms">person</span> Carlos Silva · Master Barber</div>
-            <div class="nxtrow"><span class="ms">payments</span> R$ 40,00</div>
-            <div class="nxtrow"><span class="ms">schedule</span> ~35 minutos</div>
-          </div>
-          <div class="nxtacts">
-            <button class="pbtn pbtno pbtnsm">Alterar</button>
-            <button class="pbtn pbtng pbtnsm">Confirmar presença</button>
-          </div>
+          <p style="font-size:13px;color:var(--mut);margin-top:10px">Você ainda não possui nenhum agendamento.</p>
         </div>
         <div>
           <div class="qac" style="margin-bottom:12px">
@@ -475,11 +465,7 @@
         </div>
       </div>
       <div class="favc"><h3>Barbeiro favorito</h3>
-        <div class="favrow">
-          <div class="favav">CS</div>
-          <div><div style="font-size:15px;font-weight:700;margin-bottom:2px">Carlos Silva</div>
-            <div style="font-size:11px;color:var(--mut)">Master Barber · ★ 4,9 · Especialista em Degradê</div></div>
-        </div>
+        <p style="font-size:13px;color:var(--mut)">Nenhum barbeiro favorito definido.</p>
       </div>
     </section>
 
@@ -620,10 +606,10 @@
       <div class="prfl">
         <div class="pcard">
           <div class="ptop">
-            <div class="pav">AC</div>
+            <div class="pav" id="pf-av">--</div>
             <div class="pinf">
-              <h2>Alexandre Costa <span class="pbdg pbdgvip">VIP</span></h2>
-              <p>Membro desde Janeiro de 2022 · 47 cortes realizados</p>
+              <h2 id="pf-name">-- <span class="pbdg" id="pf-badge"></span></h2>
+              <p id="pf-sub">--</p>
             </div>
           </div>
           <div class="pptabs">
@@ -633,12 +619,12 @@
           </div>
           <div class="ptc on" id="pptcdados">
             <div class="pfg2">
-              <div class="pfld"><label>Nome completo</label><input type="text" value="Alexandre Costa"></div>
-              <div class="pfld"><label>Data de nascimento</label><input type="text" value="12/03/1990"></div>
-              <div class="pfld"><label>E-mail</label><input type="email" value="alexandre@email.com"></div>
-              <div class="pfld"><label>Telefone / WhatsApp</label><input type="text" value="(84) 99999-1234"></div>
-              <div class="pfld"><label>CPF</label><input type="text" value="123.456.789-00"></div>
-              <div class="pfld"><label>Cidade</label><input type="text" value="Natal, RN"></div>
+              <div class="pfld"><label>Nome completo</label><input type="text" id="pf-inp-name"></div>
+              <div class="pfld"><label>Data de nascimento</label><input type="text" id="pf-inp-birth" placeholder="Não informado"></div>
+              <div class="pfld"><label>E-mail</label><input type="email" id="pf-inp-email"></div>
+              <div class="pfld"><label>Telefone / WhatsApp</label><input type="text" id="pf-inp-phone" placeholder="Não informado"></div>
+              <div class="pfld"><label>CPF</label><input type="text" id="pf-inp-cpf" placeholder="Não informado"></div>
+              <div class="pfld"><label>Cidade</label><input type="text" id="pf-inp-city" placeholder="Não informado"></div>
             </div>
             <div class="saverow"><button class="pbtn pbtng">Salvar alterações</button></div>
           </div>
@@ -647,7 +633,7 @@
               <div style="font-size:14px;font-weight:700;margin-bottom:4px">Barbeiro favorito</div>
               <div style="font-size:12px;color:var(--mut);margin-bottom:12px">Selecionado para prioridade de agendamento.</div>
               <div class="bargrid">
-                <div class="baropt sel" onclick="selBar(this)"><div class="barav">CS</div><div class="barnm">Carlos Silva</div><div class="barsp">Degradê & Navalhado</div></div>
+                <div class="baropt" onclick="selBar(this)"><div class="barav">CS</div><div class="barnm">Carlos Silva</div><div class="barsp">Degradê & Navalhado</div></div>
                 <div class="baropt" onclick="selBar(this)"><div class="barav">RM</div><div class="barnm">Rafael Mendes</div><div class="barsp">Barba Clássica</div></div>
                 <div class="baropt" onclick="selBar(this)"><div class="barav">DC</div><div class="barnm">Diego Costa</div><div class="barsp">Cortes Modernos</div></div>
                 <div class="baropt" onclick="selBar(this)"><div class="barav">LF</div><div class="barnm">Lucas Ferreira</div><div class="barsp">Coloração</div></div>
@@ -682,11 +668,10 @@
         </div>
         <div class="psb">
           <div class="sumc"><h3>Resumo da conta</h3>
-            <div class="sumr"><span>Total de cortes</span><span>47</span></div>
-            
-            <div class="sumr"><span>Barbeiro favorito</span><span>Carlos Silva</span></div>
-            <div class="sumr"><span>Próximo</span><span>15 Jun</span></div>
-            <div class="sumr"><span>Status</span><span><span class="pbdg pbdgvip">VIP</span></span></div>
+            <div class="sumr"><span>Total de cortes</span><span id="sum-cortes">0</span></div>
+            <div class="sumr"><span>Barbeiro favorito</span><span id="sum-favorito">Nenhum</span></div>
+            <div class="sumr"><span>Próximo</span><span id="sum-proximo">—</span></div>
+            <div class="sumr"><span>Status</span><span id="sum-status"></span></div>
           </div>
           <div class="loy">
             <div class="loyhdr"><div class="loytit"><span class="ms">star</span> Fidelidade</div><div class="loystamp"><span class="ms">military_tech</span></div></div>
