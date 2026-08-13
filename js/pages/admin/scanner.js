@@ -97,4 +97,23 @@ export function stopQrScanner() {
   detector = null;
 }
 
-Object.assign(window, { startQrScanner, stopQrScanner });
+/** Fallback: confirma digitando/colando o código do QR, para quando a câmera não conseguir ler. */
+async function confirmQrManual() {
+  const input = document.getElementById('qrsc-manual-input');
+  const token = input?.value.trim();
+  if (!token) return;
+  try {
+    const result = await scanQrCheckin(token);
+    showResult(
+      'ok',
+      result.reward_unlocked
+        ? `Atendimento confirmado! +1 ponto — recompensa de corte grátis liberada 🎉 (total: ${result.loyalty_total} pontos)`
+        : `Atendimento confirmado! +1 ponto de fidelidade (total: ${result.loyalty_total} pontos).`
+    );
+    if (input) input.value = '';
+  } catch (err) {
+    showResult('err', err.message || 'Não foi possível confirmar o código.');
+  }
+}
+
+Object.assign(window, { startQrScanner, stopQrScanner, confirmQrManual });

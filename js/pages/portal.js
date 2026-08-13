@@ -90,10 +90,13 @@ export function openQrModal(appointmentId) {
   const info = document.getElementById('qr-modal-info');
   const wrap = document.getElementById('qr-modal-canvas-wrap');
   const msg = document.getElementById('qr-modal-msg');
+  const codeWrap = document.getElementById('qr-modal-code-wrap');
+  const codeEl = document.getElementById('qr-modal-code');
   if (info) {
     info.textContent = `${a.service.name} · ${a.barber.name} · ${a.appointment_date.split('-').reverse().join('/')} às ${a.start_time.slice(0, 5)}`;
   }
   if (wrap) wrap.innerHTML = '';
+  if (codeWrap) codeWrap.style.display = 'none';
 
   if (qrIsAvailable(a)) {
     if (wrap && window.QRCode) {
@@ -106,6 +109,8 @@ export function openQrModal(appointmentId) {
         correctLevel: window.QRCode.CorrectLevel.M,
       });
     }
+    if (codeEl) codeEl.textContent = a.qr_token;
+    if (codeWrap) codeWrap.style.display = 'block';
     if (msg) msg.textContent = 'Mostre este QR Code ao barbeiro no momento do atendimento.';
   } else {
     const unlockAt = qrUnlockAt(a);

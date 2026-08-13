@@ -1040,6 +1040,8 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
   backdrop-filter:var(--blur);border:1px solid var(--gbd);text-align:center;font-size:13px;
   color:var(--mut);min-height:24px;transition:var(--tr)}
 .qrsc-result.ok{background:rgba(76,175,130,.12);border-color:rgba(76,175,130,.3);color:var(--ok);font-weight:700}
+.qrsc-manual{width:100%;padding:14px 16px;border-radius:var(--rl);background:var(--gb);
+  backdrop-filter:var(--blur);border:1px solid var(--gbd)}
 .qrsc-result.err{background:rgba(242,139,130,.12);border-color:rgba(242,139,130,.3);color:var(--err);font-weight:700}
 @media(max-width:480px){
   .qrsc-wrap{max-width:100%}
