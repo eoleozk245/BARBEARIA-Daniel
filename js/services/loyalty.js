@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js?v=20260813b';
+import { supabase } from '../supabaseClient.js?v=20260813c';
 
 const REASON_MESSAGES = {
   forbidden: 'Apenas administradores podem confirmar atendimentos.',
@@ -38,7 +38,12 @@ export async function confirmAppointmentManually(appointmentId) {
   return row;
 }
 
-/** Minutos antes do horário marcado em que o QR Code é liberado (configurável em business_settings). */
+/**
+ * Minutos antes do horário em que o QR aparece para o cliente.
+ * Regra atual: quem confirma o atendimento é o próprio barbeiro/dono, então não há
+ * motivo para restringir — o padrão (525600 = 1 ano) deixa o QR sempre disponível.
+ * O ajuste continua em business_settings caso a regra mude no futuro.
+ */
 export async function getQrUnlockMinutes() {
   const { data, error } = await supabase
     .from('business_settings')
@@ -46,7 +51,7 @@ export async function getQrUnlockMinutes() {
     .eq('id', true)
     .single();
   if (error) throw error;
-  return data?.qr_unlock_minutes_before ?? 10;
+  return data?.qr_unlock_minutes_before ?? 525600;
 }
 
 /** Saldo de fidelidade do cliente logado (RLS já restringe a own-row ou admin). */

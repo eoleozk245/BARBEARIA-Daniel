@@ -1,8 +1,8 @@
-import { listServices } from '../services/services.js?v=20260813b';
-import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813b';
-import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813b';
-import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813b';
-import { escapeHtml } from '../utils/dom.js?v=20260813b';
+import { listServices } from '../services/services.js?v=20260813c';
+import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813c';
+import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813c';
+import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813c';
+import { escapeHtml } from '../utils/dom.js?v=20260813c';
 
 const MONTHS_PT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 const STATUS_BADGE = {
@@ -81,7 +81,12 @@ function qrIsAvailable(a) {
   return new Date() >= qrUnlockAt(a);
 }
 
-/** Abre o modal do QR Code do agendamento (gera o QR se dentro da janela de liberação, senão avisa quando libera). */
+/**
+ * Abre o modal do QR Code do agendamento.
+ * Pela regra atual o QR fica sempre disponível (ver getQrUnlockMinutes), já que
+ * quem confirma é o próprio barbeiro. A checagem de janela continua aqui apenas
+ * para o caso de a barbearia voltar a restringir isso em business_settings.
+ */
 export function openQrModal(appointmentId) {
   const a = cachedAppts.find((x) => x.id === appointmentId);
   const overlay = document.getElementById('qr-modal');

@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js?v=20260813b';
+import { supabase } from '../supabaseClient.js?v=20260813c';
 
 /** Cadastro de cliente. Cria a sessão e dispara o trigger que cria a linha em `profiles`. */
 export async function signUp({ name, email, phone, password }) {
