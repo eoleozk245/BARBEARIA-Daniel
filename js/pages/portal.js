@@ -32,6 +32,7 @@ function apptCard(a, { showCancel }) {
 let cachedAppts = [];
 let qrUnlockMinutes = 10;
 let qrUnlockMinutesLoaded = false;
+let currentProfile = null;
 
 /** Renderiza "Próximos"/"Histórico" (#ptcprox/#ptchist) com agendamentos reais do cliente logado. */
 export async function renderClientAppointments() {
@@ -120,6 +121,101 @@ export function closeQrModal() {
   if (overlay) overlay.style.display = 'none';
 }
 
+/**
+ * Segmento do cliente (novo/vip/regular) — mesma regra usada em `vw_client_stats`
+ * (cadastro há ≤30 dias → novo; ≥40 cortes concluídos → vip; senão regular).
+ * Mantenha as duas em sincronia se o critério mudar.
+ */
+function computeSegmentBadge(profile, completedCount) {
+  const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+  const isNew = Date.now() - new Date(profile.created_at).getTime() <= THIRTY_DAYS_MS;
+  if (isNew) return { label: 'Novo', cls: 'pbdgok' };
+  if (completedCount >= 40) return { label: 'VIP', cls: 'pbdgvip' };
+  return { label: 'Regular', cls: 'pbdgdn' };
+}
+
+function nextUpcomingAppointment(appts) {
+  return appts
+    .filter((a) => a.status === 'scheduled' || a.status === 'confirmed')
+    .sort((a, b) => (a.appointment_date + a.start_time).localeCompare(b.appointment_date + b.start_time))[0];
+}
+
+/** Preenche as estatísticas reais do dashboard (cortes, próximo agendamento) — sem dado fictício. */
+export function renderClientDashboardExtras() {
+  const completedCount = cachedAppts.filter((a) => a.status === 'completed').length;
+  const cortesEl = document.getElementById('dst-cortes');
+  if (cortesEl) cortesEl.textContent = String(completedCount);
+
+  const nxtWrap = document.getElementById('nxtc-wrap');
+  if (!nxtWrap) return;
+  const next = nextUpcomingAppointment(cachedAppts);
+  if (!next) {
+    nxtWrap.innerHTML = `
+      <div class="nxttag">Próximo agendamento</div>
+      <p style="font-size:13px;color:var(--mut);margin-top:10px">Você ainda não possui nenhum agendamento.</p>`;
+    return;
+  }
+  const [, month, day] = next.appointment_date.split('-');
+  const monthName = new Date(next.appointment_date + 'T00:00:00').toLocaleDateString('pt-BR', { month: 'long' });
+  nxtWrap.innerHTML = `
+    <div class="nxttag">Próximo agendamento</div>
+    <div class="ndb"><div class="ndbm">${monthName}</div><div class="ndbd">${day}</div><div class="ndbt">${next.start_time.slice(0, 5)}</div></div>
+    <div class="nxttit">${escapeHtml(next.service.name)}</div>
+    <div class="nxtmeta">
+      <div class="nxtrow"><span class="ms">person</span> ${escapeHtml(next.barber.name)}</div>
+      <div class="nxtrow"><span class="ms">payments</span> ${formatCurrency(next.service.price)}</div>
+      <div class="nxtrow"><span class="ms">schedule</span> ~${formatDuration(next.service.duration_minutes)}</div>
+    </div>
+    <div class="nxtacts">
+      <button class="pbtn pbtno pbtnsm" data-qr="${next.id}"><span class="ms" style="font-size:15px">qr_code_2</span> Ver QR Code</button>
+    </div>`;
+  nxtWrap.querySelectorAll('[data-qr]').forEach((btn) => {
+    btn.addEventListener('click', () => openQrModal(btn.dataset.qr));
+  });
+}
+
+/** Preenche o cabeçalho e o "Resumo da conta" do Meu Perfil com dados reais — sem exemplo fictício. */
+export function renderClientProfileExtras() {
+  const profile = currentProfile;
+  if (!profile) return;
+  const completedCount = cachedAppts.filter((a) => a.status === 'completed').length;
+  const segment = computeSegmentBadge(profile, completedCount);
+  const initials = profile.name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+  const memberSince = new Date(profile.created_at).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  const next = nextUpcomingAppointment(cachedAppts);
+
+  const setText = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  };
+  const setValue = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.value = value || '';
+  };
+
+  setText('pf-av', initials);
+  setText('pf-name', profile.name);
+  const badge = document.getElementById('pf-badge');
+  if (badge) {
+    badge.className = `pbdg ${segment.cls}`;
+    badge.textContent = segment.label;
+  }
+  setText('pf-sub', `Membro desde ${memberSince} · ${completedCount} corte${completedCount === 1 ? '' : 's'} realizado${completedCount === 1 ? '' : 's'}`);
+
+  setValue('pf-inp-name', profile.name);
+  setValue('pf-inp-email', profile.email);
+  setValue('pf-inp-phone', profile.phone);
+  setValue('pf-inp-cpf', profile.cpf);
+  setValue('pf-inp-city', profile.city);
+  setValue('pf-inp-birth', profile.birthdate ? new Date(profile.birthdate + 'T00:00:00').toLocaleDateString('pt-BR') : '');
+
+  setText('sum-cortes', String(completedCount));
+  setText('sum-favorito', 'Nenhum');
+  setText('sum-proximo', next ? `${next.appointment_date.split('-')[2]} ${MONTHS_PT[Number(next.appointment_date.split('-')[1]) - 1]}` : '—');
+  const sumStatus = document.getElementById('sum-status');
+  if (sumStatus) sumStatus.innerHTML = `<span class="pbdg ${segment.cls}">${segment.label}</span>`;
+}
+
 /** Preenche todos os widgets de fidelidade (.loy) da página com o saldo real do cliente. */
 export async function renderLoyaltyWidgets(clientId) {
   const widgets = document.querySelectorAll('.loy');
@@ -175,10 +271,12 @@ export function subscribeClientAppointments(clientId) {
   unsubscribeMine = subscribeAppointments({
     scope: 'own',
     clientId,
-    onChange: () => {
-      renderClientAppointments();
+    onChange: async () => {
+      await renderClientAppointments();
       renderMiniCalendar();
       renderLoyaltyWidgets(clientId);
+      renderClientDashboardExtras();
+      renderClientProfileExtras();
     },
   });
 }
@@ -204,6 +302,7 @@ export async function renderPortalServices() {
 
 /** Atualiza nome/avatar do cliente logado na sidebar e no dashboard do portal. */
 export function applyClientProfileToUI(profile) {
+  currentProfile = profile;
   const initials = profile.name
     .split(' ')
     .filter(Boolean)

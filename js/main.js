@@ -6,6 +6,8 @@ import {
   renderClientAppointments,
   renderMiniCalendar,
   renderLoyaltyWidgets,
+  renderClientDashboardExtras,
+  renderClientProfileExtras,
   subscribeClientAppointments,
 } from './pages/portal.js';
 import { setBookingSession } from './pages/booking.js';
@@ -17,7 +19,9 @@ import {
   applyAdminProfileToUI,
 } from './pages/admin/configuracoes.js';
 import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi } from './pages/admin/agenda.js';
-import { renderAdminClients } from './pages/admin/clientes.js';
+import { renderAdminClients, renderTopClients } from './pages/admin/clientes.js';
+import { renderAdminFeedbacks } from './pages/admin/feedbacks.js';
+import { renderAdminHistorico } from './pages/admin/historico.js';
 import './pages/admin/scanner.js';
 import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js';
 
@@ -40,6 +44,8 @@ async function enterPortal(profile) {
   await renderClientAppointments();
   await renderMiniCalendar();
   await renderLoyaltyWidgets(profile.id);
+  renderClientDashboardExtras();
+  renderClientProfileExtras();
   subscribeClientAppointments(profile.id);
   showV('vp');
   pGo('dashboard');
@@ -55,6 +61,9 @@ async function enterAdmin(profile) {
   await renderAdminAgenda();
   await renderAppointmentsKpi();
   await renderAdminClients();
+  await renderTopClients();
+  await renderAdminFeedbacks();
+  await renderAdminHistorico();
   subscribeAdminAgenda();
   aGo('dash');
 }

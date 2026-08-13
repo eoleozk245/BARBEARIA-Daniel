@@ -1,4 +1,4 @@
-import { listClientStats, deleteClient, createClientAccount, updateProfile } from '../../services/profiles.js';
+import { listClientStats, listTopClients, deleteClient, createClientAccount, updateProfile } from '../../services/profiles.js';
 import { escapeHtml } from '../../utils/dom.js';
 
 const SEGMENT_META = {
@@ -173,4 +173,26 @@ export async function saveClientModal() {
   }
 }
 
-Object.assign(window, { renderClis: renderAdminClients, openClientModal, closeClientModal, saveClientModal });
+/** Renderiza o card "Top Clientes" do dashboard (#top-cli) com visitas concluídas reais. */
+export async function renderTopClients() {
+  const el = document.getElementById('top-cli');
+  if (!el) return;
+  const top = (await listTopClients(5)).filter((c) => c.completed_visits > 0);
+
+  el.innerHTML = top.length
+    ? top
+        .map((c, i) => {
+          const seg = SEGMENT_META[c.segment] || SEGMENT_META.regular;
+          return `
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+      <span style="font-size:12px;font-weight:700;color:var(--mut);width:14px;text-align:center">${i + 1}</span>
+      <div style="width:32px;height:32px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(var(--ar),.2),rgba(var(--ar),.07));border:1.5px solid rgba(var(--ar),.25);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--acc)">${initials(c.name)}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600">${escapeHtml(c.name)}</div><div style="font-size:11px;color:var(--mut)">${c.completed_visits} visita${c.completed_visits === 1 ? '' : 's'}</div></div>
+      <span class="cbdg ${seg.cls}">${seg.label}</span>
+    </div>`;
+        })
+        .join('')
+    : '<p style="font-size:13px;color:var(--mut);padding:20px 0">Nenhum cliente cadastrado ainda.</p>';
+}
+
+Object.assign(window, { renderClis: renderAdminClients, openClientModal, closeClientModal, saveClientModal, renderTopClients });
