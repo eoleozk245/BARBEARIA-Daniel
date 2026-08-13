@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js';
+import { supabase } from '../supabaseClient.js?v=20260813a';
 
 const SELECT_WITH_JOINS = `
   id, appointment_date, start_time, end_time, status, notes, created_at, updated_at,
@@ -24,6 +24,25 @@ export async function listAllAppointments() {
     .from('appointments')
     .select(`${SELECT_WITH_JOINS}, client:profiles!appointments_client_id_fkey(id,name,email)`)
     .order('appointment_date', { ascending: true })
+    .order('start_time', { ascending: true });
+  if (error) throw error;
+  return data;
+}
+
+/** Data de hoje no fuso do próprio aparelho (não usar toISOString: ela devolve UTC). */
+export function todayLocalDate() {
+  const d = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+/** Admin-only: agendamentos de hoje ainda em aberto (para confirmar a presença do cliente). */
+export async function listTodayAppointments() {
+  const { data, error } = await supabase
+    .from('appointments')
+    .select(`${SELECT_WITH_JOINS}, client:profiles!appointments_client_id_fkey(id,name,email)`)
+    .eq('appointment_date', todayLocalDate())
+    .in('status', ['scheduled', 'confirmed'])
     .order('start_time', { ascending: true });
   if (error) throw error;
   return data;

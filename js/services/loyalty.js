@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js';
+import { supabase } from '../supabaseClient.js?v=20260813a';
 
 const REASON_MESSAGES = {
   forbidden: 'Apenas administradores podem confirmar atendimentos.',
@@ -9,16 +9,23 @@ const REASON_MESSAGES = {
   not_found_or_invalid_status: 'Agendamento não encontrado ou já finalizado.',
 };
 
-function rpcErrorMessage(reason) {
-  return REASON_MESSAGES[reason] || 'Não foi possível confirmar. Tente novamente.';
+/** Erro com o motivo técnico anexado, para a UI poder exibi-lo no diagnóstico. */
+function rpcError(reason) {
+  const err = new Error(REASON_MESSAGES[reason] || 'Não foi possível confirmar. Tente novamente.');
+  err.reason = reason || 'desconhecido';
+  return err;
 }
 
 /** Admin-only: valida o QR escaneado e confirma o atendimento (+1 ponto de fidelidade). */
 export async function scanQrCheckin(qrToken) {
   const { data, error } = await supabase.rpc('confirm_appointment_by_qr', { p_qr_token: qrToken });
-  if (error) throw error;
+  if (error) {
+    const err = new Error(error.message || 'Falha de comunicação com o servidor.');
+    err.reason = error.code || 'erro de rede';
+    throw err;
+  }
   const row = data?.[0];
-  if (!row?.ok) throw new Error(rpcErrorMessage(row?.reason));
+  if (!row?.ok) throw rpcError(row?.reason);
   return row; // { appointment_id, loyalty_total, reward_unlocked }
 }
 
@@ -27,7 +34,7 @@ export async function confirmAppointmentManually(appointmentId) {
   const { data, error } = await supabase.rpc('confirm_appointment_manually', { p_appointment_id: appointmentId });
   if (error) throw error;
   const row = data?.[0];
-  if (!row?.ok) throw new Error(rpcErrorMessage(row?.reason));
+  if (!row?.ok) throw rpcError(row?.reason);
   return row;
 }
 

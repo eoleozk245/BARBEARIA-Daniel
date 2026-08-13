@@ -1,8 +1,8 @@
-import { listServices } from '../services/services.js';
-import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js';
-import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js';
-import { formatCurrency, formatDuration } from '../utils/format.js';
-import { escapeHtml } from '../utils/dom.js';
+import { listServices } from '../services/services.js?v=20260813a';
+import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813a';
+import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813a';
+import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813a';
+import { escapeHtml } from '../utils/dom.js?v=20260813a';
 
 const MONTHS_PT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 const STATUS_BADGE = {

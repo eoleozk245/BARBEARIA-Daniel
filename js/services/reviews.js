@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js';
+import { supabase } from '../supabaseClient.js?v=20260813a';
 
 /** Admin-only: todas as avaliações reais, mais recentes primeiro (RLS permite leitura pública). */
 export async function listAllReviews() {
