@@ -1,8 +1,8 @@
-import { listServices } from '../services/services.js?v=20260813a';
-import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813a';
-import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813a';
-import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813a';
-import { escapeHtml } from '../utils/dom.js?v=20260813a';
+import { listServices } from '../services/services.js?v=20260813b';
+import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813b';
+import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813b';
+import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813b';
+import { escapeHtml } from '../utils/dom.js?v=20260813b';
 
 const MONTHS_PT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 const STATUS_BADGE = {
@@ -100,18 +100,25 @@ export function openQrModal(appointmentId) {
 
   if (qrIsAvailable(a)) {
     if (wrap && window.QRCode) {
-      new window.QRCode(wrap, {
+      // O QR precisa de uma margem branca ao redor (a "quiet zone", ~4 módulos).
+      // Sem ela, encostado no fundo escuro do card, a maioria dos leitores não
+      // consegue reconhecer o código. Por isso ele vai dentro de uma caixa branca.
+      const quiet = document.createElement('div');
+      quiet.className = 'qr-quiet';
+      wrap.appendChild(quiet);
+      new window.QRCode(quiet, {
         text: a.qr_token,
-        width: 200,
-        height: 200,
+        width: 280,
+        height: 280,
         colorDark: '#000000',
         colorLight: '#ffffff',
-        correctLevel: window.QRCode.CorrectLevel.M,
+        // Correção de erro alta: o QR continua legível mesmo com reflexo na tela.
+        correctLevel: window.QRCode.CorrectLevel.H,
       });
     }
     if (codeEl) codeEl.textContent = a.qr_token;
     if (codeWrap) codeWrap.style.display = 'block';
-    if (msg) msg.textContent = 'Mostre este QR Code ao barbeiro no momento do atendimento.';
+    if (msg) msg.textContent = 'Mostre este QR Code ao barbeiro. Deixe o brilho da tela no máximo.';
   } else {
     const unlockAt = qrUnlockAt(a);
     const label = unlockAt.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });

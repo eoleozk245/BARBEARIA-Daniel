@@ -1,11 +1,23 @@
-import { scanQrCheckin } from '../../services/loyalty.js?v=20260813a';
-import { listTodayAppointments } from '../../services/appointments.js?v=20260813a';
-import { escapeHtml } from '../../utils/dom.js?v=20260813a';
+import { scanQrCheckin } from '../../services/loyalty.js?v=20260813b';
+import { listTodayAppointments } from '../../services/appointments.js?v=20260813b';
+import { escapeHtml } from '../../utils/dom.js?v=20260813b';
+
+/* Tamanho em que a imagem é decodificada. O jsQR é JavaScript puro: rodar na
+   resolução cheia (1280px) trava o processador do celular e sobram pouquíssimas
+   tentativas reais por segundo. Reduzindo para 480px o ganho é de ~10x, sem
+   perder precisão para um QR que ocupa boa parte do quadro. */
+const DECODE_SIZE = 480;
+const DECODE_INTERVAL_MS = 100; // ~10 leituras/s (o rAF roda a 60fps, o que seria desperdício)
+const HINT_AFTER_MS = 7000;
 
 let stream = null;
+let track = null;
 let rafId = null;
 let busy = false;
 let lastResultAt = 0;
+let lastDecodeAt = 0;
+let scanStartedAt = 0;
+let hintShown = false;
 
 function showResult(kind, message, detail) {
   const el = document.getElementById('qrsc-result');
@@ -32,6 +44,7 @@ async function handleDecodedToken(token) {
   const now = Date.now();
   if (busy || now - lastResultAt < 1500) return; // evita disparar de novo no mesmo QR ainda visível
   busy = true;
+  navigator.vibrate?.(120); // feedback tátil: o barbeiro sabe que leu sem olhar a tela
   try {
     await confirmByToken(token);
   } catch (err) {
@@ -43,29 +56,87 @@ async function handleDecodedToken(token) {
 }
 
 /**
- * Loop de leitura usando exclusivamente o jsQR.
- * (O BarcodeDetector nativo foi removido de propósito: em vários Androids ele
- * existe mas falha silenciosamente, e o código nunca caía para o jsQR —
- * a câmera abria e nunca lia nada.)
+ * Leitura contínua com jsQR, recortando o quadrado central (o que o barbeiro
+ * enquadra na mira) e decodificando reduzido para ser rápido no celular.
  */
 function decodeLoop() {
+  rafId = requestAnimationFrame(decodeLoop);
+
   const video = document.getElementById('qrsc-video');
   const canvas = document.getElementById('qrsc-canvas');
-  if (!video || !canvas || !stream) return;
+  if (!video || !canvas || !stream || busy) return;
+  if (!window.jsQR || video.readyState !== video.HAVE_ENOUGH_DATA) return;
 
-  if (window.jsQR && video.readyState === video.HAVE_ENOUGH_DATA) {
-    const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const code = window.jsQR(imageData.data, imageData.width, imageData.height, {
-      inversionAttempts: 'attemptBoth',
-    });
-    if (code?.data) handleDecodedToken(code.data.trim());
+  const now = performance.now();
+  if (now - lastDecodeAt < DECODE_INTERVAL_MS) return;
+  lastDecodeAt = now;
+
+  const vw = video.videoWidth;
+  const vh = video.videoHeight;
+  if (!vw || !vh) return;
+
+  // Recorta o quadrado central — é a área que o vídeo realmente mostra (object-fit:cover).
+  const side = Math.min(vw, vh);
+  const sx = (vw - side) / 2;
+  const sy = (vh - side) / 2;
+
+  canvas.width = DECODE_SIZE;
+  canvas.height = DECODE_SIZE;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  ctx.drawImage(video, sx, sy, side, side, 0, 0, DECODE_SIZE, DECODE_SIZE);
+
+  const img = ctx.getImageData(0, 0, DECODE_SIZE, DECODE_SIZE);
+  const code = window.jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' });
+
+  if (code?.data) {
+    handleDecodedToken(code.data.trim());
+    return;
   }
 
-  rafId = requestAnimationFrame(decodeLoop);
+  if (!hintShown && scanStartedAt && now - scanStartedAt > HINT_AFTER_MS) {
+    hintShown = true;
+    const hint = document.getElementById('qrsc-hint');
+    if (hint) hint.style.display = 'block';
+  }
+}
+
+/** Mostra controles de zoom/lanterna só quando a câmera do aparelho suportar. */
+function setupCameraControls() {
+  const caps = track?.getCapabilities?.() || {};
+
+  const torchBtn = document.getElementById('qrsc-torch');
+  if (torchBtn) {
+    if (caps.torch) {
+      torchBtn.style.display = '';
+      torchBtn.onclick = async () => {
+        const on = torchBtn.dataset.on === '1';
+        try {
+          await track.applyConstraints({ advanced: [{ torch: !on }] });
+          torchBtn.dataset.on = on ? '0' : '1';
+          torchBtn.classList.toggle('on', !on);
+        } catch { /* aparelho recusou — nada a fazer */ }
+      };
+    } else {
+      torchBtn.style.display = 'none';
+    }
+  }
+
+  const zoom = document.getElementById('qrsc-zoom');
+  const zoomWrap = document.getElementById('qrsc-zoom-wrap');
+  if (zoom && zoomWrap) {
+    if (caps.zoom) {
+      zoomWrap.style.display = '';
+      zoom.min = caps.zoom.min;
+      zoom.max = caps.zoom.max;
+      zoom.step = caps.zoom.step || 0.1;
+      zoom.value = track.getSettings?.().zoom ?? caps.zoom.min;
+      zoom.oninput = () => {
+        track.applyConstraints({ advanced: [{ zoom: Number(zoom.value) }] }).catch(() => {});
+      };
+    } else {
+      zoomWrap.style.display = 'none';
+    }
+  }
 }
 
 /** Abre a câmera e inicia a leitura contínua (chamado ao entrar na seção Escanear). */
@@ -74,6 +145,9 @@ export async function startQrScanner() {
 
   const video = document.getElementById('qrsc-video');
   if (!video) return;
+  hintShown = false;
+  const hint = document.getElementById('qrsc-hint');
+  if (hint) hint.style.display = 'none';
   showResult('', 'Aponte a câmera para o QR Code do cliente.');
 
   if (!window.jsQR) {
@@ -82,11 +156,21 @@ export async function startQrScanner() {
   }
 
   try {
+    // Sem forçar proporção quadrada: nenhuma câmera entrega 1280x1280, e pedir isso
+    // fazia o navegador escolher um modo estranho. Pede-se resolução alta e foco contínuo.
     stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 1280 } },
+      video: {
+        facingMode: { ideal: 'environment' },
+        width: { ideal: 1280 },
+        advanced: [{ focusMode: 'continuous' }],
+      },
     });
+    track = stream.getVideoTracks()[0];
     video.srcObject = stream;
     await video.play();
+    setupCameraControls();
+    scanStartedAt = performance.now();
+    lastDecodeAt = 0;
     rafId = requestAnimationFrame(decodeLoop);
   } catch (err) {
     showResult('err', 'Não foi possível acessar a câmera. Use a lista abaixo para confirmar.', err.name);
@@ -101,6 +185,8 @@ export function stopQrScanner() {
     stream.getTracks().forEach((t) => t.stop());
     stream = null;
   }
+  track = null;
+  scanStartedAt = 0;
 }
 
 /**

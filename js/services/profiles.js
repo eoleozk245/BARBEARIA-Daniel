@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js?v=20260813a';
+import { supabase } from '../supabaseClient.js?v=20260813b';
 
 export async function getProfile(id) {
   const { data, error } = await supabase.from('profiles').select('*').eq('id', id).single();

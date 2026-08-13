@@ -1,7 +1,7 @@
-import { listServices, createService, updateService, deleteService } from '../../services/services.js?v=20260813a';
-import { listBarbers, createBarber, updateBarber, deleteBarber } from '../../services/barbers.js?v=20260813a';
-import { formatCurrency } from '../../utils/format.js?v=20260813a';
-import { escapeHtml } from '../../utils/dom.js?v=20260813a';
+import { listServices, createService, updateService, deleteService } from '../../services/services.js?v=20260813b';
+import { listBarbers, createBarber, updateBarber, deleteBarber } from '../../services/barbers.js?v=20260813b';
+import { formatCurrency } from '../../utils/format.js?v=20260813b';
+import { escapeHtml } from '../../utils/dom.js?v=20260813b';
 
 /** Renderiza a lista editável de serviços em Configurações → Serviços (dados reais). */
 export async function renderCfgSvcReal() {

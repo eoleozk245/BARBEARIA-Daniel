@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js?v=20260813a';
+import { supabase } from '../supabaseClient.js?v=20260813b';
 
 const SELECT_WITH_JOINS = `
   id, appointment_date, start_time, end_time, status, notes, created_at, updated_at,

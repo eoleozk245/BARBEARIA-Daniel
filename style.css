@@ -1040,6 +1040,25 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
   backdrop-filter:var(--blur);border:1px solid var(--gbd);text-align:center;font-size:13px;
   color:var(--mut);min-height:24px;transition:var(--tr)}
 .qrsc-result.ok{background:rgba(76,175,130,.12);border-color:rgba(76,175,130,.3);color:var(--ok);font-weight:700}
+/* Margem branca obrigatória ao redor do QR Code (quiet zone). Sem ela, o código
+   encosta no fundo escuro e os leitores não conseguem reconhecê-lo. */
+.qr-quiet{background:#fff;padding:16px;border-radius:12px;line-height:0;
+  display:inline-block;box-shadow:0 8px 30px rgba(0,0,0,.35)}
+.qr-quiet img,.qr-quiet canvas{display:block;max-width:100%;height:auto}
+
+.qrsc-ctrls{display:flex;gap:8px;width:100%;flex-wrap:wrap}
+.qrsc-ctrl{display:flex;align-items:center;gap:6px;padding:9px 14px;border-radius:999px;
+  background:var(--gb);border:1px solid var(--gbd);color:var(--txt);font-size:12px;
+  font-weight:600;cursor:pointer;transition:var(--tr)}
+.qrsc-ctrl .ms{font-size:17px}
+.qrsc-ctrl:hover{background:var(--gb2)}
+.qrsc-ctrl.on{background:rgba(var(--ar),.16);border-color:var(--acc);color:var(--acc)}
+.qrsc-zoomw{flex:1;min-width:150px;cursor:default}
+.qrsc-zoomw input{flex:1;accent-color:var(--acc)}
+.qrsc-hint{width:100%;padding:12px 14px;border-radius:var(--rl);
+  background:rgba(var(--ar),.08);border:1px solid rgba(var(--ar),.2);
+  font-size:12px;color:var(--acc);line-height:1.5}
+
 .qrsc-manual{width:100%;padding:14px 16px;border-radius:var(--rl);background:var(--gb);
   backdrop-filter:var(--blur);border:1px solid var(--gbd)}
 .qrsc-sect-tt{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;
