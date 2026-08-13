@@ -1,4 +1,4 @@
-import { getCurrentProfile } from './auth.js?v=20260813b';
+import { getCurrentProfile } from './auth.js?v=20260813c';
 
 /** Retorna o profile se houver sessão válida de cliente, senão null. */
 export async function ensureClientSession() {
