@@ -1,8 +1,8 @@
-import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js';
-import { confirmAppointmentManually } from '../../services/loyalty.js';
-import { listBarbers } from '../../services/barbers.js';
-import { formatCurrency } from '../../utils/format.js';
-import { escapeHtml } from '../../utils/dom.js';
+import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js?v=20260813a';
+import { confirmAppointmentManually } from '../../services/loyalty.js?v=20260813a';
+import { listBarbers } from '../../services/barbers.js?v=20260813a';
+import { formatCurrency } from '../../utils/format.js?v=20260813a';
+import { escapeHtml } from '../../utils/dom.js?v=20260813a';
 
 const STATUS_META = {
   scheduled: { cls: 'ast-pnd', label: 'Agendado', icon: 'schedule' },

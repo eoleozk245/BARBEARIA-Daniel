@@ -1,5 +1,5 @@
-import { signUp, signIn, signInAdmin, signOut, resetPassword, getCurrentProfile } from './auth/auth.js';
-import { renderPublicServices, renderPublicTeam } from './pages/public.js';
+import { signUp, signIn, signInAdmin, signOut, resetPassword, getCurrentProfile } from './auth/auth.js?v=20260813a';
+import { renderPublicServices, renderPublicTeam } from './pages/public.js?v=20260813a';
 import {
   renderPortalServices,
   applyClientProfileToUI,
@@ -9,21 +9,21 @@ import {
   renderClientDashboardExtras,
   renderClientProfileExtras,
   subscribeClientAppointments,
-} from './pages/portal.js';
-import { setBookingSession } from './pages/booking.js';
+} from './pages/portal.js?v=20260813a';
+import { setBookingSession } from './pages/booking.js?v=20260813a';
 import {
   renderCfgSvcReal,
   renderCfgEqReal,
   addNewService,
   addNewBarber,
   applyAdminProfileToUI,
-} from './pages/admin/configuracoes.js';
-import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi } from './pages/admin/agenda.js';
-import { renderAdminClients, renderTopClients } from './pages/admin/clientes.js';
-import { renderAdminFeedbacks } from './pages/admin/feedbacks.js';
-import { renderAdminHistorico } from './pages/admin/historico.js';
-import './pages/admin/scanner.js';
-import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js';
+} from './pages/admin/configuracoes.js?v=20260813a';
+import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi } from './pages/admin/agenda.js?v=20260813a';
+import { renderAdminClients, renderTopClients } from './pages/admin/clientes.js?v=20260813a';
+import { renderAdminFeedbacks } from './pages/admin/feedbacks.js?v=20260813a';
+import { renderAdminHistorico } from './pages/admin/historico.js?v=20260813a';
+import './pages/admin/scanner.js?v=20260813a';
+import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js?v=20260813a';
 
 function showError(id, message) {
   const el = document.getElementById(id);
