@@ -1,5 +1,5 @@
-import { signUp, signIn, signInAdmin, signOut, resetPassword, getCurrentProfile } from './auth/auth.js?v=20260813d';
-import { renderPublicServices, renderPublicTeam } from './pages/public.js?v=20260813d';
+import { signUp, signIn, signInAdmin, signOut, resetPassword, getCurrentProfile } from './auth/auth.js?v=20260813e';
+import { renderPublicServices, renderPublicTeam } from './pages/public.js?v=20260813e';
 import {
   renderPortalServices,
   applyClientProfileToUI,
@@ -9,21 +9,21 @@ import {
   renderClientDashboardExtras,
   renderClientProfileExtras,
   subscribeClientAppointments,
-} from './pages/portal.js?v=20260813d';
-import { setBookingSession } from './pages/booking.js?v=20260813d';
+} from './pages/portal.js?v=20260813e';
+import { setBookingSession } from './pages/booking.js?v=20260813e';
 import {
   renderCfgSvcReal,
   renderCfgEqReal,
   addNewService,
   addNewBarber,
   applyAdminProfileToUI,
-} from './pages/admin/configuracoes.js?v=20260813d';
-import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi } from './pages/admin/agenda.js?v=20260813d';
-import { renderAdminClients, renderTopClients } from './pages/admin/clientes.js?v=20260813d';
-import { renderAdminFeedbacks } from './pages/admin/feedbacks.js?v=20260813d';
-import { renderAdminHistorico } from './pages/admin/historico.js?v=20260813d';
-import './pages/admin/scanner.js?v=20260813d';
-import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js?v=20260813d';
+} from './pages/admin/configuracoes.js?v=20260813e';
+import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi } from './pages/admin/agenda.js?v=20260813e';
+import { renderAdminClients, renderTopClients } from './pages/admin/clientes.js?v=20260813e';
+import { renderAdminFeedbacks } from './pages/admin/feedbacks.js?v=20260813e';
+import { renderAdminHistorico } from './pages/admin/historico.js?v=20260813e';
+import './pages/admin/scanner.js?v=20260813e';
+import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js?v=20260813e';
 
 function showError(id, message) {
   const el = document.getElementById(id);
@@ -41,7 +41,7 @@ async function enterPortal(profile) {
   applyClientProfileToUI(profile);
   setBookingSession(profile);
   await renderPortalServices();
-  await renderClientAppointments();
+  await renderClientAppointments(true);
   await renderMiniCalendar();
   await renderLoyaltyWidgets(profile.id);
   renderClientDashboardExtras();

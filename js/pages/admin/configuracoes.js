@@ -1,7 +1,7 @@
-import { listServices, createService, updateService, deleteService } from '../../services/services.js?v=20260813d';
-import { listBarbers, createBarber, updateBarber, deleteBarber } from '../../services/barbers.js?v=20260813d';
-import { formatCurrency } from '../../utils/format.js?v=20260813d';
-import { escapeHtml } from '../../utils/dom.js?v=20260813d';
+import { listServices, createService, updateService, deleteService } from '../../services/services.js?v=20260813e';
+import { listBarbers, createBarber, updateBarber, deleteBarber } from '../../services/barbers.js?v=20260813e';
+import { formatCurrency } from '../../utils/format.js?v=20260813e';
+import { escapeHtml, showToast } from '../../utils/dom.js?v=20260813e';
 
 /** Renderiza a lista editável de serviços em Configurações → Serviços (dados reais). */
 export async function renderCfgSvcReal() {
@@ -29,7 +29,7 @@ export async function renderCfgSvcReal() {
         try {
           await updateService(id, { [field]: value });
         } catch (err) {
-          alert('Erro ao salvar serviço: ' + err.message);
+          showToast('Erro ao salvar serviço: ' + err.message);
         }
       });
     });
@@ -39,7 +39,7 @@ export async function renderCfgSvcReal() {
         await deleteService(id);
         renderCfgSvcReal();
       } catch (err) {
-        alert('Erro ao remover serviço: ' + err.message);
+        showToast('Erro ao remover serviço: ' + err.message);
       }
     });
   });
@@ -52,7 +52,7 @@ export async function addNewService() {
     await createService({ name, description: '', price: 0, duration_minutes: 30, active: true });
     renderCfgSvcReal();
   } catch (err) {
-    alert('Erro ao criar serviço: ' + err.message);
+    showToast('Erro ao criar serviço: ' + err.message);
   }
 }
 
@@ -90,7 +90,7 @@ export async function renderCfgEqReal() {
       try {
         await updateBarber(id, { active: e.target.value === 'true' });
       } catch (err) {
-        alert('Erro ao salvar barbeiro: ' + err.message);
+        showToast('Erro ao salvar barbeiro: ' + err.message);
       }
     });
     row.querySelector('[data-action="remove"]').addEventListener('click', async () => {
@@ -99,7 +99,7 @@ export async function renderCfgEqReal() {
         await deleteBarber(id);
         renderCfgEqReal();
       } catch (err) {
-        alert('Erro ao remover barbeiro: ' + err.message);
+        showToast('Erro ao remover barbeiro: ' + err.message);
       }
     });
   });
@@ -112,7 +112,7 @@ export async function addNewBarber() {
     await createBarber({ name, active: true });
     renderCfgEqReal();
   } catch (err) {
-    alert('Erro ao criar barbeiro: ' + err.message);
+    showToast('Erro ao criar barbeiro: ' + err.message);
   }
 }
 

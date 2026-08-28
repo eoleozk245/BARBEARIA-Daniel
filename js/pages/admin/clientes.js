@@ -1,5 +1,5 @@
-import { listClientStats, listTopClients, deleteClient, createClientAccount, updateProfile } from '../../services/profiles.js?v=20260813d';
-import { escapeHtml } from '../../utils/dom.js?v=20260813d';
+import { listClientStats, listTopClients, deleteClient, createClientAccount, updateProfile } from '../../services/profiles.js?v=20260813e';
+import { escapeHtml, showToast } from '../../utils/dom.js?v=20260813e';
 
 const SEGMENT_META = {
   vip: { cls: 'cbdg-vip', label: 'VIP' },
@@ -88,7 +88,7 @@ async function handleDeleteClient(clientId) {
     await deleteClient(clientId);
     await renderAdminClients();
   } catch (err) {
-    alert('Erro ao excluir cliente: ' + (err.message || 'tente novamente.'));
+    showToast('Erro ao excluir cliente: ' + (err.message || 'tente novamente.'));
   }
 }
 

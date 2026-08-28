@@ -1,8 +1,8 @@
-import { listServices } from '../services/services.js?v=20260813d';
-import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813d';
-import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813d';
-import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813d';
-import { escapeHtml } from '../utils/dom.js?v=20260813d';
+import { listServices } from '../services/services.js?v=20260813e';
+import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813e';
+import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813e';
+import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813e';
+import { escapeHtml, showToast } from '../utils/dom.js?v=20260813e';
 
 const MONTHS_PT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 const STATUS_BADGE = {
@@ -35,10 +35,14 @@ let qrUnlockMinutesLoaded = false;
 let currentProfile = null;
 
 /** Renderiza "Próximos"/"Histórico" (#ptcprox/#ptchist) com agendamentos reais do cliente logado. */
-export async function renderClientAppointments() {
+export async function renderClientAppointments(animate = false) {
   const prox = document.getElementById('ptcprox');
   const hist = document.getElementById('ptchist');
   if (!prox || !hist) return;
+  // Cascata só na primeira carga do portal: esta função também roda ao cancelar,
+  // ao agendar e a cada evento do Realtime, e reanimar nesses casos incomoda.
+  prox.classList.toggle('stagger', animate);
+  hist.classList.toggle('stagger', animate);
   if (!qrUnlockMinutesLoaded) {
     qrUnlockMinutes = await getQrUnlockMinutes();
     qrUnlockMinutesLoaded = true;
@@ -62,7 +66,7 @@ export async function renderClientAppointments() {
         await renderClientAppointments();
         await renderMiniCalendar();
       } catch (err) {
-        alert(err.message || 'Não foi possível cancelar.');
+        showToast(err.message || 'Não foi possível cancelar.');
       }
     });
   });

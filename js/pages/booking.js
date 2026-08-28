@@ -1,10 +1,10 @@
-import { listServices } from '../services/services.js?v=20260813d';
-import { listBarbers } from '../services/barbers.js?v=20260813d';
-import { getAvailableSlots, createAppointment } from '../services/appointments.js?v=20260813d';
-import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813d';
-import { escapeHtml } from '../utils/dom.js?v=20260813d';
-import { pGo } from '../legacy.js?v=20260813d';
-import { renderClientAppointments, renderMiniCalendar } from './portal.js?v=20260813d';
+import { listServices } from '../services/services.js?v=20260813e';
+import { listBarbers } from '../services/barbers.js?v=20260813e';
+import { getAvailableSlots, createAppointment } from '../services/appointments.js?v=20260813e';
+import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813e';
+import { escapeHtml, showToast } from '../utils/dom.js?v=20260813e';
+import { pGo } from '../legacy.js?v=20260813e';
+import { renderClientAppointments, renderMiniCalendar } from './portal.js?v=20260813e';
 
 const STEPS = ['Serviço', 'Barbeiro', 'Horário', 'Confirmado'];
 
@@ -177,7 +177,7 @@ async function bkConfirm() {
     await renderClientAppointments();
     await renderMiniCalendar();
   } catch (err) {
-    alert(err.message || 'Não foi possível concluir o agendamento.');
+    showToast(err.message || 'Não foi possível concluir o agendamento.');
   } finally {
     if (btn) btn.disabled = false;
   }

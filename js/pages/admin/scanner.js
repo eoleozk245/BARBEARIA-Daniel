@@ -1,6 +1,6 @@
-import { scanQrCheckin } from '../../services/loyalty.js?v=20260813d';
-import { listTodayAppointments } from '../../services/appointments.js?v=20260813d';
-import { escapeHtml } from '../../utils/dom.js?v=20260813d';
+import { scanQrCheckin } from '../../services/loyalty.js?v=20260813e';
+import { listTodayAppointments } from '../../services/appointments.js?v=20260813e';
+import { escapeHtml } from '../../utils/dom.js?v=20260813e';
 
 /* Tamanho em que a imagem é decodificada. O jsQR é JavaScript puro: rodar na
    resolução cheia (1280px) trava o processador do celular e sobram pouquíssimas
@@ -18,6 +18,7 @@ let lastResultAt = 0;
 let lastDecodeAt = 0;
 let scanStartedAt = 0;
 let hintShown = false;
+let frameResetId = null;
 
 function showResult(kind, message, detail) {
   const el = document.getElementById('qrsc-result');
@@ -26,6 +27,17 @@ function showResult(kind, message, detail) {
   el.innerHTML = detail
     ? `${escapeHtml(message)}<br><span style="font-size:11px;opacity:.7;font-weight:400">(${escapeHtml(detail)})</span>`
     : escapeHtml(message);
+}
+
+/**
+ * Estado visual da mira: '' (procurando), 'reading' (detectou, confirmando no
+ * servidor), 'ok' ou 'err'. Só o caminho da câmera usa isto — confirmar pela
+ * lista ou pelo código digitado não mexe na mira, apenas na caixa de resultado.
+ */
+function setFrameState(state) {
+  const el = document.getElementById('qrsc-frame');
+  if (!el) return;
+  el.className = `qrsc-frame ${state}`;
 }
 
 /** Confirma um atendimento a partir do token — usado pela câmera, pelo código manual e pela lista. */
@@ -45,13 +57,21 @@ async function handleDecodedToken(token) {
   if (busy || now - lastResultAt < 1500) return; // evita disparar de novo no mesmo QR ainda visível
   busy = true;
   navigator.vibrate?.(120); // feedback tátil: o barbeiro sabe que leu sem olhar a tela
+  // A mira só pode dizer "confirmado" depois que o servidor responder — detectar
+  // o QR não garante nada (pode estar usado, inválido ou cancelado).
+  setFrameState('reading');
+  clearTimeout(frameResetId);
   try {
     await confirmByToken(token);
+    setFrameState('ok');
   } catch (err) {
+    setFrameState('err');
     showResult('err', err.message || 'Não foi possível confirmar o QR Code.', err.reason);
   } finally {
     lastResultAt = Date.now();
     busy = false;
+    // Volta a "procurando" junto com o fim da janela anti-releitura acima.
+    frameResetId = setTimeout(() => setFrameState(''), 1500);
   }
 }
 
@@ -95,8 +115,7 @@ function decodeLoop() {
 
   if (!hintShown && scanStartedAt && now - scanStartedAt > HINT_AFTER_MS) {
     hintShown = true;
-    const hint = document.getElementById('qrsc-hint');
-    if (hint) hint.style.display = 'block';
+    document.getElementById('qrsc-hint')?.classList.add('on');
   }
 }
 
@@ -141,13 +160,13 @@ function setupCameraControls() {
 
 /** Abre a câmera e inicia a leitura contínua (chamado ao entrar na seção Escanear). */
 export async function startQrScanner() {
-  renderTodayList();
+  renderTodayList(true);
 
   const video = document.getElementById('qrsc-video');
   if (!video) return;
   hintShown = false;
-  const hint = document.getElementById('qrsc-hint');
-  if (hint) hint.style.display = 'none';
+  document.getElementById('qrsc-hint')?.classList.remove('on');
+  setFrameState('');
   showResult('', 'Aponte a câmera para o QR Code do cliente.');
 
   if (!window.jsQR) {
@@ -181,6 +200,8 @@ export async function startQrScanner() {
 export function stopQrScanner() {
   if (rafId) cancelAnimationFrame(rafId);
   rafId = null;
+  clearTimeout(frameResetId); // não mexer na mira depois de sair da seção
+  frameResetId = null;
   if (stream) {
     stream.getTracks().forEach((t) => t.stop());
     stream = null;
@@ -194,10 +215,11 @@ export function stopQrScanner() {
  * Usa o próprio qr_token do agendamento, então passa exatamente pelas mesmas
  * validações da leitura por câmera (uso único, data, ponto de fidelidade).
  */
-export async function renderTodayList() {
+export async function renderTodayList(animate = false) {
   const el = document.getElementById('qrsc-today');
   if (!el) return;
-  el.innerHTML = '<p style="font-size:12px;color:var(--mut)">Carregando…</p>';
+  el.classList.remove('stagger');
+  el.innerHTML = '<div class="sk sk-row"></div><div class="sk sk-row"></div>';
   let appts;
   try {
     appts = await listTodayAppointments();
@@ -206,6 +228,9 @@ export async function renderTodayList() {
     return;
   }
 
+  // Cascata só ao abrir a seção. Depois de confirmar um cliente a lista
+  // re-renderiza, e reanimar tudo a cada confirmação viraria distração.
+  if (animate) el.classList.add('stagger');
   el.innerHTML = appts.length
     ? appts
         .map(

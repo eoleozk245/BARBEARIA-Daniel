@@ -1,5 +1,5 @@
-import { listAllReviews, replyToReview } from '../../services/reviews.js?v=20260813d';
-import { escapeHtml } from '../../utils/dom.js?v=20260813d';
+import { listAllReviews, replyToReview } from '../../services/reviews.js?v=20260813e';
+import { escapeHtml, showToast } from '../../utils/dom.js?v=20260813e';
 
 /** Iniciais já escapadas — o retorno vai direto para innerHTML. */
 function initials(name) {
@@ -56,7 +56,7 @@ export async function renderAdminFeedbacks() {
         await replyToReview(id, text);
         await renderAdminFeedbacks();
       } catch (err) {
-        alert(err.message || 'Não foi possível enviar a resposta.');
+        showToast(err.message || 'Não foi possível enviar a resposta.');
       }
     });
   });

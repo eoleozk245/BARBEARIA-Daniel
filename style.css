@@ -40,6 +40,14 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
 /* views */
 .view{display:none}
 #vs{display:block}
+/* Entrada animada de views e seções.
+   Um elemento em display:none não roda animação; ao ganhar .on ele passa a
+   display:block e a animação inicia do zero — inclusive quando o usuário
+   alterna rápido entre seções. Por isso não há classe de "saindo" nem
+   transitionend a controlar: é impossível ficar preso num estado inconsistente. */
+@keyframes viewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes secIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.view.on{animation:viewIn .3s var(--ease)}
 
 /* ── NAV ── */
 .nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--nh);
@@ -465,9 +473,14 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
 .sb.col .sbnew .lbl{width:0;opacity:0}
 .sbnav{flex:1;padding:8px;overflow-y:auto;overflow-x:hidden}
 .sbnav::-webkit-scrollbar{display:none}
-.ni{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;
+.ni{position:relative;display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;
   cursor:pointer;color:var(--mut);font-size:13px;font-weight:500;
   transition:var(--tr);white-space:nowrap;overflow:hidden;margin-bottom:2px}
+/* Barra de destaque que cresce ao selecionar o item, em vez de a cor só trocar. */
+.ni::before{content:'';position:absolute;left:0;top:50%;width:3px;height:58%;
+  border-radius:0 3px 3px 0;background:var(--acc);
+  transform:translate(-3px,-50%) scaleY(0);transition:transform .26s var(--spring)}
+.ni.on::before{transform:translate(0,-50%) scaleY(1)}
 .ni:hover{background:var(--gb);color:var(--txt2)}
 .ni.on{background:rgba(var(--ar),.12);color:var(--acc);box-shadow:inset 0 0 0 1px rgba(var(--ar),.15)}
 .ni .ms{flex-shrink:0;font-size:20px}
@@ -489,7 +502,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
   transition:margin-left .3s var(--ease),width .3s var(--ease)}
 .pmain.col{margin-left:var(--sbc);width:calc(100% - var(--sbc))}
 .psec{display:none;padding:36px;position:relative;z-index:1;min-height:100vh}
-.psec.on{display:block}
+.psec.on{display:block;animation:secIn .24s var(--ease)}
 .pph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
 .pph h1{font-size:30px;font-weight:800;letter-spacing:-.03em;margin-bottom:4px}
 .pph p{font-size:13px;color:var(--mut)}
@@ -512,7 +525,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
   border-bottom:2px solid transparent;transition:var(--tr);margin-bottom:-1px;background:none}
 .ptab:hover{color:var(--txt)}
 .ptab.on{color:var(--acc);border-bottom-color:var(--acc);font-weight:600}
-.ptc{display:none}.ptc.on{display:block}
+.ptc{display:none}.ptc.on{display:block;animation:secIn .22s var(--ease)}
 .pfg2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .pffull{grid-column:1/-1}
 .pfld label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;
@@ -877,7 +890,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
 @media(max-width:680px){#vc,#val{flex-direction:column}}
 .asec{display:none;padding:36px clamp(24px,4vw,56px);position:relative;z-index:1;min-height:100vh;
   max-width:1720px;margin:0 auto;width:100%;box-sizing:border-box}
-.asec.on{display:block}
+.asec.on{display:block;animation:secIn .24s var(--ease)}
 .aph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
 .aph h1{font-size:32px;font-weight:800;letter-spacing:-.03em;margin-bottom:4px}
 .aph p{font-size:13px;color:var(--mut)}
@@ -1035,11 +1048,41 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
   background:#000;border:1px solid var(--gbd);box-shadow:0 24px 70px rgba(0,0,0,.45)}
 .qrsc-video{width:100%;height:100%;object-fit:cover}
 .qrsc-frame{position:absolute;inset:12%;border:3px solid var(--acc);border-radius:var(--rl);
-  box-shadow:0 0 0 999px rgba(0,0,0,.28);pointer-events:none}
+  box-shadow:0 0 0 999px rgba(0,0,0,.28);pointer-events:none;
+  transition:border-color .2s var(--ease)}
+/* Respiração sutil enquanto procura: anima só opacity (composita, não repinta),
+   para não competir por CPU com o decodificador do jsQR rodando na câmera. */
+.qrsc-frame::before{content:'';position:absolute;inset:-3px;border-radius:inherit;
+  border:3px solid var(--acc);opacity:0;animation:qrscPulse 2s var(--ease) infinite}
+/* Barra de varredura. A faixa tem 20% da altura da mira e o translateY é em %
+   da própria faixa, então 500% = uma travessia completa de cima a baixo. */
+.qrsc-sweep{position:absolute;inset:4px;overflow:hidden;border-radius:inherit;pointer-events:none}
+.qrsc-sweep::after{content:'';position:absolute;left:0;right:0;top:0;height:20%;
+  background:linear-gradient(180deg,transparent,rgba(var(--ar),.5),transparent);
+  animation:qrscSweep 2.4s var(--ease) infinite}
+@keyframes qrscPulse{0%,100%{opacity:0}50%{opacity:.55}}
+@keyframes qrscSweep{0%{transform:translateY(-100%)}100%{transform:translateY(500%)}}
+/* Estados de leitura. Ao detectar, a varredura e o pulso param — o barbeiro vê
+   na hora que o app saiu de "procurando" e está confirmando no servidor. */
+.qrsc-frame.reading .qrsc-sweep,.qrsc-frame.ok .qrsc-sweep,.qrsc-frame.err .qrsc-sweep{display:none}
+.qrsc-frame.reading::before,.qrsc-frame.ok::before,.qrsc-frame.err::before{animation:none;opacity:0}
+.qrsc-frame.reading{border-color:#fff}
+.qrsc-frame.ok{border-color:var(--ok);animation:qrscFlash .5s var(--ease)}
+.qrsc-frame.err{border-color:var(--err);animation:qrscShake .45s var(--ease)}
+@keyframes qrscFlash{0%{box-shadow:0 0 0 999px rgba(0,0,0,.28),inset 0 0 0 0 rgba(76,175,130,.6)}
+  40%{box-shadow:0 0 0 999px rgba(0,0,0,.28),inset 0 0 60px 0 rgba(76,175,130,.6)}
+  100%{box-shadow:0 0 0 999px rgba(0,0,0,.28),inset 0 0 0 0 rgba(76,175,130,0)}}
+@keyframes qrscShake{0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-7px)}40%{transform:translateX(6px)}
+  60%{transform:translateX(-4px)}80%{transform:translateX(2px)}}
 .qrsc-result{width:100%;padding:16px 20px;border-radius:var(--rl);background:var(--gb);
   backdrop-filter:var(--blur);border:1px solid var(--gbd);text-align:center;font-size:13px;
   color:var(--mut);min-height:24px;transition:var(--tr)}
 .qrsc-result.ok{background:rgba(76,175,130,.12);border-color:rgba(76,175,130,.3);color:var(--ok);font-weight:700}
+/* Entrada com leve overshoot (--spring) sempre que houver um veredito, para o
+   resultado não passar despercebido no meio da tela. */
+.qrsc-result.ok,.qrsc-result.err{animation:qrscPop .34s var(--spring)}
+@keyframes qrscPop{from{transform:scale(.92);opacity:.4}to{transform:scale(1);opacity:1}}
 /* Margem branca obrigatória ao redor do QR Code (quiet zone). Sem ela, o código
    encosta no fundo escuro e os leitores não conseguem reconhecê-lo. */
 .qr-quiet{background:#fff;padding:16px;border-radius:12px;line-height:0;
@@ -1055,9 +1098,11 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
 .qrsc-ctrl.on{background:rgba(var(--ar),.16);border-color:var(--acc);color:var(--acc)}
 .qrsc-zoomw{flex:1;min-width:150px;cursor:default}
 .qrsc-zoomw input{flex:1;accent-color:var(--acc)}
-.qrsc-hint{width:100%;padding:12px 14px;border-radius:var(--rl);
+.qrsc-hint{display:none;width:100%;padding:12px 14px;border-radius:var(--rl);
   background:rgba(var(--ar),.08);border:1px solid rgba(var(--ar),.2);
   font-size:12px;color:var(--acc);line-height:1.5}
+.qrsc-hint.on{display:block;animation:qrscHintIn .3s var(--ease)}
+@keyframes qrscHintIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 
 .qrsc-manual{width:100%;padding:14px 16px;border-radius:var(--rl);background:var(--gb);
   backdrop-filter:var(--blur);border:1px solid var(--gbd)}
@@ -1285,11 +1330,69 @@ body *{letter-spacing:0}
 .mobtogbtn:hover{background:var(--gb2)}
 .mobtogbtn .ms{font-size:20px}
 .sboverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190}
+@keyframes ovIn{from{opacity:0}to{opacity:1}}
 @media(max-width:900px){
   .mobtop{display:flex}
   .sb{transform:translateX(-100%);transition:transform .3s var(--ease);box-shadow:0 24px 60px rgba(0,0,0,.5)}
   .sb.mopen{transform:translateX(0)}
   .sb.col{width:var(--sb)}
   .pmain,.pmain.col{margin-left:0!important;width:100%!important;padding-top:66px}
-  .sboverlay.on{display:block}
+  /* Só fade: backdrop-filter aqui custa caro em celular fraco e a gaveta já
+     desliza, então o ganho não pagaria a queda de fluidez. */
+  .sboverlay.on{display:block;animation:ovIn .25s var(--ease)}
 }
+
+/* ══ Feedback de toque ══
+   No celular não existe :hover, então sem isto nenhum destes botões dá retorno
+   visual ao ser pressionado. Fica no fim do arquivo de propósito: várias destas
+   classes redeclaram `transition` mais abaixo do bloco de botões, e daqui a
+   regra vence a cascata sem precisar de !important (que quebraria o
+   prefers-reduced-motion global mais acima). */
+.abtn,.pbtng,.lbtnp,.btnalt,.btncncl,.qrsc-ctrl,.ptab,.ni,.sbnew,.mobtogbtn,.bkd,.bkh,.bksvc,.bkbarc{
+  transition:var(--tr),transform .1s var(--ease)}
+.abtn:active,.pbtng:active,.lbtnp:active,.btnalt:active,.btncncl:active,.qrsc-ctrl:active,
+.ptab:active,.ni:active,.sbnew:active,.mobtogbtn:active,.bkd:active,.bkh:active,
+.bksvc:active,.bkbarc:active{transform:scale(.97)}
+
+/* ══ Entrada em cascata de listas ══
+   Aplicado por classe no contêiner, com o atraso vindo de nth-child — assim
+   nenhuma função de renderização precisa injetar style="animation-delay".
+   Só vale para a primeira carga: quem re-renderiza a lista (confirmar presença,
+   cancelar agendamento) remove a classe antes, senão a cascata tocaria de novo
+   a cada ação e viraria distração. */
+@keyframes listIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.stagger > *{animation:listIn .3s var(--ease) backwards}
+.stagger > *:nth-child(1){animation-delay:.02s}
+.stagger > *:nth-child(2){animation-delay:.06s}
+.stagger > *:nth-child(3){animation-delay:.10s}
+.stagger > *:nth-child(4){animation-delay:.14s}
+.stagger > *:nth-child(5){animation-delay:.18s}
+.stagger > *:nth-child(6){animation-delay:.22s}
+.stagger > *:nth-child(7){animation-delay:.26s}
+.stagger > *:nth-child(n+8){animation-delay:.30s}
+
+/* ══ Skeleton de carregamento ══ */
+@keyframes skShimmer{from{background-position:-180% 0}to{background-position:180% 0}}
+.sk{border-radius:8px;background:linear-gradient(90deg,
+  rgba(255,255,255,.04) 25%,rgba(255,255,255,.10) 50%,rgba(255,255,255,.04) 75%);
+  background-size:180% 100%;animation:skShimmer 1.3s linear infinite}
+.sk-row{height:38px;margin-bottom:8px}
+.sk-row:last-child{margin-bottom:0}
+
+/* ══ Toasts (substituem o alert() nativo) ══ */
+.toasts{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:400;
+  display:flex;flex-direction:column;gap:8px;width:min(420px,calc(100vw - 24px));
+  pointer-events:none}
+.toast{position:relative;pointer-events:auto;padding:13px 40px 13px 16px;border-radius:var(--rl);
+  background:rgba(22,22,22,.96);backdrop-filter:var(--blur);border:1px solid var(--gbd);
+  color:var(--txt);font-size:13px;line-height:1.5;box-shadow:0 12px 40px rgba(0,0,0,.5);
+  animation:toastIn .28s var(--spring)}
+.toast.err{border-color:rgba(242,139,130,.35);color:var(--err)}
+.toast.ok{border-color:rgba(76,175,130,.35);color:var(--ok)}
+.toast.out{animation:toastOut .2s var(--ease) forwards}
+.toast-x{position:absolute;top:6px;right:6px;width:26px;height:26px;border:none;
+  background:transparent;color:inherit;opacity:.55;font-size:18px;line-height:1;
+  cursor:pointer;border-radius:8px}
+.toast-x:hover{opacity:1;background:rgba(255,255,255,.08)}
+@keyframes toastIn{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes toastOut{to{opacity:0;transform:translateY(8px) scale(.98)}}

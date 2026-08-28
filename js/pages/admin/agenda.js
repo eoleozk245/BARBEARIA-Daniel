@@ -1,8 +1,8 @@
-import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js?v=20260813d';
-import { confirmAppointmentManually } from '../../services/loyalty.js?v=20260813d';
-import { listBarbers } from '../../services/barbers.js?v=20260813d';
-import { formatCurrency } from '../../utils/format.js?v=20260813d';
-import { escapeHtml } from '../../utils/dom.js?v=20260813d';
+import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js?v=20260813e';
+import { confirmAppointmentManually } from '../../services/loyalty.js?v=20260813e';
+import { listBarbers } from '../../services/barbers.js?v=20260813e';
+import { formatCurrency } from '../../utils/format.js?v=20260813e';
+import { escapeHtml, showToast } from '../../utils/dom.js?v=20260813e';
 
 const STATUS_META = {
   scheduled: { cls: 'ast-pnd', label: 'Agendado', icon: 'schedule' },
@@ -79,18 +79,18 @@ export async function renderAdminAgenda() {
     .join('');
 
   tbody.querySelectorAll('[data-confirm]').forEach((btn) => {
-    btn.addEventListener('click', () => updateAppointmentStatus(btn.dataset.confirm, 'confirmed').catch((e) => alert(e.message)));
+    btn.addEventListener('click', () => updateAppointmentStatus(btn.dataset.confirm, 'confirmed').catch((e) => showToast(e.message)));
   });
   tbody.querySelectorAll('[data-complete]').forEach((btn) => {
     btn.addEventListener('click', () => {
       if (!confirm('Concluir manualmente este agendamento? Isso NÃO soma ponto de fidelidade — use apenas quando o QR Code não puder ser lido.')) return;
-      confirmAppointmentManually(btn.dataset.complete).catch((e) => alert(e.message));
+      confirmAppointmentManually(btn.dataset.complete).catch((e) => showToast(e.message));
     });
   });
   tbody.querySelectorAll('[data-cancel]').forEach((btn) => {
     btn.addEventListener('click', () => {
       if (!confirm('Cancelar este agendamento?')) return;
-      updateAppointmentStatus(btn.dataset.cancel, 'cancelled').catch((e) => alert(e.message));
+      updateAppointmentStatus(btn.dataset.cancel, 'cancelled').catch((e) => showToast(e.message));
     });
   });
 }

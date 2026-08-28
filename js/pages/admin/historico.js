@@ -1,7 +1,7 @@
-import { listAllAppointments } from '../../services/appointments.js?v=20260813d';
-import { listClients } from '../../services/profiles.js?v=20260813d';
-import { listAllReviews } from '../../services/reviews.js?v=20260813d';
-import { escapeHtml } from '../../utils/dom.js?v=20260813d';
+import { listAllAppointments } from '../../services/appointments.js?v=20260813e';
+import { listClients } from '../../services/profiles.js?v=20260813e';
+import { listAllReviews } from '../../services/reviews.js?v=20260813e';
+import { escapeHtml } from '../../utils/dom.js?v=20260813e';
 
 const STATUS_META = {
   completed: { action: 'concluído', icon: 'check_circle', dot: 'dot-ok' },
@@ -75,6 +75,7 @@ export async function renderAdminHistorico() {
   if (!el) return;
   const feed = await buildActivityFeed();
 
+  el.classList.add('stagger'); // renderizado uma única vez, ao abrir a seção
   el.innerHTML = feed.length
     ? feed
         .map(
