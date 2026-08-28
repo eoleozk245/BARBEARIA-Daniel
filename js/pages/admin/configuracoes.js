@@ -1,7 +1,7 @@
-import { listServices, createService, updateService, deleteService } from '../../services/services.js?v=20260813c';
-import { listBarbers, createBarber, updateBarber, deleteBarber } from '../../services/barbers.js?v=20260813c';
-import { formatCurrency } from '../../utils/format.js?v=20260813c';
-import { escapeHtml } from '../../utils/dom.js?v=20260813c';
+import { listServices, createService, updateService, deleteService } from '../../services/services.js?v=20260813d';
+import { listBarbers, createBarber, updateBarber, deleteBarber } from '../../services/barbers.js?v=20260813d';
+import { formatCurrency } from '../../utils/format.js?v=20260813d';
+import { escapeHtml } from '../../utils/dom.js?v=20260813d';
 
 /** Renderiza a lista editável de serviços em Configurações → Serviços (dados reais). */
 export async function renderCfgSvcReal() {
@@ -72,7 +72,7 @@ export async function renderCfgEqReal() {
         .toUpperCase();
       return `
     <div class="asvc-row" data-id="${b.id}">
-      <div style="width:34px;height:34px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(var(--ar),.2),rgba(var(--ar),.06));border:1px solid rgba(var(--ar),.2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--acc)">${initials}</div>
+      <div style="width:34px;height:34px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(var(--ar),.2),rgba(var(--ar),.06));border:1px solid rgba(var(--ar),.2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--acc)">${escapeHtml(initials)}</div>
       <span class="asvc-n">${escapeHtml(b.name)}</span>
       <span style="font-size:11px;color:var(--mut)">${escapeHtml(b.title || '')}</span>
       <select class="afsel" data-field="active" style="width:110px;padding:6px 10px;border-radius:8px;font-size:11px">

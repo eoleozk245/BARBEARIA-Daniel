@@ -1,5 +1,5 @@
-import { signUp, signIn, signInAdmin, signOut, resetPassword, getCurrentProfile } from './auth/auth.js?v=20260813c';
-import { renderPublicServices, renderPublicTeam } from './pages/public.js?v=20260813c';
+import { signUp, signIn, signInAdmin, signOut, resetPassword, getCurrentProfile } from './auth/auth.js?v=20260813d';
+import { renderPublicServices, renderPublicTeam } from './pages/public.js?v=20260813d';
 import {
   renderPortalServices,
   applyClientProfileToUI,
@@ -9,21 +9,21 @@ import {
   renderClientDashboardExtras,
   renderClientProfileExtras,
   subscribeClientAppointments,
-} from './pages/portal.js?v=20260813c';
-import { setBookingSession } from './pages/booking.js?v=20260813c';
+} from './pages/portal.js?v=20260813d';
+import { setBookingSession } from './pages/booking.js?v=20260813d';
 import {
   renderCfgSvcReal,
   renderCfgEqReal,
   addNewService,
   addNewBarber,
   applyAdminProfileToUI,
-} from './pages/admin/configuracoes.js?v=20260813c';
-import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi } from './pages/admin/agenda.js?v=20260813c';
-import { renderAdminClients, renderTopClients } from './pages/admin/clientes.js?v=20260813c';
-import { renderAdminFeedbacks } from './pages/admin/feedbacks.js?v=20260813c';
-import { renderAdminHistorico } from './pages/admin/historico.js?v=20260813c';
-import './pages/admin/scanner.js?v=20260813c';
-import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js?v=20260813c';
+} from './pages/admin/configuracoes.js?v=20260813d';
+import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi } from './pages/admin/agenda.js?v=20260813d';
+import { renderAdminClients, renderTopClients } from './pages/admin/clientes.js?v=20260813d';
+import { renderAdminFeedbacks } from './pages/admin/feedbacks.js?v=20260813d';
+import { renderAdminHistorico } from './pages/admin/historico.js?v=20260813d';
+import './pages/admin/scanner.js?v=20260813d';
+import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js?v=20260813d';
 
 function showError(id, message) {
   const el = document.getElementById(id);

@@ -1,8 +1,8 @@
-import { listServices } from '../services/services.js?v=20260813c';
-import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813c';
-import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813c';
-import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813c';
-import { escapeHtml } from '../utils/dom.js?v=20260813c';
+import { listServices } from '../services/services.js?v=20260813d';
+import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813d';
+import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813d';
+import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813d';
+import { escapeHtml } from '../utils/dom.js?v=20260813d';
 
 const MONTHS_PT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 const STATUS_BADGE = {
@@ -21,7 +21,7 @@ function apptCard(a, { showCancel }) {
     <div class="appt" data-id="${a.id}">
       <div class="apptdt"><div class="apptmon">${MONTHS_PT[Number(month) - 1]}</div><div class="apptday">${day}</div><div class="appttm">${a.start_time.slice(0, 5)}</div></div>
       <div><div class="appth">${escapeHtml(a.service.name)} <span class="pbdg ${badge.cls}" style="${badge.style || ''}"><span class="ms">${badge.icon}</span> ${badge.label}</span></div>
-        <div class="apptbar"><div class="abav">${initials}</div> ${escapeHtml(a.barber.name)} <span style="color:var(--dim)">·</span><span class="apptp">${formatCurrency(a.service.price)}</span></div></div>
+        <div class="apptbar"><div class="abav">${escapeHtml(initials)}</div> ${escapeHtml(a.barber.name)} <span style="color:var(--dim)">·</span><span class="apptp">${formatCurrency(a.service.price)}</span></div></div>
       <div class="apptacts">
         ${showQr ? `<button class="btnalt" data-qr="${a.id}"><span class="ms" style="font-size:15px">qr_code_2</span> Ver QR Code</button>` : ''}
         ${showCancel ? `<button class="btncncl" data-cancel="${a.id}">Cancelar</button>` : ''}

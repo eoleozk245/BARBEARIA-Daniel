@@ -1,6 +1,10 @@
-import { supabase } from '../supabaseClient.js?v=20260813c';
+import { supabase } from '../supabaseClient.js?v=20260813d';
 
-/** Admin-only: todas as avaliações reais, mais recentes primeiro (RLS permite leitura pública). */
+/**
+ * Admin-only: todas as avaliações reais, mais recentes primeiro.
+ * RLS (`reviews_select_own_or_admin`) só devolve as avaliações do próprio cliente
+ * ou, para admin, todas — não há mais leitura pública desta tabela.
+ */
 export async function listAllReviews() {
   const { data, error } = await supabase
     .from('reviews')

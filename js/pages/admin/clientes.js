@@ -1,5 +1,5 @@
-import { listClientStats, listTopClients, deleteClient, createClientAccount, updateProfile } from '../../services/profiles.js?v=20260813c';
-import { escapeHtml } from '../../utils/dom.js?v=20260813c';
+import { listClientStats, listTopClients, deleteClient, createClientAccount, updateProfile } from '../../services/profiles.js?v=20260813d';
+import { escapeHtml } from '../../utils/dom.js?v=20260813d';
 
 const SEGMENT_META = {
   vip: { cls: 'cbdg-vip', label: 'VIP' },
@@ -9,8 +9,9 @@ const SEGMENT_META = {
 
 let cachedClients = [];
 
+/** Iniciais já escapadas — o retorno vai direto para innerHTML. */
 function initials(name) {
-  return name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+  return escapeHtml(name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase());
 }
 
 function formatDate(isoDate) {

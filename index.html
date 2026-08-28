@@ -4,11 +4,49 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Barbearia do Daniel</title>
+
+<!--
+  Content Security Policy. Restringe de onde a página pode carregar código,
+  estilos, fontes e para onde pode abrir conexões — reduzindo bastante o
+  estrago possível caso algum dado escape do escape de HTML.
+
+  'unsafe-inline' em script-src é necessário porque a interface usa handlers
+  inline (onclick=...) em toda parte; removê-lo exigiria reescrever a UI
+  inteira para addEventListener. frame-ancestors não funciona em <meta>
+  (só em cabeçalho HTTP, indisponível no GitHub Pages) — a proteção contra
+  clickjacking está em js/framebuster.js, logo abaixo.
+-->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  base-uri 'self';
+  object-src 'none';
+  form-action 'self';
+  frame-src 'none';
+  img-src 'self' data: blob:;
+  media-src 'self' blob:;
+  worker-src 'self' blob:;
+  font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net;
+  script-src 'self' 'unsafe-inline' https://esm.sh;
+  connect-src 'self' https://sbzrccpyomwuctufkkmf.supabase.co wss://sbzrccpyomwuctufkkmf.supabase.co https://esm.sh;
+">
+<script src="js/framebuster.js?v=20260813d"></script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.11.0/dist/tabler-icons.min.css">
+<!--
+  SRI: o CSS do jsDelivr é imutável na versão fixada, então o hash trava o
+  conteúdo exato. Os CSS do Google Fonts variam conforme o navegador
+  (formatos de fonte diferentes por UA), então SRI os quebraria — para esses,
+  a defesa é o allowlist de style-src/font-src acima.
+-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.11.0/dist/tabler-icons.min.css"
+      integrity="sha384-UsOvy6Miuagj2Q/9aXCTRHaUDZjxTxMGk9ZsU2m0MDw8eIOyV129Qd9NszbyyFQM"
+      crossorigin="anonymous" referrerpolicy="no-referrer">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20260813d">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 </head>
 <body>
 
@@ -694,9 +732,9 @@
 
 <!-- ?v= força o navegador a buscar o código novo em vez de usar o cache antigo.
      Ao publicar uma correção, troque a versão aqui e nos imports dos módulos. -->
-<script src="js/vendor/qrcode.min.js?v=20260813c"></script>
-<script src="js/vendor/jsQR.min.js?v=20260813c"></script>
-<script type="module" src="js/main.js?v=20260813c"></script>
+<script src="js/vendor/qrcode.min.js?v=20260813d"></script>
+<script src="js/vendor/jsQR.min.js?v=20260813d"></script>
+<script type="module" src="js/main.js?v=20260813d"></script>
 
 <!-- ══════════ VIEW: PAINEL ADMIN ══════════ -->
 <div id="va" class="view">
@@ -749,7 +787,7 @@
           <div class="sbav" id="a-sbav" style="background:linear-gradient(135deg,var(--acc2),var(--acc3));color:#1a1400;font-weight:800">DN</div>
           <div class="sbui"><div class="sbun" id="a-sbun">Daniel</div><div class="sbur" style="color:var(--acc)">Administrador</div></div>
         </div>
-        <div class="nlbl" style="font-size:9px;color:var(--dim);text-align:center;padding-top:4px">versão 20260813c</div>
+        <div class="nlbl" style="font-size:9px;color:var(--dim);text-align:center;padding-top:4px">versão 20260813d</div>
       </div>
     </div>
   </aside>

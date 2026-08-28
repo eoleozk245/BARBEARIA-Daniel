@@ -1,10 +1,10 @@
-import { listServices } from '../services/services.js?v=20260813c';
-import { listBarbers } from '../services/barbers.js?v=20260813c';
-import { getAvailableSlots, createAppointment } from '../services/appointments.js?v=20260813c';
-import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813c';
-import { escapeHtml } from '../utils/dom.js?v=20260813c';
-import { pGo } from '../legacy.js?v=20260813c';
-import { renderClientAppointments, renderMiniCalendar } from './portal.js?v=20260813c';
+import { listServices } from '../services/services.js?v=20260813d';
+import { listBarbers } from '../services/barbers.js?v=20260813d';
+import { getAvailableSlots, createAppointment } from '../services/appointments.js?v=20260813d';
+import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813d';
+import { escapeHtml } from '../utils/dom.js?v=20260813d';
+import { pGo } from '../legacy.js?v=20260813d';
+import { renderClientAppointments, renderMiniCalendar } from './portal.js?v=20260813d';
 
 const STEPS = ['Serviço', 'Barbeiro', 'Horário', 'Confirmado'];
 
@@ -67,7 +67,7 @@ async function renderBkBar() {
       const initials = b.name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
       return `
     <div class="bkbarc ${bk.barber?.id === b.id ? 'on' : ''}" onclick="bkPickBarber('${b.id}')">
-      <div class="bkbav">${initials}</div>
+      <div class="bkbav">${escapeHtml(initials)}</div>
       <div><div class="bkbn">${escapeHtml(b.name)}</div><div class="bkbr">${escapeHtml(b.title || '')}</div><div class="bkbrate">★ ${b.rating ?? '—'}</div></div>
     </div>`;
     })
