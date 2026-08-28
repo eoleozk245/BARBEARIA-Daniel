@@ -1377,6 +1377,7 @@ body *{letter-spacing:0}
   rgba(255,255,255,.04) 25%,rgba(255,255,255,.10) 50%,rgba(255,255,255,.04) 75%);
   background-size:180% 100%;animation:skShimmer 1.3s linear infinite}
 .sk-row{height:38px;margin-bottom:8px}
+.sk-card{height:76px;margin-bottom:10px;border-radius:var(--rl)}
 .sk-row:last-child{margin-bottom:0}
 
 /* ══ Toasts (substituem o alert() nativo) ══ */
@@ -1396,3 +1397,58 @@ body *{letter-spacing:0}
 .toast-x:hover{opacity:1;background:rgba(255,255,255,.08)}
 @keyframes toastIn{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
 @keyframes toastOut{to{opacity:0;transform:translateY(8px) scale(.98)}}
+
+/* ══════════ Fase A — animações de conteúdo ══════════ */
+
+/* Confete da recompensa de fidelidade (desenhado em canvas por js/utils/anim.js) */
+.confetti-canvas{position:fixed;inset:0;z-index:600;pointer-events:none}
+
+/* Barra de fidelidade preenchendo.
+   Aqui `width` é aceitável apesar de causar layout: é um elemento folha de 6px
+   dentro de um container pequeno, então o custo é irrelevante — e scaleX
+   distorceria o gradiente dourado. */
+.loyf{transition:width .9s var(--ease)}
+
+/* Wizard de agendamento: o passo novo entra pelo lado que dá noção de avanço.
+   Avançar → entra pela direita; voltar → entra pela esquerda. */
+.bkstep.show{display:block;animation:bkNext .3s var(--ease)}
+.bkstep.show.back{animation-name:bkPrev}
+@keyframes bkNext{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+@keyframes bkPrev{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+
+/* Modais: o overlay já tem backdrop-filter estático — animar a opacidade dele
+   faz o desfoque "surgir" junto, sem o custo de animar o próprio filtro. */
+.cmodal-overlay{animation:modalBg .25s var(--ease)}
+.cmodal-overlay .cmodal{animation:modalIn .32s var(--spring)}
+@keyframes modalBg{from{opacity:0}to{opacity:1}}
+@keyframes modalIn{from{opacity:0;transform:translateY(14px) scale(.95)}to{opacity:1;transform:none}}
+
+/* Estado vazio ilustrado (substitui os parágrafos cinza) */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:34px 20px;gap:4px;animation:emptyIn .4s var(--ease)}
+.empty-ico{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  margin-bottom:10px;background:linear-gradient(135deg,rgba(var(--ar),.14),rgba(var(--ar),.04));
+  border:1px solid rgba(var(--ar),.18)}
+.empty-ico .ms{font-size:26px;color:var(--acc);opacity:.85}
+.empty-t{font-size:14px;font-weight:700;color:var(--txt2)}
+.empty-s{font-size:12px;color:var(--mut);line-height:1.6;max-width:280px}
+@keyframes emptyIn{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}
+
+/* Linha que acabou de chegar pelo Realtime — destaque momentâneo para o
+   barbeiro perceber a novidade sem precisar reler a tabela inteira. */
+@keyframes rowFlash{
+  0%{background:rgba(var(--ar),.22)}
+  70%{background:rgba(var(--ar),.10)}
+  100%{background:transparent}}
+tr.row-new td{animation:rowFlash 2.2s var(--ease)}
+
+/* Skeleton para linha de tabela (a Agenda usa <tr>, onde height fixo em div não serve) */
+.sk-cell{height:14px;border-radius:6px}
+
+/* Pull-to-refresh (mobile) */
+.ptr{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:center;
+  height:56px;margin-top:-56px;color:var(--acc);font-size:12px;pointer-events:none;z-index:50}
+.ptr .ms{font-size:22px;transition:transform .2s var(--ease)}
+.ptr.ready .ms{transform:rotate(180deg)}
+.ptr.spin .ms{animation:ptrSpin .8s linear infinite}
+@keyframes ptrSpin{to{transform:rotate(360deg)}}

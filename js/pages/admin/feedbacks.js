@@ -1,5 +1,5 @@
-import { listAllReviews, replyToReview } from '../../services/reviews.js?v=20260813e';
-import { escapeHtml, showToast } from '../../utils/dom.js?v=20260813e';
+import { listAllReviews, replyToReview } from '../../services/reviews.js?v=20260813f';
+import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813f';
 
 /** Iniciais já escapadas — o retorno vai direto para innerHTML. */
 function initials(name) {
@@ -14,6 +14,7 @@ function formatDate(iso) {
 export async function renderAdminFeedbacks() {
   const el = document.getElementById('fb-list');
   if (!el) return;
+  if (el && !el.children.length) el.innerHTML = skeletonRows(3, 'sk-card');
   const reviews = await listAllReviews();
 
   el.innerHTML = reviews.length
@@ -44,7 +45,7 @@ export async function renderAdminFeedbacks() {
     </div>`;
         })
         .join('')
-    : '<p style="font-size:13px;color:var(--mut);padding:20px 0">Nenhuma avaliação registrada ainda.</p>';
+    : emptyState('reviews', 'Nenhuma avaliação ainda', 'As avaliações enviadas pelos clientes aparecem aqui.');
 
   el.querySelectorAll('[data-reply-btn]').forEach((btn) => {
     btn.addEventListener('click', async () => {

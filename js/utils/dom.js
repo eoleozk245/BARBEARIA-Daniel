@@ -6,6 +6,30 @@ export function qsa(selector, root = document) {
   return [...root.querySelectorAll(selector)];
 }
 
+/**
+ * Estado vazio ilustrado — troca os parágrafos cinza de "nada aqui" por algo
+ * que explica o que fazer. Devolve HTML pronto para interpolar.
+ */
+export function emptyState(icon, title, subtitle = '') {
+  return `
+    <div class="empty">
+      <div class="empty-ico"><span class="ms">${escapeHtml(icon)}</span></div>
+      <div class="empty-t">${escapeHtml(title)}</div>
+      ${subtitle ? `<div class="empty-s">${escapeHtml(subtitle)}</div>` : ''}
+    </div>`;
+}
+
+/** Barras de carregamento (skeleton) — `n` linhas. */
+export function skeletonRows(n = 3, cls = 'sk-row') {
+  return Array.from({ length: n }, () => `<div class="sk ${cls}"></div>`).join('');
+}
+
+/** Skeleton para tabela: `rows` linhas de `cols` células. */
+export function skeletonTable(rows = 5, cols = 9) {
+  const cells = Array.from({ length: cols }, () => '<td><div class="sk sk-cell"></div></td>').join('');
+  return Array.from({ length: rows }, () => `<tr>${cells}</tr>`).join('');
+}
+
 const TOAST_MS = 4500;
 
 /**

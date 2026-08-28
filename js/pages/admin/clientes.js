@@ -1,5 +1,5 @@
-import { listClientStats, listTopClients, deleteClient, createClientAccount, updateProfile } from '../../services/profiles.js?v=20260813e';
-import { escapeHtml, showToast } from '../../utils/dom.js?v=20260813e';
+import { listClientStats, listTopClients, deleteClient, createClientAccount, updateProfile } from '../../services/profiles.js?v=20260813f';
+import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813f';
 
 const SEGMENT_META = {
   vip: { cls: 'cbdg-vip', label: 'VIP' },
@@ -21,6 +21,8 @@ function formatDate(isoDate) {
 
 /** Renderiza a grid de clientes (#cli-grid) com dados reais + classificação calculada no banco. */
 export async function renderAdminClients() {
+  const gridEarly = document.getElementById('cli-grid');
+  if (gridEarly && !gridEarly.children.length) gridEarly.innerHTML = skeletonRows(3, 'sk-card');
   cachedClients = await listClientStats();
 
   const search = (document.getElementById('cli-s')?.value || '').toLowerCase();
@@ -68,7 +70,7 @@ export async function renderAdminClients() {
     </div>`;
         })
         .join('')
-    : '<p style="font-size:13px;color:var(--mut);padding:20px 0">Nenhum cliente encontrado.</p>';
+    : emptyState('search_off', 'Nenhum cliente encontrado', 'Tente outro nome, e-mail ou perfil no filtro acima.');
 
   grid.querySelectorAll('[data-delete]').forEach((btn) => {
     btn.addEventListener('click', () => handleDeleteClient(btn.dataset.delete));
@@ -193,7 +195,7 @@ export async function renderTopClients() {
     </div>`;
         })
         .join('')
-    : '<p style="font-size:13px;color:var(--mut);padding:20px 0">Nenhum cliente cadastrado ainda.</p>';
+    : emptyState('group', 'Nenhum cliente ainda', 'Assim que houver cortes concluídos, os melhores clientes aparecem aqui.');
 }
 
 Object.assign(window, { renderClis: renderAdminClients, openClientModal, closeClientModal, saveClientModal, renderTopClients });

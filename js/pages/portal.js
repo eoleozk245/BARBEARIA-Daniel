@@ -1,8 +1,9 @@
-import { listServices } from '../services/services.js?v=20260813e';
-import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813e';
-import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813e';
-import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813e';
-import { escapeHtml, showToast } from '../utils/dom.js?v=20260813e';
+import { listServices } from '../services/services.js?v=20260813f';
+import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813f';
+import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813f';
+import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813f';
+import { escapeHtml, showToast, emptyState } from '../utils/dom.js?v=20260813f';
+import { countUp, confetti } from '../utils/anim.js?v=20260813f';
 
 const MONTHS_PT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 const STATUS_BADGE = {
@@ -30,6 +31,7 @@ function apptCard(a, { showCancel }) {
 }
 
 let cachedAppts = [];
+let lastRewardAvailable = null; // null = ainda não sabemos (primeira carga)
 let qrUnlockMinutes = 10;
 let qrUnlockMinutesLoaded = false;
 let currentProfile = null;
@@ -53,10 +55,10 @@ export async function renderClientAppointments(animate = false) {
 
   prox.innerHTML = upcoming.length
     ? upcoming.map((a) => apptCard(a, { showCancel: true })).join('')
-    : '<p style="font-size:13px;color:var(--mut);padding:20px 0">Nenhum agendamento futuro.</p>';
+    : emptyState('event_available', 'Nenhum agendamento futuro', 'Quando você marcar um horário, ele aparece aqui.');
   hist.innerHTML = past.length
     ? past.map((a) => apptCard(a, { showCancel: false })).join('')
-    : '<p style="font-size:13px;color:var(--mut);padding:20px 0">Nenhum histórico ainda.</p>';
+    : emptyState('history', 'Nenhum histórico ainda', 'Seus cortes concluídos ficam guardados aqui.');
 
   prox.querySelectorAll('[data-cancel]').forEach((btn) => {
     btn.addEventListener('click', async () => {
@@ -164,8 +166,7 @@ function nextUpcomingAppointment(appts) {
 /** Preenche as estatísticas reais do dashboard (cortes, próximo agendamento) — sem dado fictício. */
 export function renderClientDashboardExtras() {
   const completedCount = cachedAppts.filter((a) => a.status === 'completed').length;
-  const cortesEl = document.getElementById('dst-cortes');
-  if (cortesEl) cortesEl.textContent = String(completedCount);
+  countUp(document.getElementById('dst-cortes'), completedCount);
 
   const nxtWrap = document.getElementById('nxtc-wrap');
   if (!nxtWrap) return;
@@ -242,11 +243,18 @@ export async function renderLoyaltyWidgets(clientId) {
   const widgets = document.querySelectorAll('.loy');
   if (!widgets.length) return;
   const { progress, remaining, rewardAvailable } = await getMyLoyaltyStatus(clientId);
+
+  // Confete só na virada de "ainda não" para "liberado". Esta função também roda
+  // a cada carregamento e a cada evento do Realtime — comemorar sempre que a
+  // recompensa estivesse disponível encheria a tela toda vez que o cliente
+  // abrisse o app antes de resgatar. `null` é a primeira carga: não comemora.
+  if (lastRewardAvailable === false && rewardAvailable) confetti();
+  lastRewardAvailable = rewardAvailable;
   widgets.forEach((w) => {
     const n = w.querySelector('.loyn .n');
     const bar = w.querySelector('.loybar .loyf');
     const msg = w.querySelector('.loyms');
-    if (n) n.textContent = String(progress);
+    countUp(n, progress);
     if (bar) bar.style.width = `${progress * 10}%`;
     if (msg) {
       msg.innerHTML = rewardAvailable

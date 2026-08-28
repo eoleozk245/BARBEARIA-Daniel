@@ -1,10 +1,10 @@
-import { listServices } from '../services/services.js?v=20260813e';
-import { listBarbers } from '../services/barbers.js?v=20260813e';
-import { getAvailableSlots, createAppointment } from '../services/appointments.js?v=20260813e';
-import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813e';
-import { escapeHtml, showToast } from '../utils/dom.js?v=20260813e';
-import { pGo } from '../legacy.js?v=20260813e';
-import { renderClientAppointments, renderMiniCalendar } from './portal.js?v=20260813e';
+import { listServices } from '../services/services.js?v=20260813f';
+import { listBarbers } from '../services/barbers.js?v=20260813f';
+import { getAvailableSlots, createAppointment } from '../services/appointments.js?v=20260813f';
+import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813f';
+import { escapeHtml, showToast } from '../utils/dom.js?v=20260813f';
+import { pGo } from '../legacy.js?v=20260813f';
+import { renderClientAppointments, renderMiniCalendar } from './portal.js?v=20260813f';
 
 const STEPS = ['Serviço', 'Barbeiro', 'Horário', 'Confirmado'];
 
@@ -120,8 +120,17 @@ async function renderBkTime() {
   if (cb) cb.style.display = bk.date && bk.slot ? 'flex' : 'none';
 }
 
+let bkCurrentStep = 1;
+
 function bkGo(n) {
-  document.querySelectorAll('#psec-novo-agendamento .bkstep').forEach((s, i) => s.classList.toggle('show', i === n - 1));
+  // O sentido decide de que lado o passo entra: avançar vem da direita,
+  // voltar vem da esquerda — dá noção de progresso dentro do wizard.
+  const goingBack = n < bkCurrentStep;
+  bkCurrentStep = n;
+  document.querySelectorAll('#psec-novo-agendamento .bkstep').forEach((s, i) => {
+    s.classList.toggle('back', goingBack);
+    s.classList.toggle('show', i === n - 1);
+  });
   renderStInd(n);
   if (n === 2) renderBkBar();
   if (n === 3) renderBkTime();

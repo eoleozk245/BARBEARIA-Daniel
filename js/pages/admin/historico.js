@@ -1,7 +1,7 @@
-import { listAllAppointments } from '../../services/appointments.js?v=20260813e';
-import { listClients } from '../../services/profiles.js?v=20260813e';
-import { listAllReviews } from '../../services/reviews.js?v=20260813e';
-import { escapeHtml } from '../../utils/dom.js?v=20260813e';
+import { listAllAppointments } from '../../services/appointments.js?v=20260813f';
+import { listClients } from '../../services/profiles.js?v=20260813f';
+import { listAllReviews } from '../../services/reviews.js?v=20260813f';
+import { escapeHtml, emptyState, skeletonRows } from '../../utils/dom.js?v=20260813f';
 
 const STATUS_META = {
   completed: { action: 'concluído', icon: 'check_circle', dot: 'dot-ok' },
@@ -87,7 +87,7 @@ export async function renderAdminHistorico() {
     </div>`
         )
         .join('')
-    : '<p style="font-size:13px;color:var(--mut);padding:20px 0">Nenhuma atividade registrada ainda.</p>';
+    : emptyState('history', 'Nenhuma atividade ainda', 'Agendamentos, cadastros e avaliações aparecem aqui conforme acontecem.');
 }
 
 Object.assign(window, { renderAdminHistorico });

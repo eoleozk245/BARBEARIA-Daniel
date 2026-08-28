@@ -1,8 +1,9 @@
-import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js?v=20260813e';
-import { confirmAppointmentManually } from '../../services/loyalty.js?v=20260813e';
-import { listBarbers } from '../../services/barbers.js?v=20260813e';
-import { formatCurrency } from '../../utils/format.js?v=20260813e';
-import { escapeHtml, showToast } from '../../utils/dom.js?v=20260813e';
+import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js?v=20260813f';
+import { confirmAppointmentManually } from '../../services/loyalty.js?v=20260813f';
+import { listBarbers } from '../../services/barbers.js?v=20260813f';
+import { formatCurrency } from '../../utils/format.js?v=20260813f';
+import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813f';
+import { countUp } from '../../utils/anim.js?v=20260813f';
 
 const STATUS_META = {
   scheduled: { cls: 'ast-pnd', label: 'Agendado', icon: 'schedule' },
@@ -13,6 +14,7 @@ const STATUS_META = {
 
 let cachedAppointments = [];
 let barbersLoaded = false;
+let highlightRowId = null; // agendamento recém-chegado pelo Realtime, a destacar no próximo render
 
 async function populateFilters() {
   if (barbersLoaded) return;
@@ -38,6 +40,8 @@ function populateDateFilter() {
 
 /** Renderiza a tabela de Agenda (#ag-tbody) com agendamentos reais, aplicando os filtros da UI. */
 export async function renderAdminAgenda() {
+  const tbodyEarly = document.getElementById('ag-tbody');
+  if (tbodyEarly && !tbodyEarly.children.length) tbodyEarly.innerHTML = skeletonTable(6, 9);
   await populateFilters();
   cachedAppointments = await listAllAppointments();
   populateDateFilter();
@@ -60,7 +64,8 @@ export async function renderAdminAgenda() {
   tbody.innerHTML = filtered
     .map((a) => {
       const s = STATUS_META[a.status];
-      return `<tr>
+      const isNew = a.id === highlightRowId;
+      return `<tr class="${isNew ? 'row-new' : ''}">
         <td style="color:var(--mut);font-size:12px">#${a.id.slice(0, 8)}</td>
         <td><strong>${escapeHtml(a.client.name)}</strong></td>
         <td>${escapeHtml(a.service.name)}</td>
@@ -77,6 +82,8 @@ export async function renderAdminAgenda() {
       </tr>`;
     })
     .join('');
+
+  highlightRowId = null; // o destaque vale só para este desenho
 
   tbody.querySelectorAll('[data-confirm]').forEach((btn) => {
     btn.addEventListener('click', () => updateAppointmentStatus(btn.dataset.confirm, 'confirmed').catch((e) => showToast(e.message)));
@@ -102,14 +109,23 @@ export async function renderAppointmentsKpi() {
   const now = new Date();
   const from = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
   const to = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-31`;
-  el.textContent = await countAppointments({ from, to });
+  countUp(el, await countAppointments({ from, to }));
 }
 
 let unsubscribeAll = null;
 /** Assina Realtime para todos os agendamentos: qualquer criação/cancelamento/confirmação atualiza a tabela sozinha. */
 export function subscribeAdminAgenda() {
   if (unsubscribeAll) unsubscribeAll();
-  unsubscribeAll = subscribeAppointments({ scope: 'all', onChange: () => renderAdminAgenda() });
+  unsubscribeAll = subscribeAppointments({
+    scope: 'all',
+    onChange: async (payload) => {
+      // Guarda o id do agendamento que acabou de chegar para destacá-lo depois
+      // de redesenhar — senão o barbeiro não percebe a novidade no meio da lista.
+      if (payload?.eventType === 'INSERT' && payload.new?.id) highlightRowId = payload.new.id;
+      await renderAdminAgenda();
+      await renderAppointmentsKpi();
+    },
+  });
 }
 
 Object.assign(window, { renderAg: renderAdminAgenda });

@@ -1,6 +1,6 @@
-import { scanQrCheckin } from '../../services/loyalty.js?v=20260813e';
-import { listTodayAppointments } from '../../services/appointments.js?v=20260813e';
-import { escapeHtml } from '../../utils/dom.js?v=20260813e';
+import { scanQrCheckin } from '../../services/loyalty.js?v=20260813f';
+import { listTodayAppointments } from '../../services/appointments.js?v=20260813f';
+import { escapeHtml, emptyState, skeletonRows } from '../../utils/dom.js?v=20260813f';
 
 /* Tamanho em que a imagem é decodificada. O jsQR é JavaScript puro: rodar na
    resolução cheia (1280px) trava o processador do celular e sobram pouquíssimas
@@ -244,7 +244,7 @@ export async function renderTodayList(animate = false) {
     </div>`
         )
         .join('')
-    : '<p style="font-size:12px;color:var(--mut)">Nenhum atendimento pendente para hoje.</p>';
+    : emptyState('event_busy', 'Nada pendente para hoje', 'Quando houver cliente agendado, ele aparece aqui para confirmar.');
 
   el.querySelectorAll('[data-confirm-token]').forEach((btn) => {
     btn.addEventListener('click', async () => {
