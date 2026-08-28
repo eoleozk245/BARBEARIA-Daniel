@@ -1,5 +1,5 @@
-import { listAllReviews, replyToReview } from '../../services/reviews.js?v=20260813f';
-import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813f';
+import { listAllReviews, replyToReview } from '../../services/reviews.js?v=20260813g';
+import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813g';
 
 /** Iniciais já escapadas — o retorno vai direto para innerHTML. */
 function initials(name) {

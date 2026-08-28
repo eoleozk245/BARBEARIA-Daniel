@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js?v=20260813f';
+import { supabase } from '../supabaseClient.js?v=20260813g';
 
 export async function listServices({ onlyActive = true } = {}) {
   let query = supabase.from('services').select('*').order('name');

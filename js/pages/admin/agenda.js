@@ -1,9 +1,9 @@
-import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js?v=20260813f';
-import { confirmAppointmentManually } from '../../services/loyalty.js?v=20260813f';
-import { listBarbers } from '../../services/barbers.js?v=20260813f';
-import { formatCurrency } from '../../utils/format.js?v=20260813f';
-import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813f';
-import { countUp } from '../../utils/anim.js?v=20260813f';
+import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js?v=20260813g';
+import { confirmAppointmentManually } from '../../services/loyalty.js?v=20260813g';
+import { listBarbers } from '../../services/barbers.js?v=20260813g';
+import { formatCurrency } from '../../utils/format.js?v=20260813g';
+import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813g';
+import { countUp } from '../../utils/anim.js?v=20260813g';
 
 const STATUS_META = {
   scheduled: { cls: 'ast-pnd', label: 'Agendado', icon: 'schedule' },

@@ -1452,3 +1452,24 @@ tr.row-new td{animation:rowFlash 2.2s var(--ease)}
 .ptr.ready .ms{transform:rotate(180deg)}
 .ptr.spin .ms{animation:ptrSpin .8s linear infinite}
 @keyframes ptrSpin{to{transform:rotate(360deg)}}
+
+/* ══ Avaliação pelo cliente (estrelas) ══ */
+.rstars{display:flex;justify-content:center;gap:6px}
+.rstar{background:none;border:none;cursor:pointer;font-size:38px;line-height:1;padding:2px 4px;
+  color:rgba(255,255,255,.16);transition:transform .15s var(--spring),color .15s var(--ease)}
+.rstar:hover{transform:scale(1.15)}
+.rstar:active{transform:scale(.94)}
+/* .on marca as estrelas até a nota escolhida (preenchimento da esquerda para a direita) */
+.rstar.on{color:var(--acc2)}
+.rstar.on{animation:starPop .3s var(--spring)}
+@keyframes starPop{from{transform:scale(.6)}to{transform:scale(1)}}
+.rstars-lbl{text-align:center;font-size:12px;color:var(--mut);margin-top:8px;min-height:18px}
+.cmodal-err{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:12px;
+  background:rgba(242,139,130,.12);border:1px solid rgba(242,139,130,.3);color:var(--err)}
+/* Botão de avaliar dentro do card de agendamento concluído */
+.btnrev{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;
+  background:rgba(var(--ar),.12);border:1px solid rgba(var(--ar),.28);color:var(--acc);
+  font-size:12px;font-weight:600;cursor:pointer}
+.btnrev:hover{background:rgba(var(--ar),.18)}
+.apptrev{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mut)}
+.apptrev .s{color:var(--acc2)}

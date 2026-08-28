@@ -1,9 +1,10 @@
-import { listServices } from '../services/services.js?v=20260813f';
-import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813f';
-import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813f';
-import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813f';
-import { escapeHtml, showToast, emptyState } from '../utils/dom.js?v=20260813f';
-import { countUp, confetti } from '../utils/anim.js?v=20260813f';
+import { listServices } from '../services/services.js?v=20260813g';
+import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813g';
+import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813g';
+import { listMyReviews, createReview } from '../services/reviews.js?v=20260813g';
+import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813g';
+import { escapeHtml, showToast, emptyState } from '../utils/dom.js?v=20260813g';
+import { countUp, confetti } from '../utils/anim.js?v=20260813g';
 
 const MONTHS_PT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 const STATUS_BADGE = {
@@ -18,6 +19,9 @@ function apptCard(a, { showCancel }) {
   const badge = STATUS_BADGE[a.status];
   const initials = a.barber.name.split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
   const showQr = a.status === 'scheduled' || a.status === 'confirmed';
+  // Só corte concluído pode ser avaliado — é exatamente o que a policy do banco exige.
+  const myReview = myReviewsByAppt.get(a.id);
+  const canReview = a.status === 'completed' && !myReview;
   return `
     <div class="appt" data-id="${a.id}">
       <div class="apptdt"><div class="apptmon">${MONTHS_PT[Number(month) - 1]}</div><div class="apptday">${day}</div><div class="appttm">${a.start_time.slice(0, 5)}</div></div>
@@ -25,6 +29,8 @@ function apptCard(a, { showCancel }) {
         <div class="apptbar"><div class="abav">${escapeHtml(initials)}</div> ${escapeHtml(a.barber.name)} <span style="color:var(--dim)">·</span><span class="apptp">${formatCurrency(a.service.price)}</span></div></div>
       <div class="apptacts">
         ${showQr ? `<button class="btnalt" data-qr="${a.id}"><span class="ms" style="font-size:15px">qr_code_2</span> Ver QR Code</button>` : ''}
+        ${canReview ? `<button class="btnrev" data-review="${a.id}"><span class="ms" style="font-size:15px">star</span> Avaliar</button>` : ''}
+        ${myReview ? `<div class="apptrev"><span class="s">${'★'.repeat(myReview.rating)}</span> Avaliado</div>` : ''}
         ${showCancel ? `<button class="btncncl" data-cancel="${a.id}">Cancelar</button>` : ''}
       </div>
     </div>`;
@@ -32,6 +38,7 @@ function apptCard(a, { showCancel }) {
 
 let cachedAppts = [];
 let lastRewardAvailable = null; // null = ainda não sabemos (primeira carga)
+let myReviewsByAppt = new Map(); // appointment_id -> avaliação já enviada
 let qrUnlockMinutes = 10;
 let qrUnlockMinutesLoaded = false;
 let currentProfile = null;
@@ -50,6 +57,12 @@ export async function renderClientAppointments(animate = false) {
     qrUnlockMinutesLoaded = true;
   }
   cachedAppts = await listMyAppointments();
+  // Carrega o que já foi avaliado para o card saber se mostra "Avaliar" ou a nota.
+  try {
+    myReviewsByAppt = new Map((await listMyReviews()).map((r) => [r.appointment_id, r]));
+  } catch {
+    myReviewsByAppt = new Map(); // avaliação é secundária: não pode derrubar a lista
+  }
   const upcoming = cachedAppts.filter((a) => a.status === 'scheduled' || a.status === 'confirmed');
   const past = cachedAppts.filter((a) => a.status === 'completed' || a.status === 'cancelled');
 
@@ -74,6 +87,9 @@ export async function renderClientAppointments(animate = false) {
   });
   document.querySelectorAll('[data-qr]').forEach((btn) => {
     btn.addEventListener('click', () => openQrModal(btn.dataset.qr));
+  });
+  document.querySelectorAll('[data-review]').forEach((btn) => {
+    btn.addEventListener('click', () => openReviewModal(btn.dataset.review));
   });
 }
 
@@ -143,6 +159,89 @@ export function closeQrModal() {
   const overlay = document.getElementById('qr-modal');
   if (overlay) overlay.style.display = 'none';
 }
+
+/* ══ Avaliação do atendimento ══ */
+
+const RATING_LABELS = ['', 'Ruim', 'Regular', 'Bom', 'Muito bom', 'Excelente'];
+let reviewingApptId = null;
+let reviewRating = 0;
+
+function paintStars(rating) {
+  document.querySelectorAll('#rev-stars .rstar').forEach((btn) => {
+    const on = Number(btn.dataset.star) <= rating;
+    btn.classList.toggle('on', on);
+    btn.setAttribute('aria-checked', String(Number(btn.dataset.star) === rating));
+  });
+  const lbl = document.getElementById('rev-stars-lbl');
+  if (lbl) lbl.textContent = rating ? RATING_LABELS[rating] : 'Toque nas estrelas para dar sua nota';
+}
+
+function reviewErr(message) {
+  const el = document.getElementById('rev-err');
+  if (!el) return;
+  el.textContent = message;
+  el.style.display = message ? 'block' : 'none';
+}
+
+export function openReviewModal(appointmentId) {
+  const a = cachedAppts.find((x) => x.id === appointmentId);
+  const overlay = document.getElementById('rev-modal');
+  if (!a || !overlay) return;
+
+  reviewingApptId = appointmentId;
+  reviewRating = 0;
+  paintStars(0);
+  reviewErr('');
+  const comment = document.getElementById('rev-comment');
+  if (comment) comment.value = '';
+
+  const info = document.getElementById('rev-modal-info');
+  if (info) {
+    info.textContent = `${a.service.name} com ${a.barber.name} · ${a.appointment_date.split('-').reverse().join('/')}`;
+  }
+  overlay.style.display = 'flex';
+}
+
+export function closeReviewModal() {
+  const overlay = document.getElementById('rev-modal');
+  if (overlay) overlay.style.display = 'none';
+  reviewingApptId = null;
+}
+
+export async function submitReview() {
+  if (!reviewingApptId) return;
+  if (!reviewRating) return reviewErr('Escolha de 1 a 5 estrelas antes de enviar.');
+
+  const a = cachedAppts.find((x) => x.id === reviewingApptId);
+  const btn = document.getElementById('rev-send');
+  if (btn) btn.disabled = true;
+  reviewErr('');
+  try {
+    await createReview({
+      appointmentId: reviewingApptId,
+      barberId: a?.barber?.id || null,
+      rating: reviewRating,
+      comment: document.getElementById('rev-comment')?.value.trim(),
+    });
+    closeReviewModal();
+    showToast('Obrigado pela avaliação!', 'ok');
+    await renderClientAppointments();
+  } catch (err) {
+    reviewErr(err.message || 'Não foi possível enviar a avaliação.');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+// Delegação: as estrelas existem desde o carregamento da página, então um único
+// listener no container serve — e sobrevive a qualquer re-render do portal.
+document.addEventListener('click', (e) => {
+  const star = e.target.closest('#rev-stars .rstar');
+  if (!star) return;
+  reviewRating = Number(star.dataset.star);
+  paintStars(reviewRating);
+  reviewErr('');
+});
 
 /**
  * Segmento do cliente (novo/vip/regular) — mesma regra usada em `vw_client_stats`
@@ -349,4 +448,4 @@ export function applyClientProfileToUI(profile) {
   if (dname) dname.textContent = firstName;
 }
 
-Object.assign(window, { openQrModal, closeQrModal });
+Object.assign(window, { openQrModal, closeQrModal, openReviewModal, closeReviewModal, submitReview });

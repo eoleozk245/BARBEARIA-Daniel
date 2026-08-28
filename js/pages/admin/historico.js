@@ -1,7 +1,7 @@
-import { listAllAppointments } from '../../services/appointments.js?v=20260813f';
-import { listClients } from '../../services/profiles.js?v=20260813f';
-import { listAllReviews } from '../../services/reviews.js?v=20260813f';
-import { escapeHtml, emptyState, skeletonRows } from '../../utils/dom.js?v=20260813f';
+import { listAllAppointments } from '../../services/appointments.js?v=20260813g';
+import { listClients } from '../../services/profiles.js?v=20260813g';
+import { listAllReviews } from '../../services/reviews.js?v=20260813g';
+import { escapeHtml, emptyState, skeletonRows } from '../../utils/dom.js?v=20260813g';
 
 const STATUS_META = {
   completed: { action: 'concluído', icon: 'check_circle', dot: 'dot-ok' },

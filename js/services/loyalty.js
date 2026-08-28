@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js?v=20260813f';
+import { supabase } from '../supabaseClient.js?v=20260813g';
 
 const REASON_MESSAGES = {
   forbidden: 'Apenas administradores podem confirmar atendimentos.',

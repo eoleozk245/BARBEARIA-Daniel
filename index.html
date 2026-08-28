@@ -30,7 +30,7 @@
   script-src 'self' 'unsafe-inline' https://esm.sh;
   connect-src 'self' https://sbzrccpyomwuctufkkmf.supabase.co wss://sbzrccpyomwuctufkkmf.supabase.co https://esm.sh;
 ">
-<script src="js/framebuster.js?v=20260813f"></script>
+<script src="js/framebuster.js?v=20260813g"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,7 +45,7 @@
       integrity="sha384-UsOvy6Miuagj2Q/9aXCTRHaUDZjxTxMGk9ZsU2m0MDw8eIOyV129Qd9NszbyyFQM"
       crossorigin="anonymous" referrerpolicy="no-referrer">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260813f">
+<link rel="stylesheet" href="style.css?v=20260813g">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 </head>
 <body>
@@ -596,6 +596,34 @@
       </div>
     </div>
 
+    <!-- AVALIAR ATENDIMENTO (cliente) -->
+    <div class="cmodal-overlay" id="rev-modal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="rev-modal-title">
+      <div class="cmodal">
+        <div class="cmodal-hdr">
+          <h3 id="rev-modal-title">Como foi seu atendimento?</h3>
+          <button class="cmodal-x" onclick="closeReviewModal()" aria-label="Fechar"><span class="ms">close</span></button>
+        </div>
+        <div class="cmodal-body">
+          <div id="rev-modal-info" style="margin-bottom:16px;font-size:13px;color:var(--mut);text-align:center"></div>
+          <div class="rstars" id="rev-stars" role="radiogroup" aria-label="Nota de 1 a 5 estrelas">
+            <button type="button" class="rstar" data-star="1" role="radio" aria-checked="false" aria-label="1 estrela">★</button>
+            <button type="button" class="rstar" data-star="2" role="radio" aria-checked="false" aria-label="2 estrelas">★</button>
+            <button type="button" class="rstar" data-star="3" role="radio" aria-checked="false" aria-label="3 estrelas">★</button>
+            <button type="button" class="rstar" data-star="4" role="radio" aria-checked="false" aria-label="4 estrelas">★</button>
+            <button type="button" class="rstar" data-star="5" role="radio" aria-checked="false" aria-label="5 estrelas">★</button>
+          </div>
+          <div class="rstars-lbl" id="rev-stars-lbl">Toque nas estrelas para dar sua nota</div>
+          <textarea id="rev-comment" class="afb-resp" rows="3" style="width:100%;margin-top:14px"
+                    placeholder="Quer contar algo? (opcional)" maxlength="500"></textarea>
+          <div id="rev-err" class="cmodal-err" style="display:none"></div>
+        </div>
+        <div class="cmodal-foot">
+          <button class="abtn-o cmodal-cancel" onclick="closeReviewModal()">Agora não</button>
+          <button class="abtn abtn-g" id="rev-send" onclick="submitReview()">Enviar avaliação</button>
+        </div>
+      </div>
+    </div>
+
     <!-- NOVO AGENDAMENTO (dentro do painel do cliente) -->
     <section class="psec" id="psec-novo-agendamento">
       <div class="pph">
@@ -732,9 +760,9 @@
 
 <!-- ?v= força o navegador a buscar o código novo em vez de usar o cache antigo.
      Ao publicar uma correção, troque a versão aqui e nos imports dos módulos. -->
-<script src="js/vendor/qrcode.min.js?v=20260813f"></script>
-<script src="js/vendor/jsQR.min.js?v=20260813f"></script>
-<script type="module" src="js/main.js?v=20260813f"></script>
+<script src="js/vendor/qrcode.min.js?v=20260813g"></script>
+<script src="js/vendor/jsQR.min.js?v=20260813g"></script>
+<script type="module" src="js/main.js?v=20260813g"></script>
 
 <!-- ══════════ VIEW: PAINEL ADMIN ══════════ -->
 <div id="va" class="view">
@@ -787,7 +815,7 @@
           <div class="sbav" id="a-sbav" style="background:linear-gradient(135deg,var(--acc2),var(--acc3));color:#1a1400;font-weight:800">DN</div>
           <div class="sbui"><div class="sbun" id="a-sbun">Daniel</div><div class="sbur" style="color:var(--acc)">Administrador</div></div>
         </div>
-        <div class="nlbl" style="font-size:9px;color:var(--dim);text-align:center;padding-top:4px">versão 20260813f</div>
+        <div class="nlbl" style="font-size:9px;color:var(--dim);text-align:center;padding-top:4px">versão 20260813g</div>
       </div>
     </div>
   </aside>
