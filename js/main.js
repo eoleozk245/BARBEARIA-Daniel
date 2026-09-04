@@ -1,5 +1,5 @@
-import { signUp, signIn, signInAdmin, signOut, resetPassword, getCurrentProfile } from './auth/auth.js?v=20260813i';
-import { renderPublicServices, renderPublicTeam } from './pages/public.js?v=20260813i';
+import { signUp, signIn, signInAdmin, signOut, resetPassword, getCurrentProfile } from './auth/auth.js?v=20260813j';
+import { renderPublicServices, renderPublicTeam } from './pages/public.js?v=20260813j';
 import {
   renderPortalServices,
   applyClientProfileToUI,
@@ -9,22 +9,23 @@ import {
   renderClientDashboardExtras,
   renderClientProfileExtras,
   subscribeClientAppointments,
-} from './pages/portal.js?v=20260813i';
-import { setBookingSession } from './pages/booking.js?v=20260813i';
+} from './pages/portal.js?v=20260813j';
+import { setBookingSession } from './pages/booking.js?v=20260813j';
 import {
   renderCfgSvcReal,
   renderCfgEqReal,
   addNewService,
   addNewBarber,
   applyAdminProfileToUI,
-} from './pages/admin/configuracoes.js?v=20260813i';
-import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi, renderFinanceKpis } from './pages/admin/agenda.js?v=20260813i';
-import { renderAdminClients, renderTopClients } from './pages/admin/clientes.js?v=20260813i';
-import { renderAdminFeedbacks } from './pages/admin/feedbacks.js?v=20260813i';
-import { renderAdminHistorico } from './pages/admin/historico.js?v=20260813i';
-import './pages/admin/scanner.js?v=20260813i';
-import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js?v=20260813i';
-import { enablePullToRefresh } from './utils/pulltorefresh.js?v=20260813i';
+} from './pages/admin/configuracoes.js?v=20260813j';
+import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi, renderFinanceKpis } from './pages/admin/agenda.js?v=20260813j';
+import { renderAdminClients, renderTopClients } from './pages/admin/clientes.js?v=20260813j';
+import { renderAdminFeedbacks } from './pages/admin/feedbacks.js?v=20260813j';
+import { renderAdminHistorico } from './pages/admin/historico.js?v=20260813j';
+import './pages/admin/scanner.js?v=20260813j';
+import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js?v=20260813j';
+import { enablePullToRefresh } from './utils/pulltorefresh.js?v=20260813j';
+import { setupNotifications } from './pages/notifications.js?v=20260813j';
 
 function showError(id, message) {
   const el = document.getElementById(id);
@@ -48,6 +49,7 @@ async function enterPortal(profile) {
   renderClientDashboardExtras();
   renderClientProfileExtras();
   subscribeClientAppointments(profile.id);
+  setupNotifications({ prefix: 'p', userId: profile.id });
   enablePullToRefresh(document.getElementById('pmain'), async () => {
     await renderClientAppointments();
     await renderMiniCalendar();
@@ -73,6 +75,7 @@ async function enterAdmin(profile) {
   await renderAdminFeedbacks();
   await renderAdminHistorico();
   subscribeAdminAgenda();
+  setupNotifications({ prefix: 'a', userId: profile.id });
   enablePullToRefresh(document.getElementById('apmain'), async () => {
     await renderAdminAgenda();
     await renderAppointmentsKpi();

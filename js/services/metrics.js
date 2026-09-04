@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js?v=20260813i';
+import { supabase } from '../supabaseClient.js?v=20260813j';
 
 /**
  * Métricas reais do dashboard do admin.

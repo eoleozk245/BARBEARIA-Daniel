@@ -1,10 +1,10 @@
-import { listServices } from '../services/services.js?v=20260813i';
-import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813i';
-import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813i';
-import { listMyReviews, createReview } from '../services/reviews.js?v=20260813i';
-import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813i';
-import { escapeHtml, showToast, emptyState } from '../utils/dom.js?v=20260813i';
-import { countUp, confetti } from '../utils/anim.js?v=20260813i';
+import { listServices } from '../services/services.js?v=20260813j';
+import { listMyAppointments, cancelAppointment, subscribeAppointments } from '../services/appointments.js?v=20260813j';
+import { getMyLoyaltyStatus, getQrUnlockMinutes } from '../services/loyalty.js?v=20260813j';
+import { listMyReviews, createReview } from '../services/reviews.js?v=20260813j';
+import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813j';
+import { escapeHtml, showToast, emptyState } from '../utils/dom.js?v=20260813j';
+import { countUp, confetti } from '../utils/anim.js?v=20260813j';
 
 const MONTHS_PT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
 const STATUS_BADGE = {

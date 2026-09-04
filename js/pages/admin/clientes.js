@@ -1,5 +1,5 @@
-import { listClientStats, listTopClients, deleteClient, createClientAccount, updateProfile } from '../../services/profiles.js?v=20260813i';
-import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813i';
+import { listClientStats, listTopClients, deleteClient, createClientAccount, updateProfile } from '../../services/profiles.js?v=20260813j';
+import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813j';
 
 const SEGMENT_META = {
   vip: { cls: 'cbdg-vip', label: 'VIP' },

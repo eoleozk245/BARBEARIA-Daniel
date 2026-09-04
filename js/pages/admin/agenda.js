@@ -1,11 +1,11 @@
-import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js?v=20260813i';
-import { confirmAppointmentManually } from '../../services/loyalty.js?v=20260813i';
-import { listBarbers } from '../../services/barbers.js?v=20260813i';
-import { formatCurrency } from '../../utils/format.js?v=20260813i';
-import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813i';
-import { countUp } from '../../utils/anim.js?v=20260813i';
-import { getAdminDashboardMetrics } from '../../services/metrics.js?v=20260813i';
-import { setAdminMetrics } from '../../legacy.js?v=20260813i';
+import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js?v=20260813j';
+import { confirmAppointmentManually } from '../../services/loyalty.js?v=20260813j';
+import { listBarbers } from '../../services/barbers.js?v=20260813j';
+import { formatCurrency } from '../../utils/format.js?v=20260813j';
+import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813j';
+import { countUp } from '../../utils/anim.js?v=20260813j';
+import { getAdminDashboardMetrics } from '../../services/metrics.js?v=20260813j';
+import { setAdminMetrics } from '../../legacy.js?v=20260813j';
 
 const STATUS_META = {
   scheduled: { cls: 'ast-pnd', label: 'Agendado', icon: 'schedule' },

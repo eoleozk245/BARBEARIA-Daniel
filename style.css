@@ -1473,3 +1473,43 @@ tr.row-new td{animation:rowFlash 2.2s var(--ease)}
 .btnrev:hover{background:rgba(var(--ar),.18)}
 .apptrev{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mut)}
 .apptrev .s{color:var(--acc2)}
+
+/* ══ Notificações (sininho) ══ */
+.dwelc-row,.awelc-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.awelc-row{justify-content:flex-end;margin-bottom:-8px}
+.notif-wrap{position:relative;flex-shrink:0}
+.notif-btn{position:relative;width:42px;height:42px;border-radius:12px;cursor:pointer;
+  background:var(--gb);border:1px solid var(--gbd);color:var(--txt);
+  display:flex;align-items:center;justify-content:center;transition:var(--tr),transform .1s var(--ease)}
+.notif-btn:hover{background:var(--gb2)}
+.notif-btn:active{transform:scale(.94)}
+.notif-btn .ms{font-size:21px}
+/* Sino balança quando chega algo novo — chama atenção sem roubar o foco */
+.notif-btn.ring .ms{animation:bellRing .7s var(--ease)}
+@keyframes bellRing{0%,100%{transform:rotate(0)}15%{transform:rotate(14deg)}
+  30%{transform:rotate(-12deg)}45%{transform:rotate(8deg)}60%{transform:rotate(-5deg)}}
+.notif-badge{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;
+  border-radius:999px;background:var(--err);color:#fff;font-size:10px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;border:2px solid var(--bg);
+  animation:qrscPop .3s var(--spring)}
+.notif-panel{position:absolute;top:52px;right:0;width:min(340px,calc(100vw - 32px));z-index:300;
+  background:var(--bg2);border:1px solid var(--gbd);border-radius:var(--rx);overflow:hidden;
+  box-shadow:0 24px 70px rgba(0,0,0,.5);animation:modalIn .24s var(--spring)}
+.notif-hdr{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:13px 16px;border-bottom:1px solid var(--gbd);font-size:13px;font-weight:700}
+.notif-all{background:none;border:none;color:var(--acc);font-size:11px;font-weight:600;cursor:pointer;padding:2px}
+.notif-all:hover{text-decoration:underline}
+.notif-list{max-height:330px;overflow-y:auto}
+.notif-item{display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.04);
+  font-size:12px;line-height:1.5;cursor:pointer;transition:var(--tr)}
+.notif-item:last-child{border-bottom:none}
+.notif-item:hover{background:var(--gb)}
+.notif-item.unread{background:rgba(var(--ar),.06)}
+.notif-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;background:transparent}
+.notif-item.unread .notif-dot{background:var(--acc)}
+.notif-msg{flex:1}
+.notif-time{font-size:10px;color:var(--mut);margin-top:3px}
+@media(max-width:600px){
+  .dwelc-row{flex-direction:row}
+  .notif-panel{right:-8px}
+}
