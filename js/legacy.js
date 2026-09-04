@@ -253,18 +253,38 @@ function toggleCpw2(){
 
 
 /* ════════════════════════════════════════
-   ADMIN — DADOS MOCK (Fase 3 substitui por payments/reviews/notifications/activity_log reais)
+   ADMIN — MÉTRICAS REAIS
+   Preenchido por setAdminMetrics() a partir de admin_dashboard_metrics()
+   no banco (receita = atendimentos concluídos × preço do serviço).
+   Não há despesa nem lucro líquido: o sistema não registra despesas, e
+   inventar esses números seria pior do que não mostrá-los.
 ════════════════════════════════════════ */
-const ADM_DATA={
-  monthly:{
-    labels:['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
-    rev:[8400,9200,7800,10500,11200,9800,12100,11500,9900,13200,12800,11000],
-    exp:[3200,3800,3100,4200,4800,3900,4900,4600,3800,5100,4700,4200]},
-  weekly:{
-    labels:['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
-    rev:[580,920,760,1100,1350,1820,0]},
-  svcs:[{l:'Corte Clássico',p:42,c:'#e6c364'},{l:'Corte + Barba',p:28,c:'#c9a84c'},{l:'Barba',p:18,c:'rgba(230,195,100,.5)'},{l:'Outros',p:12,c:'rgba(230,195,100,.25)'}]
+const MONTHS_ABBR=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const SVC_COLORS=['#e6c364','#c9a84c','rgba(230,195,100,.5)','rgba(230,195,100,.3)','rgba(230,195,100,.18)'];
+let ADM_DATA={
+  monthly:{labels:[],rev:[]},
+  weekly:{labels:[],rev:[]},
+  svcs:[]
 };
+
+/** Recebe o retorno do banco e redesenha os três gráficos com dados reais. */
+function setAdminMetrics(m){
+  if(!m)return;
+  ADM_DATA={
+    monthly:{
+      labels:(m.monthly||[]).map(x=>MONTHS_ABBR[Number(x.month.slice(5,7))-1]),
+      rev:(m.monthly||[]).map(x=>Number(x.revenue)||0)
+    },
+    weekly:{
+      labels:(m.weekly||[]).map(x=>new Date(x.day+'T00:00:00').toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')),
+      rev:(m.weekly||[]).map(x=>Number(x.revenue)||0)
+    },
+    svcs:(m.services||[]).slice(0,5).map((s,i)=>({l:s.label,p:Number(s.pct)||0,c:SVC_COLORS[i]||SVC_COLORS[4]}))
+  };
+  renderRevChart(document.querySelector('.ctabs .ctab.on')?.textContent.trim().toLowerCase()==='semanal'?'semanal':'mensal');
+  renderDonut();
+  renderWeekly();
+}
 
 /* ADMIN NAV */
 let adCol=false;
@@ -309,8 +329,9 @@ setInterval(admClock,1000);
 function renderRevChart(period){
   const el=document.getElementById('chart-rev');if(!el)return;
   const D=period==='semanal'?ADM_DATA.weekly:ADM_DATA.monthly;
-  const rv=D.rev,ex=period==='semanal'?[]:ADM_DATA.monthly.exp,lb=D.labels,n=lb.length;
-  const maxV=Math.max(...rv,...(ex.length?ex:[0]))*1.12||1;
+  const rv=D.rev,ex=[],lb=D.labels,n=lb.length; // ex vazio: não há registro de despesas no sistema
+  if(!n)return; // sem dados ainda
+  const maxV=Math.max(...rv,0)*1.12||1;
   const W=560,H=175,pX=18,pY=14,plotW=W-pX*2,plotH=H-pY*2-16;
   const tx=i=>pX+(i/(n-1))*plotW,ty=v=>pY+plotH-(v/maxV)*plotH;
   const rpts=rv.map((v,i)=>tx(i)+','+ty(v)).join(' ');
@@ -338,16 +359,18 @@ function renderDonut(){
     const da=(d.p/100)*C,doff=-(cum/100)*C;cum+=d.p;
     return '<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="'+d.c+'" stroke-width="'+SW+'" stroke-dasharray="'+da+' '+(C-da)+'" stroke-dashoffset="'+(C/4+doff)+'" transform="rotate(-90 '+CX+' '+CY+')"/>';
   }).join('');
-  el.innerHTML='<svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" class="svg-chart"><circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="'+SW+'"/>'+segs+'<text x="'+CX+'" y="'+(CY-5)+'" text-anchor="middle" fill="#e5e2e1" font-size="14" font-weight="800" font-family="Inter,sans-serif">42%</text><text x="'+CX+'" y="'+(CY+10)+'" text-anchor="middle" fill="#99907e" font-size="9" font-family="Inter,sans-serif">top serviço</text></svg>';
+  el.innerHTML='<svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" class="svg-chart"><circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="'+SW+'"/>'+segs+'<text x="'+CX+'" y="'+(CY-5)+'" text-anchor="middle" fill="#e5e2e1" font-size="14" font-weight="800" font-family="Inter,sans-serif">'+(ADM_DATA.svcs[0]?ADM_DATA.svcs[0].p+'%':'—')+'</text><text x="'+CX+'" y="'+(CY+10)+'" text-anchor="middle" fill="#99907e" font-size="9" font-family="Inter,sans-serif">top serviço</text></svg>';
   lg.innerHTML=ADM_DATA.svcs.map(d=>'<div style="display:flex;align-items:center;gap:8px;margin-bottom:9px"><div style="width:10px;height:10px;border-radius:3px;background:'+d.c+';flex-shrink:0"></div><span style="font-size:12px;color:var(--mut);flex:1">'+d.l+'</span><span style="font-size:12px;font-weight:700;color:var(--txt)">'+d.p+'%</span></div>').join('');
 }
 function renderWeekly(){
   const el=document.getElementById('chart-weekly');if(!el)return;
-  const D=ADM_DATA.weekly,maxV=Math.max(...D.rev)*1.15||1;
+  const D=ADM_DATA.weekly;if(!D.rev.length)return;
+  const maxV=Math.max(...D.rev)*1.15||1;
   const W=320,H=155,pX=10,pY=12,bW=30,gap=(W-pX*2-7*bW)/6;
   const bars=D.rev.map((v,i)=>{
     const x=pX+i*(bW+gap),h=v>0?(v/maxV)*(H-pY*2-18):2,y=pY+(H-pY*2-18)-h;
-    const col=i===5?'url(#bg)':'rgba(230,195,100,.28)';
+    const hoje=(new Date().getDay()+6)%7; // ADM_DATA.weekly começa na segunda
+    const col=i===hoje?'url(#bg)':'rgba(230,195,100,.28)';
     return '<rect x="'+x+'" y="'+y+'" width="'+bW+'" height="'+h+'" rx="7" fill="'+col+'"/>'+(v>0?'<text x="'+(x+bW/2)+'" y="'+(y-5)+'" text-anchor="middle" fill="#99907e" font-size="8" font-family="Inter,sans-serif">R$'+v+'</text>':'')+'<text x="'+(x+bW/2)+'" y="'+(H-3)+'" text-anchor="middle" fill="#99907e" font-size="9" font-family="Inter,sans-serif">'+D.labels[i]+'</text>';
   }).join('');
   el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" class="svg-chart"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f1d885"/><stop offset="100%" stop-color="#c9a84c"/></linearGradient></defs>'+bars+'</svg>';
@@ -392,4 +415,4 @@ Object.assign(window, {
   toggleMobSb, closeMobSb,
 });
 
-export { rvObs, showV, pGo, aGo, adminInit };
+export { rvObs, showV, pGo, aGo, adminInit, setAdminMetrics };

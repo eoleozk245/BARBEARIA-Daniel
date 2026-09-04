@@ -1,9 +1,11 @@
-import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js?v=20260813g';
-import { confirmAppointmentManually } from '../../services/loyalty.js?v=20260813g';
-import { listBarbers } from '../../services/barbers.js?v=20260813g';
-import { formatCurrency } from '../../utils/format.js?v=20260813g';
-import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813g';
-import { countUp } from '../../utils/anim.js?v=20260813g';
+import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js?v=20260813h';
+import { confirmAppointmentManually } from '../../services/loyalty.js?v=20260813h';
+import { listBarbers } from '../../services/barbers.js?v=20260813h';
+import { formatCurrency } from '../../utils/format.js?v=20260813h';
+import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813h';
+import { countUp } from '../../utils/anim.js?v=20260813h';
+import { getAdminDashboardMetrics } from '../../services/metrics.js?v=20260813h';
+import { setAdminMetrics } from '../../legacy.js?v=20260813h';
 
 const STATUS_META = {
   scheduled: { cls: 'ast-pnd', label: 'Agendado', icon: 'schedule' },
@@ -110,6 +112,57 @@ export async function renderAppointmentsKpi() {
   const from = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
   const to = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-31`;
   countUp(el, await countAppointments({ from, to }));
+}
+
+/**
+ * Cartões financeiros e gráficos do Dashboard, com números reais.
+ * Receita = atendimentos concluídos × preço do serviço. Não existe despesa nem
+ * lucro líquido aqui porque o sistema não registra despesas em lugar nenhum.
+ */
+export async function renderFinanceKpis() {
+  let m;
+  try {
+    m = await getAdminDashboardMetrics();
+  } catch (err) {
+    const trend = document.getElementById('kpi-receita-trend');
+    if (trend) trend.innerHTML = '<span class="ms">error</span> não foi possível carregar';
+    return;
+  }
+
+  const receita = Number(m.current_month_revenue) || 0;
+  const anterior = Number(m.prev_month_revenue) || 0;
+  const concluidos = Number(m.current_month_completed) || 0;
+
+  countUp(document.getElementById('kpi-receita'), receita, { format: (n) => formatCurrency(n) });
+  countUp(document.getElementById('kpi-ticket'), concluidos ? receita / concluidos : 0, {
+    decimals: 2,
+    format: (n) => formatCurrency(n),
+  });
+  countUp(document.getElementById('kpi-novos'), Number(m.new_clients_month) || 0);
+
+  const lbl = document.getElementById('kpi-receita-lbl');
+  if (lbl && m.month_start) {
+    const mes = new Date(`${m.month_start}T00:00:00`).toLocaleDateString('pt-BR', { month: 'long' });
+    lbl.textContent = `Receita — ${mes[0].toUpperCase()}${mes.slice(1)}`;
+  }
+
+  // A variação só faz sentido se houve mês anterior com movimento; sem isso,
+  // qualquer porcentagem seria divisão por zero disfarçada.
+  const trend = document.getElementById('kpi-receita-trend');
+  if (trend) {
+    if (!anterior) {
+      trend.style.color = 'var(--mut)';
+      trend.innerHTML = '<span class="ms">remove</span> sem mês anterior para comparar';
+    } else {
+      const pct = ((receita - anterior) / anterior) * 100;
+      const subiu = pct >= 0;
+      trend.style.color = '';
+      trend.className = `akpi-trend ${subiu ? 'aup' : 'adown'}`;
+      trend.innerHTML = `<span class="ms">${subiu ? 'arrow_upward' : 'arrow_downward'}</span> ${subiu ? '+' : ''}${pct.toFixed(1).replace('.', ',')}% vs. mês anterior`;
+    }
+  }
+
+  setAdminMetrics(m); // redesenha os três gráficos
 }
 
 let unsubscribeAll = null;

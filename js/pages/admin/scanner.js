@@ -1,6 +1,6 @@
-import { scanQrCheckin } from '../../services/loyalty.js?v=20260813g';
-import { listTodayAppointments } from '../../services/appointments.js?v=20260813g';
-import { escapeHtml, emptyState, skeletonRows } from '../../utils/dom.js?v=20260813g';
+import { scanQrCheckin } from '../../services/loyalty.js?v=20260813h';
+import { listTodayAppointments } from '../../services/appointments.js?v=20260813h';
+import { escapeHtml, emptyState, skeletonRows } from '../../utils/dom.js?v=20260813h';
 
 /* Tamanho em que a imagem é decodificada. O jsQR é JavaScript puro: rodar na
    resolução cheia (1280px) trava o processador do celular e sobram pouquíssimas

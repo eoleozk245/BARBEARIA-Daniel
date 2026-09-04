@@ -30,7 +30,7 @@
   script-src 'self' 'unsafe-inline' https://esm.sh;
   connect-src 'self' https://sbzrccpyomwuctufkkmf.supabase.co wss://sbzrccpyomwuctufkkmf.supabase.co https://esm.sh;
 ">
-<script src="js/framebuster.js?v=20260813g"></script>
+<script src="js/framebuster.js?v=20260813h"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,7 +45,7 @@
       integrity="sha384-UsOvy6Miuagj2Q/9aXCTRHaUDZjxTxMGk9ZsU2m0MDw8eIOyV129Qd9NszbyyFQM"
       crossorigin="anonymous" referrerpolicy="no-referrer">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260813g">
+<link rel="stylesheet" href="style.css?v=20260813h">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 </head>
 <body>
@@ -760,9 +760,9 @@
 
 <!-- ?v= força o navegador a buscar o código novo em vez de usar o cache antigo.
      Ao publicar uma correção, troque a versão aqui e nos imports dos módulos. -->
-<script src="js/vendor/qrcode.min.js?v=20260813g"></script>
-<script src="js/vendor/jsQR.min.js?v=20260813g"></script>
-<script type="module" src="js/main.js?v=20260813g"></script>
+<script src="js/vendor/qrcode.min.js?v=20260813h"></script>
+<script src="js/vendor/jsQR.min.js?v=20260813h"></script>
+<script type="module" src="js/main.js?v=20260813h"></script>
 
 <!-- ══════════ VIEW: PAINEL ADMIN ══════════ -->
 <div id="va" class="view">
@@ -815,7 +815,7 @@
           <div class="sbav" id="a-sbav" style="background:linear-gradient(135deg,var(--acc2),var(--acc3));color:#1a1400;font-weight:800">DN</div>
           <div class="sbui"><div class="sbun" id="a-sbun">Daniel</div><div class="sbur" style="color:var(--acc)">Administrador</div></div>
         </div>
-        <div class="nlbl" style="font-size:9px;color:var(--dim);text-align:center;padding-top:4px">versão 20260813g</div>
+        <div class="nlbl" style="font-size:9px;color:var(--dim);text-align:center;padding-top:4px">versão 20260813h</div>
       </div>
     </div>
   </aside>
@@ -839,21 +839,21 @@
       <div class="akpis">
         <div class="akpi">
           <div class="akpi-ico"><span class="ms">trending_up</span></div>
-          <div class="akpi-v">R$ 12.800</div>
-          <div class="akpi-l">Receita — Novembro</div>
-          <div class="akpi-trend aup"><span class="ms">arrow_upward</span> +8,4% vs. outubro</div>
+          <div class="akpi-v" id="kpi-receita">—</div>
+          <div class="akpi-l" id="kpi-receita-lbl">Receita do mês</div>
+          <div class="akpi-trend" id="kpi-receita-trend" style="color:var(--mut)"><span class="ms">schedule</span> carregando…</div>
         </div>
         <div class="akpi">
-          <div class="akpi-ico" style="background:linear-gradient(135deg,rgba(242,139,130,.18),rgba(242,139,130,.06));border-color:rgba(242,139,130,.2)"><span class="ms" style="color:var(--err)">trending_down</span></div>
-          <div class="akpi-v akpi-vr">R$ 4.700</div>
-          <div class="akpi-l">Despesas — Novembro</div>
-          <div class="akpi-trend aup"><span class="ms">arrow_downward</span> -2,1% vs. outubro</div>
+          <div class="akpi-ico" style="background:linear-gradient(135deg,rgba(76,175,130,.18),rgba(76,175,130,.06));border-color:rgba(76,175,130,.2)"><span class="ms" style="color:var(--ok)">sell</span></div>
+          <div class="akpi-v akpi-vo" id="kpi-ticket">—</div>
+          <div class="akpi-l">Ticket médio</div>
+          <div class="akpi-trend" style="color:var(--mut)"><span class="ms">calculate</span> receita ÷ atendimentos</div>
         </div>
         <div class="akpi">
-          <div class="akpi-ico" style="background:linear-gradient(135deg,rgba(76,175,130,.18),rgba(76,175,130,.06));border-color:rgba(76,175,130,.2)"><span class="ms" style="color:var(--ok)">account_balance_wallet</span></div>
-          <div class="akpi-v akpi-vo">R$ 8.100</div>
-          <div class="akpi-l">Lucro Líquido</div>
-          <div class="akpi-trend aup"><span class="ms">arrow_upward</span> +12,6% vs. outubro</div>
+          <div class="akpi-ico"><span class="ms">person_add</span></div>
+          <div class="akpi-v" id="kpi-novos">—</div>
+          <div class="akpi-l">Novos clientes no mês</div>
+          <div class="akpi-trend" style="color:var(--mut)"><span class="ms">group</span> cadastros reais</div>
         </div>
         <div class="akpi">
           <div class="akpi-ico"><span class="ms">content_cut</span></div>
@@ -865,7 +865,7 @@
       <div class="chart-row">
         <div class="cbox">
           <div class="cbox-hdr">
-            <div><div class="cbox-tit">Receita & Despesas</div><div class="cbox-sub">Últimos 12 meses</div></div>
+            <div><div class="cbox-tit">Receita</div><div class="cbox-sub">Últimos 12 meses</div></div>
             <div class="ctabs">
               <button class="ctab on" onclick="swChartPeriod('mensal',this)">Mensal</button>
               <button class="ctab" onclick="swChartPeriod('semanal',this)">Semanal</button>
