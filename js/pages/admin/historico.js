@@ -1,91 +1,61 @@
-import { listAllAppointments } from '../../services/appointments.js?v=20260813h';
-import { listClients } from '../../services/profiles.js?v=20260813h';
-import { listAllReviews } from '../../services/reviews.js?v=20260813h';
-import { escapeHtml, emptyState, skeletonRows } from '../../utils/dom.js?v=20260813h';
+import { listActivity } from '../../services/activity.js?v=20260813i';
+import { escapeHtml, emptyState, skeletonRows } from '../../utils/dom.js?v=20260813i';
 
-const STATUS_META = {
-  completed: { action: 'concluído', icon: 'check_circle', dot: 'dot-ok' },
-  cancelled: { action: 'cancelado', icon: 'cancel', dot: 'dot-err' },
-  confirmed: { action: 'confirmado', icon: 'event_available', dot: 'dot-acc' },
-  scheduled: { action: 'agendado', icon: 'event', dot: 'dot-mut' },
+/**
+ * Aparência de cada tipo de evento gravado em `activity_log`.
+ * A chave é a coluna `action` que os triggers do banco escrevem.
+ */
+const ACTION_META = {
+  appointment_created: { icon: 'event', dot: 'dot-mut' },
+  appointment_confirmed: { icon: 'event_available', dot: 'dot-acc' },
+  appointment_completed: { icon: 'check_circle', dot: 'dot-ok' },
+  appointment_cancelled: { icon: 'cancel', dot: 'dot-err' },
+  client_created: { icon: 'person_add', dot: 'dot-acc' },
+  review_created: { icon: 'star', dot: 'dot-acc' },
+  review_replied: { icon: 'reply', dot: 'dot-mut' },
 };
+const FALLBACK_META = { icon: 'bolt', dot: 'dot-mut' };
 
 function formatDateTime(iso) {
   return new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
 }
 
 /**
- * Monta um feed de atividade real combinando agendamentos, novos clientes e
- * avaliações — não existe uma tabela de activity_log dedicada no banco, então
- * este histórico é derivado dos eventos que já existem, sem nenhum dado fictício.
+ * Quem fez a ação. `actor_id` é null quando o evento partiu do próprio sistema
+ * (gatilho de banco sem sessão, tarefa agendada) — nesse caso "Sistema" é a
+ * descrição honesta, não um nome inventado.
  */
-async function buildActivityFeed() {
-  const [appts, clients, reviews] = await Promise.all([listAllAppointments(), listClients(), listAllReviews()]);
-
-  const events = [];
-
-  appts.forEach((a) => {
-    const meta = STATUS_META[a.status];
-    if (!meta) return;
-    events.push({
-      time: a.updated_at,
-      icon: meta.icon,
-      dot: meta.dot,
-      action: `Agendamento ${meta.action} — ${a.client?.name || 'Cliente'} / ${a.service?.name || 'Serviço'}`,
-      user: 'Sistema',
-    });
-  });
-
-  clients.forEach((c) => {
-    events.push({
-      time: c.created_at,
-      icon: 'person_add',
-      dot: 'dot-acc',
-      action: `Novo cliente cadastrado — ${c.name}`,
-      user: 'Sistema',
-    });
-  });
-
-  reviews.forEach((r) => {
-    const clientName = r.client?.name || 'Cliente';
-    events.push({
-      time: r.created_at,
-      icon: 'star',
-      dot: 'dot-acc',
-      action: `Nova avaliação recebida — ${clientName} (${r.rating}★)`,
-      user: 'Sistema',
-    });
-    if (r.replied_at) {
-      events.push({
-        time: r.replied_at,
-        icon: 'reply',
-        dot: 'dot-mut',
-        action: `Resposta enviada à avaliação de ${clientName}`,
-        user: 'Daniel',
-      });
-    }
-  });
-
-  return events.sort((a, b) => new Date(b.time) - new Date(a.time)).slice(0, 20);
+function actorLabel(row) {
+  if (!row.actor) return 'Sistema';
+  return row.actor.role === 'admin' ? `${row.actor.name} (admin)` : row.actor.name;
 }
 
-/** Renderiza o Histórico (#atl-list) com atividade real do sistema. */
+/** Renderiza o Histórico (#atl-list) lendo a tabela activity_log. */
 export async function renderAdminHistorico() {
   const el = document.getElementById('atl-list');
   if (!el) return;
-  const feed = await buildActivityFeed();
+  if (!el.children.length) el.innerHTML = skeletonRows(4, 'sk-row');
 
-  el.classList.add('stagger'); // renderizado uma única vez, ao abrir a seção
+  let feed;
+  try {
+    feed = await listActivity(30);
+  } catch (err) {
+    el.innerHTML = emptyState('error', 'Não foi possível carregar o histórico', err.message || 'Tente novamente.');
+    return;
+  }
+
+  el.classList.add('stagger');
   el.innerHTML = feed.length
     ? feed
-        .map(
-          (h) => `
+        .map((h) => {
+          const meta = ACTION_META[h.action] || FALLBACK_META;
+          return `
     <div class="atl-item">
-      <div class="atl-dot ${h.dot}"><span class="ms">${h.icon}</span></div>
-      <div class="atl-act">${escapeHtml(h.action)}</div>
-      <div class="atl-meta"><span><span class="ms">person</span>${h.user}</span><span><span class="ms">schedule</span>${formatDateTime(h.time)}</span></div>
-    </div>`
-        )
+      <div class="atl-dot ${meta.dot}"><span class="ms">${meta.icon}</span></div>
+      <div class="atl-act">${escapeHtml(h.description || h.action)}</div>
+      <div class="atl-meta"><span><span class="ms">person</span>${escapeHtml(actorLabel(h))}</span><span><span class="ms">schedule</span>${formatDateTime(h.created_at)}</span></div>
+    </div>`;
+        })
         .join('')
     : emptyState('history', 'Nenhuma atividade ainda', 'Agendamentos, cadastros e avaliações aparecem aqui conforme acontecem.');
 }
