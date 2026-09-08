@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js?v=20260813j';
+import { supabase } from '../supabaseClient.js?v=20260813k';
 
 /**
  * Admin-only: todas as avaliações reais, mais recentes primeiro.

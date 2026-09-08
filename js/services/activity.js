@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js?v=20260813j';
+import { supabase } from '../supabaseClient.js?v=20260813k';
 
 /**
  * Feed de atividade do admin, lido da tabela `activity_log`.

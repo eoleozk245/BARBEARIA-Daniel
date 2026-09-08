@@ -1,5 +1,5 @@
-import { listClientStats, listTopClients, deleteClient, createClientAccount, updateProfile } from '../../services/profiles.js?v=20260813j';
-import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813j';
+import { listClientStats, listTopClients, deleteClient, createClientAccount, updateProfile } from '../../services/profiles.js?v=20260813k';
+import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813k';
 
 const SEGMENT_META = {
   vip: { cls: 'cbdg-vip', label: 'VIP' },
@@ -23,7 +23,14 @@ function formatDate(isoDate) {
 export async function renderAdminClients() {
   const gridEarly = document.getElementById('cli-grid');
   if (gridEarly && !gridEarly.children.length) gridEarly.innerHTML = skeletonRows(3, 'sk-card');
-  cachedClients = await listClientStats();
+  try {
+    cachedClients = await listClientStats();
+  } catch (err) {
+    if (gridEarly) {
+      gridEarly.innerHTML = emptyState('error', 'Não foi possível carregar os clientes', err.message || 'Tente atualizar a página.');
+    }
+    throw err;
+  }
 
   const search = (document.getElementById('cli-s')?.value || '').toLowerCase();
   const segmentFilter = (document.getElementById('cli-b')?.value || '').toLowerCase();

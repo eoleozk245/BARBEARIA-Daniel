@@ -333,7 +333,10 @@ function renderRevChart(period){
   if(!n)return; // sem dados ainda
   const maxV=Math.max(...rv,0)*1.12||1;
   const W=560,H=175,pX=18,pY=14,plotW=W-pX*2,plotH=H-pY*2-16;
-  const tx=i=>pX+(i/(n-1))*plotW,ty=v=>pY+plotH-(v/maxV)*plotH;
+  // Com um único ponto, i/(n-1) seria 0/0 = NaN e o SVG inteiro saía quebrado.
+  // Nesse caso o ponto vai ao centro do gráfico.
+  const tx=n===1?()=>pX+plotW/2:i=>pX+(i/(n-1))*plotW;
+  const ty=v=>pY+plotH-(v/maxV)*plotH;
   const rpts=rv.map((v,i)=>tx(i)+','+ty(v)).join(' ');
   const fX=tx(0),lX=tx(n-1),bY=pY+plotH;
   const rarea=fX+','+bY+' '+rpts+' '+lX+','+bY;

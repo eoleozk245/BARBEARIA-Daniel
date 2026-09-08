@@ -1,5 +1,5 @@
-import { listAllReviews, replyToReview } from '../../services/reviews.js?v=20260813j';
-import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813j';
+import { listAllReviews, replyToReview } from '../../services/reviews.js?v=20260813k';
+import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813k';
 
 /** Iniciais já escapadas — o retorno vai direto para innerHTML. */
 function initials(name) {
@@ -15,7 +15,14 @@ export async function renderAdminFeedbacks() {
   const el = document.getElementById('fb-list');
   if (!el) return;
   if (el && !el.children.length) el.innerHTML = skeletonRows(3, 'sk-card');
-  const reviews = await listAllReviews();
+  let reviews;
+  try {
+    reviews = await listAllReviews();
+  } catch (err) {
+    // O skeleton não pode ficar preso disfarçado de "carregando".
+    el.innerHTML = emptyState('error', 'Não foi possível carregar as avaliações', err.message || 'Tente atualizar a página.');
+    throw err;
+  }
 
   el.innerHTML = reviews.length
     ? reviews

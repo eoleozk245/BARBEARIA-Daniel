@@ -1,11 +1,11 @@
-import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js?v=20260813j';
-import { confirmAppointmentManually } from '../../services/loyalty.js?v=20260813j';
-import { listBarbers } from '../../services/barbers.js?v=20260813j';
-import { formatCurrency } from '../../utils/format.js?v=20260813j';
-import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813j';
-import { countUp } from '../../utils/anim.js?v=20260813j';
-import { getAdminDashboardMetrics } from '../../services/metrics.js?v=20260813j';
-import { setAdminMetrics } from '../../legacy.js?v=20260813j';
+import { listAllAppointments, updateAppointmentStatus, subscribeAppointments, countAppointments } from '../../services/appointments.js?v=20260813k';
+import { confirmAppointmentManually } from '../../services/loyalty.js?v=20260813k';
+import { listBarbers } from '../../services/barbers.js?v=20260813k';
+import { formatCurrency } from '../../utils/format.js?v=20260813k';
+import { escapeHtml, showToast, emptyState, skeletonRows, skeletonTable } from '../../utils/dom.js?v=20260813k';
+import { countUp } from '../../utils/anim.js?v=20260813k';
+import { getAdminDashboardMetrics } from '../../services/metrics.js?v=20260813k';
+import { setAdminMetrics } from '../../legacy.js?v=20260813k';
 
 const STATUS_META = {
   scheduled: { cls: 'ast-pnd', label: 'Agendado', icon: 'schedule' },
@@ -44,8 +44,17 @@ function populateDateFilter() {
 export async function renderAdminAgenda() {
   const tbodyEarly = document.getElementById('ag-tbody');
   if (tbodyEarly && !tbodyEarly.children.length) tbodyEarly.innerHTML = skeletonTable(6, 9);
-  await populateFilters();
-  cachedAppointments = await listAllAppointments();
+  try {
+    await populateFilters();
+    cachedAppointments = await listAllAppointments();
+  } catch (err) {
+    // Sem isto o skeleton acima ficaria girando para sempre, dando a impressão
+    // de "carregando" quando na verdade a consulta falhou.
+    if (tbodyEarly) {
+      tbodyEarly.innerHTML = `<tr><td colspan="9">${emptyState('error', 'Não foi possível carregar a agenda', err.message || 'Tente atualizar a página.')}</td></tr>`;
+    }
+    throw err; // o chamador (safeRender) registra no console
+  }
   populateDateFilter();
 
   const search = (document.getElementById('ag-search')?.value || '').toLowerCase();
@@ -108,10 +117,18 @@ export async function renderAdminAgenda() {
 export async function renderAppointmentsKpi() {
   const el = document.getElementById('kpi-appts-count');
   if (!el) return;
+  // Limite superior = dia 1 do mês SEGUINTE, exclusivo. Antes daqui saía sempre
+  // "-31", que em meses de 30 dias (e em fevereiro) vira uma data inexistente:
+  // o Postgres recusa com "date/time field value out of range" e a consulta
+  // inteira falha. Assim não é preciso saber quantos dias o mês tem — e a
+  // virada de ano é tratada pelo próprio Date.
   const now = new Date();
-  const from = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
-  const to = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-31`;
-  countUp(el, await countAppointments({ from, to }));
+  const pad = (n) => String(n).padStart(2, '0');
+  const first = new Date(now.getFullYear(), now.getMonth(), 1);
+  const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  const from = `${first.getFullYear()}-${pad(first.getMonth() + 1)}-01`;
+  const before = `${nextMonth.getFullYear()}-${pad(nextMonth.getMonth() + 1)}-01`;
+  countUp(el, await countAppointments({ from, before }));
 }
 
 /**

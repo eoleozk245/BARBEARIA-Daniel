@@ -1,4 +1,4 @@
-import { supabase } from '../supabaseClient.js?v=20260813j';
+import { supabase } from '../supabaseClient.js?v=20260813k';
 
 const SELECT_WITH_JOINS = `
   id, appointment_date, start_time, end_time, status, notes, created_at, updated_at,
@@ -89,7 +89,11 @@ export async function getAvailableSlots(barberId, serviceId, dateStr) {
   const step = settings?.slot_interval_minutes || 30;
   const busyRanges = busy.map((b) => [timeToMinutes(b.start_time), timeToMinutes(b.end_time)]);
   const now = new Date();
-  const isToday = now.toISOString().slice(0, 10) === dateStr;
+  // todayLocalDate() usa a data LOCAL. Com toISOString() (UTC), em Fortaleza
+  // (UTC−3) qualquer horário depois das 21:00 já era "amanhã": a comparação
+  // dava falso, o filtro de horários passados não era aplicado e o app voltava
+  // a oferecer horas que já tinham passado.
+  const isToday = todayLocalDate() === dateStr;
   const nowMinutes = now.getHours() * 60 + now.getMinutes();
 
   const slots = [];
@@ -114,7 +118,10 @@ export async function createAppointment({ client_id, barber_id, service_id, appo
     .select(SELECT_WITH_JOINS)
     .single();
   if (error) {
-    if (error.code === '23505') {
+    // 23505 = início idêntico (índice único); 23P01 = faixa sobreposta
+    // (constraint de exclusão). Os dois significam a mesma coisa para o usuário:
+    // alguém pegou o horário entre a checagem de disponibilidade e o salvamento.
+    if (error.code === '23505' || error.code === '23P01') {
       throw new Error('Esse horário acabou de ser ocupado por outra pessoa. Escolha outro horário.');
     }
     throw error;
@@ -146,10 +153,19 @@ export async function updateAppointmentStatus(id, status) {
   return data;
 }
 
-export async function countAppointments({ from, to } = {}) {
+/**
+ * Conta agendamentos num intervalo de datas.
+ *
+ * `to` é inclusivo; `before` é exclusivo. Prefira `before` para períodos como
+ * "este mês": passar o dia 1 do mês seguinte evita ter que calcular o último
+ * dia — cálculo que já causou um bug sério, porque um "-31" fixo produz datas
+ * inexistentes em meses de 30 dias e o Postgres recusa a consulta inteira.
+ */
+export async function countAppointments({ from, to, before } = {}) {
   let query = supabase.from('appointments').select('id', { count: 'exact', head: true });
   if (from) query = query.gte('appointment_date', from);
   if (to) query = query.lte('appointment_date', to);
+  if (before) query = query.lt('appointment_date', before);
   const { count, error } = await query;
   if (error) throw error;
   return count || 0;

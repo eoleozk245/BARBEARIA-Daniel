@@ -1513,3 +1513,25 @@ tr.row-new td{animation:rowFlash 2.2s var(--ease)}
   .dwelc-row{flex-direction:row}
   .notif-panel{right:-8px}
 }
+
+/* ══ Novo Agendamento (admin) ══
+   Reaproveita .cmodal/.acfg-inp/.abtn já existentes — nenhum estilo novo de
+   cor, sombra ou raio. Só o que o formulário precisa. */
+.na-field{margin-bottom:16px}
+.na-field:last-of-type{margin-bottom:0}
+.na-label{display:block;font-size:12px;font-weight:700;color:var(--txt2);margin-bottom:7px}
+.na-label-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:7px}
+.na-label-row .na-label{margin-bottom:0}
+.na-link{background:none;border:none;color:var(--acc);font-size:11px;font-weight:600;cursor:pointer;padding:0}
+.na-link:hover{text-decoration:underline}
+#na-client-new .acfg-inp{margin-bottom:8px}
+#na-client-new .acfg-inp:last-child{margin-bottom:0}
+.na-slots{display:flex;flex-wrap:wrap;gap:7px;min-height:38px;align-items:flex-start}
+.na-slot{padding:8px 14px;border-radius:10px;cursor:pointer;font-size:12px;font-weight:600;
+  background:var(--gb);border:1px solid var(--gbd);color:var(--txt);
+  transition:var(--tr),transform .1s var(--ease)}
+.na-slot:hover{background:var(--gb2);border-color:rgba(var(--ar),.35)}
+.na-slot:active{transform:scale(.96)}
+.na-slot.on{background:rgba(var(--ar),.16);border-color:var(--acc);color:var(--acc)}
+.na-hint{font-size:12px;color:var(--mut);line-height:1.5}
+#na-save:disabled{opacity:.45;cursor:not-allowed}
