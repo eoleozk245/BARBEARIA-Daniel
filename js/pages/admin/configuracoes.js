@@ -13,9 +13,12 @@ export async function renderCfgSvcReal() {
       (s) => `
     <div class="asvc-row" data-id="${s.id}">
       <span class="asvc-n">${escapeHtml(s.name)}</span>
-      <input class="asvc-inp" data-field="price" value="${s.price}" style="color:var(--acc)">
-      <input class="asvc-inp" data-field="duration_minutes" value="${s.duration_minutes}" style="color:var(--mut)">
-      <button class="abtn abtn-r" data-action="remove" style="padding:6px 10px;border-radius:8px;font-size:11px">Remover</button>
+      <input class="asvc-inp" data-field="price" value="${s.price}"
+             aria-label="Preço de ${escapeHtml(s.name)} em reais" style="color:var(--acc)">
+      <input class="asvc-inp" data-field="duration_minutes" value="${s.duration_minutes}"
+             aria-label="Duração de ${escapeHtml(s.name)} em minutos" style="color:var(--mut)">
+      <button class="abtn abtn-r" data-action="remove" aria-label="Remover ${escapeHtml(s.name)}"
+              style="padding:6px 10px;border-radius:8px;font-size:11px">Remover</button>
     </div>`
     )
     .join('');
@@ -75,11 +78,13 @@ export async function renderCfgEqReal() {
       <div style="width:34px;height:34px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,rgba(var(--ar),.2),rgba(var(--ar),.06));border:1px solid rgba(var(--ar),.2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--acc)">${escapeHtml(initials)}</div>
       <span class="asvc-n">${escapeHtml(b.name)}</span>
       <span style="font-size:11px;color:var(--mut)">${escapeHtml(b.title || '')}</span>
-      <select class="afsel" data-field="active" style="width:110px;padding:6px 10px;border-radius:8px;font-size:11px">
+      <select class="afsel" data-field="active" aria-label="Situação de ${escapeHtml(b.name)}"
+              style="width:110px;padding:6px 10px;border-radius:8px;font-size:11px">
         <option value="true" ${b.active ? 'selected' : ''}>Ativo</option>
         <option value="false" ${!b.active ? 'selected' : ''}>Inativo</option>
       </select>
-      <button class="abtn abtn-r" data-action="remove" style="padding:6px 10px;border-radius:8px;font-size:11px">Remover</button>
+      <button class="abtn abtn-r" data-action="remove" aria-label="Remover ${escapeHtml(b.name)}"
+              style="padding:6px 10px;border-radius:8px;font-size:11px">Remover</button>
     </div>`;
     })
     .join('');

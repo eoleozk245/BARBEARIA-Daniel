@@ -25,11 +25,11 @@ function apptCard(a, { showCancel }) {
   return `
     <div class="appt" data-id="${a.id}">
       <div class="apptdt"><div class="apptmon">${MONTHS_PT[Number(month) - 1]}</div><div class="apptday">${day}</div><div class="appttm">${a.start_time.slice(0, 5)}</div></div>
-      <div><div class="appth">${escapeHtml(a.service.name)} <span class="pbdg ${badge.cls}" style="${badge.style || ''}"><span class="ms">${badge.icon}</span> ${badge.label}</span></div>
-        <div class="apptbar"><div class="abav">${escapeHtml(initials)}</div> ${escapeHtml(a.barber.name)} <span style="color:var(--dim)">·</span><span class="apptp">${formatCurrency(a.service.price)}</span></div></div>
+      <div><div class="appth">${escapeHtml(a.service.name)} <span class="pbdg ${badge.cls}" style="${badge.style || ''}"><span class="ms" aria-hidden="true">${badge.icon}</span> ${badge.label}</span></div>
+        <div class="apptbar"><div class="abav">${escapeHtml(initials)}</div> ${escapeHtml(a.barber.name)} <span style="color:var(--mut)" aria-hidden="true">·</span><span class="apptp">${formatCurrency(a.service.price)}</span></div></div>
       <div class="apptacts">
-        ${showQr ? `<button class="btnalt" data-qr="${a.id}"><span class="ms" style="font-size:15px">qr_code_2</span> Ver QR Code</button>` : ''}
-        ${canReview ? `<button class="btnrev" data-review="${a.id}"><span class="ms" style="font-size:15px">star</span> Avaliar</button>` : ''}
+        ${showQr ? `<button class="btnalt" data-qr="${a.id}"><span class="ms" aria-hidden="true" style="font-size:15px">qr_code_2</span> Ver QR Code</button>` : ''}
+        ${canReview ? `<button class="btnrev" data-review="${a.id}"><span class="ms" aria-hidden="true" style="font-size:15px">star</span> Avaliar</button>` : ''}
         ${myReview ? `<div class="apptrev"><span class="s">${'★'.repeat(myReview.rating)}</span> Avaliado</div>` : ''}
         ${showCancel ? `<button class="btncncl" data-cancel="${a.id}">Cancelar</button>` : ''}
       </div>
@@ -283,12 +283,12 @@ export function renderClientDashboardExtras() {
     <div class="ndb"><div class="ndbm">${monthName}</div><div class="ndbd">${day}</div><div class="ndbt">${next.start_time.slice(0, 5)}</div></div>
     <div class="nxttit">${escapeHtml(next.service.name)}</div>
     <div class="nxtmeta">
-      <div class="nxtrow"><span class="ms">person</span> ${escapeHtml(next.barber.name)}</div>
-      <div class="nxtrow"><span class="ms">payments</span> ${formatCurrency(next.service.price)}</div>
-      <div class="nxtrow"><span class="ms">schedule</span> ~${formatDuration(next.service.duration_minutes)}</div>
+      <div class="nxtrow"><span class="ms" aria-hidden="true">person</span> ${escapeHtml(next.barber.name)}</div>
+      <div class="nxtrow"><span class="ms" aria-hidden="true">payments</span> ${formatCurrency(next.service.price)}</div>
+      <div class="nxtrow"><span class="ms" aria-hidden="true">schedule</span> ~${formatDuration(next.service.duration_minutes)}</div>
     </div>
     <div class="nxtacts">
-      <button class="pbtn pbtno pbtnsm" data-qr="${next.id}"><span class="ms" style="font-size:15px">qr_code_2</span> Ver QR Code</button>
+      <button class="pbtn pbtno pbtnsm" data-qr="${next.id}"><span class="ms" aria-hidden="true" style="font-size:15px">qr_code_2</span> Ver QR Code</button>
     </div>`;
   nxtWrap.querySelectorAll('[data-qr]').forEach((btn) => {
     btn.addEventListener('click', () => openQrModal(btn.dataset.qr));
@@ -421,7 +421,7 @@ export async function renderPortalServices() {
       <div class="psrvico"><i class="ti ${escapeHtml(s.icon || 'ti-cut')}"></i></div>
       <div class="psrvtop"><span class="psrvnm">${escapeHtml(s.name)}</span><span class="psrvpr">${formatCurrency(s.price)}</span></div>
       <p class="psrvds">${escapeHtml(s.description)}</p>
-      <div class="psrvdur"><span class="ms">schedule</span>${formatDuration(s.duration_minutes)}</div>
+      <div class="psrvdur"><span class="ms" aria-hidden="true">schedule</span>${formatDuration(s.duration_minutes)}</div>
       <button class="psrvbook">Agendar este serviço</button>
     </div>`
     )

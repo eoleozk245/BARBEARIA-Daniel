@@ -42,7 +42,11 @@ function showV(id){
 function sto(id){
   const el=document.getElementById(id);if(!el)return;
   const nh=document.getElementById('nav').offsetHeight;
-  window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-nh+1,behavior:'smooth'});
+  // Rolagem animada é exatamente o que `prefers-reduced-motion` pede para
+  // desligar, e nenhuma media query de CSS alcança um scrollTo em JS.
+  const suave=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-nh+1,
+    behavior:suave?'smooth':'auto'});
   closeDrawer();
 }
 
@@ -157,8 +161,8 @@ function renderRev(p=0){
   const per=3,pgs=Math.ceil(AVAL.length/per),vis=AVAL.slice(p*per,p*per+per);
   document.getElementById('rgrid').innerHTML=vis.map(a=>`
     <div class="rcard">
-      <div class="rquo">"</div>
-      <div class="rstars">★★★★★</div>
+      <div class="rquo" aria-hidden="true">"</div>
+      <div class="rstars" role="img" aria-label="5 de 5 estrelas">★★★★★</div>
       <p class="rtxt">${a.t}</p>
       <div class="rfoot">
         <div class="raut"><div class="rav">${a.n[0]}</div><span class="ranm">${a.n}</span></div>

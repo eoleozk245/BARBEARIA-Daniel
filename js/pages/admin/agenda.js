@@ -84,7 +84,7 @@ export async function renderAdminAgenda() {
         <td style="color:var(--mut)">${a.appointment_date.split('-').reverse().join('/')}</td>
         <td>${a.start_time.slice(0, 5)}</td>
         <td style="font-weight:700;color:var(--acc)">${formatCurrency(a.service.price)}</td>
-        <td><span class="ast ${s.cls}"><span class="ms">${s.icon}</span>${s.label}</span></td>
+        <td><span class="ast ${s.cls}"><span class="ms" aria-hidden="true">${s.icon}</span>${s.label}</span></td>
         <td><div class="aact">
           ${a.status === 'scheduled' ? `<button class="abtn abtn-g" data-confirm="${a.id}">Confirmar</button>` : ''}
           ${a.status !== 'cancelled' && a.status !== 'completed' ? `<button class="abtn abtn-o" data-complete="${a.id}" title="Use apenas se o QR Code não puder ser lido — não soma ponto de fidelidade">Concluir</button>` : ''}
@@ -142,7 +142,7 @@ export async function renderFinanceKpis() {
     m = await getAdminDashboardMetrics();
   } catch (err) {
     const trend = document.getElementById('kpi-receita-trend');
-    if (trend) trend.innerHTML = '<span class="ms">error</span> não foi possível carregar';
+    if (trend) trend.innerHTML = '<span class="ms" aria-hidden="true">error</span> não foi possível carregar';
     return;
   }
 
@@ -169,13 +169,13 @@ export async function renderFinanceKpis() {
   if (trend) {
     if (!anterior) {
       trend.style.color = 'var(--mut)';
-      trend.innerHTML = '<span class="ms">remove</span> sem mês anterior para comparar';
+      trend.innerHTML = '<span class="ms" aria-hidden="true">remove</span> sem mês anterior para comparar';
     } else {
       const pct = ((receita - anterior) / anterior) * 100;
       const subiu = pct >= 0;
       trend.style.color = '';
       trend.className = `akpi-trend ${subiu ? 'aup' : 'adown'}`;
-      trend.innerHTML = `<span class="ms">${subiu ? 'arrow_upward' : 'arrow_downward'}</span> ${subiu ? '+' : ''}${pct.toFixed(1).replace('.', ',')}% vs. mês anterior`;
+      trend.innerHTML = `<span class="ms" aria-hidden="true">${subiu ? 'arrow_upward' : 'arrow_downward'}</span> ${subiu ? '+' : ''}${pct.toFixed(1).replace('.', ',')}% vs. mês anterior`;
     }
   }
 

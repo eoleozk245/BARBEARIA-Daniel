@@ -51,9 +51,9 @@ export async function renderAdminHistorico() {
           const meta = ACTION_META[h.action] || FALLBACK_META;
           return `
     <div class="atl-item">
-      <div class="atl-dot ${meta.dot}"><span class="ms">${meta.icon}</span></div>
+      <div class="atl-dot ${meta.dot}"><span class="ms" aria-hidden="true">${meta.icon}</span></div>
       <div class="atl-act">${escapeHtml(h.description || h.action)}</div>
-      <div class="atl-meta"><span><span class="ms">person</span>${escapeHtml(actorLabel(h))}</span><span><span class="ms">schedule</span>${formatDateTime(h.created_at)}</span></div>
+      <div class="atl-meta"><span><span class="ms" aria-hidden="true">person</span>${escapeHtml(actorLabel(h))}</span><span><span class="ms" aria-hidden="true">schedule</span>${formatDateTime(h.created_at)}</span></div>
     </div>`;
         })
         .join('')

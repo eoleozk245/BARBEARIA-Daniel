@@ -20,7 +20,7 @@ export function enablePullToRefresh(scroller, onRefresh) {
 
   const indicator = document.createElement('div');
   indicator.className = 'ptr';
-  indicator.innerHTML = '<span class="ms">arrow_downward</span>';
+  indicator.innerHTML = '<span class="ms" aria-hidden="true">arrow_downward</span>';
   scroller.style.position = scroller.style.position || 'relative';
   scroller.prepend(indicator);
 

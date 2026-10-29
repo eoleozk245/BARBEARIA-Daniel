@@ -13,7 +13,7 @@ export function qsa(selector, root = document) {
 export function emptyState(icon, title, subtitle = '') {
   return `
     <div class="empty">
-      <div class="empty-ico"><span class="ms">${escapeHtml(icon)}</span></div>
+      <div class="empty-ico"><span class="ms" aria-hidden="true">${escapeHtml(icon)}</span></div>
       <div class="empty-t">${escapeHtml(title)}</div>
       ${subtitle ? `<div class="empty-s">${escapeHtml(subtitle)}</div>` : ''}
     </div>`;

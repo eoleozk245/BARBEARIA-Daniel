@@ -58,11 +58,12 @@
 
 <!-- ══════════ VIEW 1: SITE ══════════ -->
 <div id="vs" class="view">
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
 
   <nav class="nav" id="nav">
     <div class="nav-in">
       <a class="logo" href="#home" aria-label="Barbearia do Daniel — Início">
-        <div class="lbox"><i class="ti ti-cut"></i></div>
+        <div class="lbox"><i class="ti ti-cut" aria-hidden="true"></i></div>
         <span class="ltxt">DANIEL</span>
       </a>
       <div class="ntabs" role="tablist">
@@ -74,9 +75,9 @@
         <button class="ntab" onclick="showV('vl')">Agendar</button>
         <button class="ntab" data-target="contact">Contato</button>
       </div>
-      <button class="nlogin" onclick="showV('vl')"><i class="ti ti-user"></i> Entrar</button>
+      <button class="nlogin" onclick="showV('vl')"><i class="ti ti-user" aria-hidden="true"></i> Entrar</button>
       <button class="nburgr" id="burgr" aria-label="Menu" aria-expanded="false">
-        <span class="ms" id="burgrico">menu</span>
+        <span class="ms" aria-hidden="true" id="burgrico">menu</span>
       </button>
     </div>
   </nav>
@@ -92,7 +93,7 @@
     <button class="dlogin" onclick="showV('vl')"><span class="ms" aria-hidden="true" style="font-size:16px">login</span> Entrar</button>
   </div>
 
-  <main>
+  <main id="conteudo">
 
     <!-- HOME -->
     <section class="sec" id="home">
@@ -107,15 +108,15 @@
             <h1 class="hh1">Arte em cada<br><span class="gd">detalhe.</span></h1>
             <p class="hp">Mais de 14 anos transformando estilos com técnica, cuidado e atenção que você merece.</p>
             <div class="hctas">
-              <button class="btn btng" onclick="showV('vl')"><i class="ti ti-calendar"></i> Agendar agora</button>
-              <button class="btn btno" onclick="sto('services')">Ver serviços <i class="ti ti-arrow-right"></i></button>
+              <button class="btn btng" onclick="showV('vl')"><i class="ti ti-calendar" aria-hidden="true"></i> Agendar agora</button>
+              <button class="btn btno" onclick="sto('services')">Ver serviços <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
             </div>
           </div>
           <div class="hcard rv rv2 in">
             <div class="hcl">Horário disponível agora</div>
             <div class="hch">Hoje, 18:30</div>
             <div class="hctime">
-              <span class="ms">schedule</span>
+              <span class="ms" aria-hidden="true">schedule</span>
               <div><div class="hctv">35 minutos</div><div class="hctr">Carlos Silva · Master Barber</div></div>
             </div>
             <div class="hcstats">
@@ -123,7 +124,7 @@
               <div class="hcs"><div class="hcsv">4,9 ★</div><div class="hcsl">Avaliação</div></div>
             </div>
             <button class="btn btng" style="width:100%;justify-content:center" onclick="showV('vl')">
-              <i class="ti ti-bolt"></i> Reservar este horário
+              <i class="ti ti-bolt" aria-hidden="true"></i> Reservar este horário
             </button>
           </div>
         </div>
@@ -186,26 +187,26 @@
       <div class="cgrid rv">
         <div>
           <div class="cigrid">
-            <div class="ci"><div class="ciico"><i class="ti ti-map-pin"></i></div><div><div class="cil">Endereço</div><div class="civ">Rua das Palmeiras, 123 — Centro</div></div></div>
-            <div class="ci"><div class="ciico"><i class="ti ti-phone"></i></div><div><div class="cil">Telefone</div><div class="civ">(84) 99999-0000</div></div></div>
-            <div class="ci"><div class="ciico"><i class="ti ti-mail"></i></div><div><div class="cil">E-mail</div><div class="civ">contato@barbearia.com</div></div></div>
-            <div class="ci"><div class="ciico"><i class="ti ti-brand-instagram"></i></div><div><div class="cil">Instagram</div><div class="civ">@barbeariaDaniel</div></div></div>
+            <div class="ci"><div class="ciico"><i class="ti ti-map-pin" aria-hidden="true"></i></div><div><div class="cil">Endereço</div><div class="civ">Rua das Palmeiras, 123 — Centro</div></div></div>
+            <div class="ci"><div class="ciico"><i class="ti ti-phone" aria-hidden="true"></i></div><div><div class="cil">Telefone</div><div class="civ">(84) 99999-0000</div></div></div>
+            <div class="ci"><div class="ciico"><i class="ti ti-mail" aria-hidden="true"></i></div><div><div class="cil">E-mail</div><div class="civ">contato@barbearia.com</div></div></div>
+            <div class="ci"><div class="ciico"><i class="ti ti-brand-instagram" aria-hidden="true"></i></div><div><div class="cil">Instagram</div><div class="civ">@barbeariaDaniel</div></div></div>
           </div>
           <div class="hcard2">
-            <div class="hcard2t"><i class="ti ti-clock"></i> Horários de funcionamento</div>
+            <div class="hcard2t"><i class="ti ti-clock" aria-hidden="true"></i> Horários de funcionamento</div>
             <div class="hcr"><span>Segunda a Sexta</span><span style="font-weight:600">09:00 – 20:00</span></div>
             <div class="hcr"><span>Sábado</span><span style="font-weight:600">09:00 – 18:00</span></div>
-            <div class="hcr"><span>Domingo</span><span style="color:var(--dim)">Fechado</span></div>
+            <div class="hcr"><span>Domingo</span><span style="color:var(--mut)">Fechado</span></div>
           </div>
         </div>
         <div class="cform">
           <div class="cftit">Envie uma mensagem</div>
           <div class="cfsub">Respondemos em até 2 horas em dias úteis.</div>
-          <div class="cffg"><label class="cflbl">Nome completo</label><input class="cfi" placeholder="Seu nome"></div>
-          <div class="cffg"><label class="cflbl">E-mail</label><input class="cfi" type="email" placeholder="seu@email.com"></div>
-          <div class="cffg"><label class="cflbl">Telefone (WhatsApp)</label><input class="cfi" placeholder="(84) 99999-0000"></div>
-          <div class="cffg"><label class="cflbl">Mensagem</label><textarea class="cfi cft" rows="4" placeholder="Sua dúvida ou solicitação"></textarea></div>
-          <button class="btn btng" style="width:100%;justify-content:center;margin-top:6px"><i class="ti ti-send"></i> Enviar mensagem</button>
+          <div class="cffg"><label class="cflbl" for="cf-nome">Nome completo</label><input id="cf-nome" class="cfi" placeholder="Seu nome"></div>
+          <div class="cffg"><label class="cflbl" for="cf-email">E-mail</label><input id="cf-email" class="cfi" type="email" placeholder="seu@email.com"></div>
+          <div class="cffg"><label class="cflbl" for="cf-fone">Telefone (WhatsApp)</label><input id="cf-fone" class="cfi" placeholder="(84) 99999-0000"></div>
+          <div class="cffg"><label class="cflbl" for="cf-msg">Mensagem</label><textarea id="cf-msg" class="cfi cft" rows="4" placeholder="Sua dúvida ou solicitação"></textarea></div>
+          <button class="btn btng" style="width:100%;justify-content:center;margin-top:6px"><i class="ti ti-send" aria-hidden="true"></i> Enviar mensagem</button>
         </div>
       </div>
     </section>
@@ -217,42 +218,42 @@
       <div class="fgrid">
         <div>
           <div style="display:flex;align-items:center;gap:10px">
-            <div class="lbox" style="width:28px;height:28px"><i class="ti ti-cut" style="font-size:13px"></i></div>
+            <div class="lbox" style="width:28px;height:28px"><i class="ti ti-cut" aria-hidden="true" style="font-size:13px"></i></div>
             <span style="font-size:14px;font-weight:800;letter-spacing:.06em">DANIEL</span>
           </div>
           <p class="fbd">Arte, técnica e cuidado em cada corte. Sua melhor versão começa aqui.</p>
           <div class="fsoc">
-            <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
-            <a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook"><i class="ti ti-brand-facebook"></i></a>
-            <a href="https://wa.me/5584999990000" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="ti ti-brand-whatsapp"></i></a>
-            <a href="https://youtube.com/" target="_blank" rel="noopener" aria-label="YouTube"><i class="ti ti-brand-youtube"></i></a>
+            <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram"><i class="ti ti-brand-instagram" aria-hidden="true"></i></a>
+            <a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook"><i class="ti ti-brand-facebook" aria-hidden="true"></i></a>
+            <a href="https://wa.me/5584999990000" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i></a>
+            <a href="https://youtube.com/" target="_blank" rel="noopener" aria-label="YouTube"><i class="ti ti-brand-youtube" aria-hidden="true"></i></a>
           </div>
         </div>
         <div>
           <div class="fct">Navegação</div>
-          <a class="fl" onclick="sto('home')">Home</a>
-          <a class="fl" onclick="sto('services')">Serviços</a>
-          <a class="fl" onclick="sto('team')">Equipe</a>
-          <a class="fl" onclick="sto('gallery')">Galeria</a>
-          <a class="fl" onclick="showV('vl')">Agendar</a>
+          <button type="button" class="fl" onclick="sto('home')">Home</button>
+          <button type="button" class="fl" onclick="sto('services')">Serviços</button>
+          <button type="button" class="fl" onclick="sto('team')">Equipe</button>
+          <button type="button" class="fl" onclick="sto('gallery')">Galeria</button>
+          <button type="button" class="fl" onclick="showV('vl')">Agendar</button>
         </div>
         <div>
           <div class="fct">Serviços</div>
-          <span class="fl">Corte Clássico</span><span class="fl">Degradê</span>
-          <span class="fl">Barba Completa</span><span class="fl">Hidratação</span><span class="fl">Sobrancelha</span>
+          <span class="fli">Corte Clássico</span><span class="fli">Degradê</span>
+          <span class="fli">Barba Completa</span><span class="fli">Hidratação</span><span class="fli">Sobrancelha</span>
         </div>
         <div>
           <div class="fct">Contato</div>
-          <span class="fl">(84) 99999-0000</span><span class="fl">contato@barbearia.com</span>
-          <span class="fl">Rua das Palmeiras, 123</span><span class="fl">@barbeariaDaniel</span>
+          <span class="fli">(84) 99999-0000</span><span class="fli">contato@barbearia.com</span>
+          <span class="fli">Rua das Palmeiras, 123</span><span class="fli">@barbeariaDaniel</span>
         </div>
       </div>
       <div class="fdiv"></div>
       <div class="fbot">
         <span class="fcp">© 2025 Barbearia do Daniel. Todos os direitos reservados.</span>
         <div class="factions">
-          <button class="btn btno btnsm" onclick="showV('val')"><i class="ti ti-shield-lock"></i> Painel do Administrador</button>
-          <button class="btn btno btnsm" onclick="showV('vl')"><i class="ti ti-user"></i> Área do cliente</button>
+          <button class="btn btno btnsm" onclick="showV('val')"><i class="ti ti-shield-lock" aria-hidden="true"></i> Painel do Administrador</button>
+          <button class="btn btno btnsm" onclick="showV('vl')"><i class="ti ti-user" aria-hidden="true"></i> Área do cliente</button>
         </div>
       </div>
     </div>
@@ -265,11 +266,11 @@
   <div class="ll">
     <div class="llorb"></div><div class="lldeco"></div>
     <div class="lllogo">
-      <div class="lllogoico"><span class="ms">content_cut</span></div>
+      <div class="lllogoico"><span class="ms" aria-hidden="true">content_cut</span></div>
       <span class="lllogotxt">B. Daniel</span>
     </div>
     <button class="llback" onclick="showV('vs')">
-      <span class="ms" style="font-size:14px">arrow_back</span> Voltar ao site
+      <span class="ms" aria-hidden="true" style="font-size:14px">arrow_back</span> Voltar ao site
     </button>
     <div>
       <!-- ALTERAR TÍTULO HERO SE NECESSÁRIO -->
@@ -282,25 +283,26 @@
       <h2>Acesse sua conta</h2>
       <p>Bem-vindo de volta. Insira suas credenciais para continuar.</p>
       <div class="lfg">
-        <label>E-mail</label>
+        <label for="lemail">E-mail</label>
         <div class="inpw">
-          <span class="ms inpico">mail</span>
+          <span class="ms inpico" aria-hidden="true">mail</span>
           <input type="email" class="linp" id="lemail" placeholder="voce@email.com" aria-label="E-mail">
         </div>
       </div>
       <div class="lfg">
-        <label>Senha <span class="lfgt" onclick="handleForgotPassword()" style="cursor:pointer">Esqueci minha senha</span></label>
+        <div class="lfglbl"><label for="lpw">Senha</label>
+          <button type="button" class="lfgt" onclick="handleForgotPassword()">Esqueci minha senha</button></div>
         <div class="inpw">
-          <span class="ms inpico">lock</span>
+          <span class="ms inpico" aria-hidden="true">lock</span>
           <input type="password" class="linp" id="lpw" placeholder="••••••••" aria-label="Senha">
           <button class="inpeye" onclick="togglePw()" aria-label="Ver senha">
-            <span class="ms" id="lpweye">visibility</span>
+            <span class="ms" aria-hidden="true" id="lpweye">visibility</span>
           </button>
         </div>
       </div>
       <div id="lerr" class="formerr" style="display:none"></div>
       <button class="lbtnp" onclick="handleClientLogin()">
-        Entrar <span class="ms" style="font-size:18px">arrow_forward</span>
+        Entrar <span class="ms" aria-hidden="true" style="font-size:18px">arrow_forward</span>
       </button>
       <div class="ldiv"><span>OU CONTINUE COM</span></div>
       <button class="lsoc lsoc-google" style="gap:12px"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> <span>Entrar com Google</span></button>
@@ -316,11 +318,11 @@
   <div class="ll">
     <div class="llorb"></div><div class="lldeco"></div>
     <div class="lllogo">
-      <div class="lllogoico"><span class="ms">content_cut</span></div>
+      <div class="lllogoico"><span class="ms" aria-hidden="true">content_cut</span></div>
       <span class="lllogotxt">Barbearia do Daniel</span>
     </div>
     <button class="llback" onclick="showV('vl')">
-      <span class="ms" style="font-size:14px">arrow_back</span> Voltar ao login
+      <span class="ms" aria-hidden="true" style="font-size:14px">arrow_back</span> Voltar ao login
     </button>
     <div>
       <h1 class="llh">Junte-se à<br><span class="gd">nossa comunidade.</span></h1>
@@ -332,49 +334,49 @@
       <h2>Criar conta</h2>
       <p>Preencha seus dados para começar.</p>
       <div class="lfg">
-        <label>Nome completo</label>
+        <label for="cname">Nome completo</label>
         <div class="inpw">
-          <span class="ms inpico">person</span>
+          <span class="ms inpico" aria-hidden="true">person</span>
           <input type="text" class="linp" id="cname" placeholder="Seu nome completo" aria-label="Nome">
         </div>
       </div>
       <div class="lfg">
-        <label>E-mail</label>
+        <label for="cemail">E-mail</label>
         <div class="inpw">
-          <span class="ms inpico">mail</span>
+          <span class="ms inpico" aria-hidden="true">mail</span>
           <input type="email" class="linp" id="cemail" placeholder="seu@email.com" aria-label="E-mail">
         </div>
       </div>
       <div class="lfg">
-        <label>Telefone / WhatsApp</label>
+        <label for="cphone">Telefone / WhatsApp</label>
         <div class="inpw">
-          <span class="ms inpico">phone</span>
+          <span class="ms inpico" aria-hidden="true">phone</span>
           <input type="tel" class="linp" id="cphone" placeholder="(84) 99999-0000" aria-label="Telefone">
         </div>
       </div>
       <div class="lfg">
-        <label>Senha</label>
+        <label for="cpw">Senha</label>
         <div class="inpw">
-          <span class="ms inpico">lock</span>
+          <span class="ms inpico" aria-hidden="true">lock</span>
           <input type="password" class="linp" id="cpw" placeholder="Mínimo 8 caracteres" aria-label="Senha">
           <button class="inpeye" onclick="toggleCpw()" aria-label="Mostrar senha">
-            <span class="ms" id="cpweye">visibility</span>
+            <span class="ms" aria-hidden="true" id="cpweye">visibility</span>
           </button>
         </div>
       </div>
       <div class="lfg">
-        <label>Confirmar senha</label>
+        <label for="cpw2">Confirmar senha</label>
         <div class="inpw">
-          <span class="ms inpico">lock</span>
+          <span class="ms inpico" aria-hidden="true">lock</span>
           <input type="password" class="linp" id="cpw2" placeholder="Repita a senha" aria-label="Confirmar senha">
           <button class="inpeye" onclick="toggleCpw2()" aria-label="Mostrar confirmação">
-            <span class="ms" id="cpw2eye">visibility</span>
+            <span class="ms" aria-hidden="true" id="cpw2eye">visibility</span>
           </button>
         </div>
       </div>
       <div id="cerr" class="formerr" style="display:none"></div>
       <button class="lbtnp" onclick="handleSignup()">
-        Criar conta <span class="ms" style="font-size:18px">arrow_forward</span>
+        Criar conta <span class="ms" aria-hidden="true" style="font-size:18px">arrow_forward</span>
       </button>
       <div class="lfoot">Já tem uma conta? <a onclick="showV('vl')" style="cursor:pointer">Entrar</a></div>
     </div>
@@ -388,15 +390,15 @@
     <div class="llorb"></div>
     <div class="lldeco"></div>
     <div class="lllogo">
-      <div class="lllogoico"><span class="ms">admin_panel_settings</span></div>
+      <div class="lllogoico"><span class="ms" aria-hidden="true">admin_panel_settings</span></div>
       <span class="lllogotxt">Área Restrita</span>
     </div>
     <button class="llback" onclick="showV('vl')">
-      <span class="ms" style="font-size:14px">arrow_back</span> Login do cliente
+      <span class="ms" aria-hidden="true" style="font-size:14px">arrow_back</span> Login do cliente
     </button>
     <div>
       <div style="display:inline-flex;align-items:center;gap:7px;padding:5px 14px;background:rgba(var(--ar),.1);border:1px solid rgba(var(--ar),.25);border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--acc);text-transform:uppercase;margin-bottom:20px">
-        <span class="ms" style="font-size:13px">shield</span> ADMINISTRADOR
+        <span class="ms" aria-hidden="true" style="font-size:13px">shield</span> ADMINISTRADOR
       </div>
       <h1 class="llh">Acesso <span class="gd">administrativo.</span></h1>
       <p class="llsub">Esta área é restrita. O acesso é monitorado e todas as ações são registradas no histórico do sistema.</p>
@@ -407,27 +409,27 @@
       <h2>Painel do Admin</h2>
       <p>Insira suas credenciais de administrador para continuar.</p>
       <div class="lfg">
-        <label>E-mail administrativo</label>
+        <label for="aemail">E-mail administrativo</label>
         <div class="inpw">
-          <span class="ms inpico">admin_panel_settings</span>
+          <span class="ms inpico" aria-hidden="true">admin_panel_settings</span>
           <input type="email" class="linp" id="aemail" placeholder="daniel@barbearia.com" aria-label="E-mail admin">
         </div>
       </div>
       <div class="lfg">
-        <label>Senha</label>
+        <label for="apw">Senha</label>
         <div class="inpw">
-          <span class="ms inpico">lock</span>
+          <span class="ms inpico" aria-hidden="true">lock</span>
           <input type="password" class="linp" id="apw" placeholder="••••••••" aria-label="Senha admin">
-          <button class="inpeye" onclick="togApw()" aria-label="Ver senha"><span class="ms" id="apweye">visibility</span></button>
+          <button class="inpeye" onclick="togApw()" aria-label="Ver senha"><span class="ms" aria-hidden="true" id="apweye">visibility</span></button>
         </div>
       </div>
       <div id="aerr" class="formerr" style="display:none"></div>
-      <button class="lbtnp" onclick="handleAdminLogin()" style="background:linear-gradient(135deg,var(--dim),var(--acc2));box-shadow:0 6px 24px -4px rgba(var(--ar),.35)">
-        <span class="ms" style="font-size:18px">admin_panel_settings</span> Entrar como Administrador
+      <button class="lbtnp" onclick="handleAdminLogin()" style="box-shadow:0 6px 24px -4px rgba(var(--ar),.35)">
+        <span class="ms" aria-hidden="true" style="font-size:18px">admin_panel_settings</span> Entrar como Administrador
       </button>
       <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.07);text-align:center">
         <button onclick="showV('vl')" style="font-size:12px;color:var(--mut);background:none;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px">
-          <span class="ms" style="font-size:14px">person</span> Entrar como cliente
+          <span class="ms" aria-hidden="true" style="font-size:14px">person</span> Entrar como cliente
         </button>
       </div>
     </div>
@@ -436,38 +438,39 @@
 
 <!-- ══════════ VIEW 3: PORTAL ══════════ -->
 <div id="vp" class="view">
+  <a class="skip" href="#pmain">Pular para o conteúdo</a>
   <div class="mobtop">
-    <button class="mobtogbtn" onclick="toggleMobSb('sb')" aria-label="Abrir menu"><span class="ms">menu</span></button>
+    <button class="mobtogbtn" onclick="toggleMobSb('sb')" aria-label="Abrir menu"><span class="ms" aria-hidden="true">menu</span></button>
     <div class="mobtop-tt">Barbearia do Daniel</div>
   </div>
   <div class="sboverlay" id="sb-overlay" onclick="closeMobSb('sb')"></div>
   <aside class="sb" id="sb">
     <div class="sbhdr">
       <div class="sbbrand">
-        <div class="sblogo"><span class="ms">content_cut</span></div>
+        <div class="sblogo"><span class="ms" aria-hidden="true">content_cut</span></div>
         <div class="sbinf"><div class="sbn">Barbearia do Daniel</div><div class="sbs">Premium Male Grooming</div></div>
       </div>
       <button class="sbtog" onclick="togSb()" aria-label="Recolher menu">
-        <span class="ms" id="sbico">chevron_left</span>
+        <span class="ms" aria-hidden="true" id="sbico">chevron_left</span>
       </button>
     </div>
     <div class="sbctaw">
       <button class="sbnew" onclick="pGo('novo-agendamento')">
-        <span class="ms" style="font-size:18px;flex-shrink:0">add</span>
+        <span class="ms" aria-hidden="true" style="font-size:18px;flex-shrink:0">add</span>
         <span class="lbl">Novo Agendamento</span>
       </button>
     </div>
     <nav class="sbnav">
-      <div class="ni on" id="nid" onclick="pGo('dashboard')"><span class="ms">grid_view</span><span class="nlbl">Dashboard</span></div>
-      <div class="ni" id="nia" onclick="pGo('agendamentos')"><span class="ms">calendar_month</span><span class="nlbl">Meus Agendamentos</span></div>
-      <div class="ni" id="nino" onclick="pGo('novo-agendamento')"><span class="ms">add_circle</span><span class="nlbl">Novo Agendamento</span></div>
-      <div class="ni" id="nis" onclick="pGo('servicos')"><span class="ms">design_services</span><span class="nlbl">Serviços</span></div>
-      <div class="ni" id="nip" onclick="pGo('perfil')"><span class="ms">person</span><span class="nlbl">Meu Perfil</span></div>
+      <button type="button" class="ni on" id="nid" onclick="pGo('dashboard')"><span class="ms" aria-hidden="true">grid_view</span><span class="nlbl">Dashboard</span></button>
+      <button type="button" class="ni" id="nia" onclick="pGo('agendamentos')"><span class="ms" aria-hidden="true">calendar_month</span><span class="nlbl">Meus Agendamentos</span></button>
+      <button type="button" class="ni" id="nino" onclick="pGo('novo-agendamento')"><span class="ms" aria-hidden="true">add_circle</span><span class="nlbl">Novo Agendamento</span></button>
+      <button type="button" class="ni" id="nis" onclick="pGo('servicos')"><span class="ms" aria-hidden="true">design_services</span><span class="nlbl">Serviços</span></button>
+      <button type="button" class="ni" id="nip" onclick="pGo('perfil')"><span class="ms" aria-hidden="true">person</span><span class="nlbl">Meu Perfil</span></button>
     </nav>
     <div class="sbbot">
-      <div class="ni" onclick="showV('vs')"><span class="ms">home</span><span class="nlbl">Voltar ao site</span></div>
-      <div class="ni"><span class="ms">help_outline</span><span class="nlbl">Suporte</span></div>
-      <div class="ni" onclick="handleClientLogout()" style="color:var(--err)"><span class="ms" style="color:var(--err)">logout</span><span class="nlbl">Sair da conta</span></div>
+      <button type="button" class="ni" onclick="showV('vs')"><span class="ms" aria-hidden="true">home</span><span class="nlbl">Voltar ao site</span></button>
+      <button type="button" class="ni" onclick="showV('vs');sto('contact')"><span class="ms" aria-hidden="true">help_outline</span><span class="nlbl">Suporte</span></button>
+      <button type="button" class="ni" onclick="handleClientLogout()" style="color:var(--err)"><span class="ms" aria-hidden="true" style="color:var(--err)">logout</span><span class="nlbl">Sair da conta</span></button>
       <div style="margin-top:6px;border-top:1px solid var(--gbd);padding-top:8px">
         <div class="sbusr"><div class="sbav" id="p-sbav">AC</div><div class="sbui"><div class="sbun" id="p-sbun">Alexandre Costa</div><div class="sbur">Cliente</div></div></div>
       </div>
@@ -478,10 +481,10 @@
     <!-- DASHBOARD -->
     <section class="psec on" id="psec-dashboard">
       <div class="dwelc-row">
-        <div class="dwelc"><h2>Bem-vindo de volta, <span id="p-dname">Alexandre</span> 👋</h2><p>Aqui está um resumo da sua conta.</p></div>
+        <div class="dwelc"><h1>Bem-vindo de volta, <span id="p-dname">Alexandre</span> 👋</h1><p>Aqui está um resumo da sua conta.</p></div>
         <div class="notif-wrap">
   <button class="notif-btn" id="p-notif-btn" aria-label="Notificações" aria-expanded="false">
-    <span class="ms">notifications</span>
+    <span class="ms" aria-hidden="true">notifications</span>
     <span class="notif-badge" id="p-notif-badge" hidden>0</span>
   </button>
   <div class="notif-panel" id="p-notif-panel" hidden role="dialog" aria-label="Notificações">
@@ -505,11 +508,11 @@
         <div>
           <div class="qac" style="margin-bottom:12px">
             <h3>Ações rápidas</h3>
-            <button class="pbtn pbtng" onclick="pGo('novo-agendamento')"><span class="ms" style="font-size:17px">add</span> Novo Agendamento</button>
-            <button class="pbtn pbtno" onclick="pGo('servicos')"><span class="ms" style="font-size:17px">design_services</span> Ver Serviços</button>
+            <button class="pbtn pbtng" onclick="pGo('novo-agendamento')"><span class="ms" aria-hidden="true" style="font-size:17px">add</span> Novo Agendamento</button>
+            <button class="pbtn pbtno" onclick="pGo('servicos')"><span class="ms" aria-hidden="true" style="font-size:17px">design_services</span> Ver Serviços</button>
           </div>
           <div class="loy">
-            <div class="loyhdr"><div class="loytit"><span class="ms">star</span> Fidelidade</div><div class="loystamp"><span class="ms">military_tech</span></div></div>
+            <div class="loyhdr"><div class="loytit"><span class="ms" aria-hidden="true">star</span> Fidelidade</div><div class="loystamp"><span class="ms" aria-hidden="true">military_tech</span></div></div>
             <div class="loyn"><span class="n">0</span><span class="of">/10</span><span class="loylbl">cortes</span></div>
             <div class="loybar"><div class="loyf" style="width:0%"></div></div>
             <div class="loyms">Faltam <strong>10 cortes</strong> para um serviço gratuito!</div>
@@ -526,7 +529,7 @@
     <section class="psec" id="psec-agendamentos">
       <div class="pph">
         <div><h1>Meus Agendamentos</h1><p>Gerencie suas próximas sessões e histórico de cortes.</p></div>
-        <button class="pbtn pbtng" onclick="pGo('novo-agendamento')"><span class="ms" style="font-size:17px">add</span> Novo Agendamento</button>
+        <button class="pbtn pbtng" onclick="pGo('novo-agendamento')"><span class="ms" aria-hidden="true" style="font-size:17px">add</span> Novo Agendamento</button>
       </div>
       <div class="apptl">
         <div>
@@ -537,14 +540,14 @@
           <div class="ptc on" id="ptcprox">
             <div class="appt">
               <div class="apptdt"><div class="apptmon">jun</div><div class="apptday">15</div><div class="appttm">14:30</div></div>
-              <div><div class="appth">Corte Degradê <span class="pbdg pbdgok"><span class="ms">check_circle</span> Confirmado</span></div>
-                <div class="apptbar"><div class="abav">CS</div> Carlos Silva <span style="color:var(--dim)">·</span><span class="apptp">R$ 40,00</span></div></div>
+              <div><div class="appth">Corte Degradê <span class="pbdg pbdgok"><span class="ms" aria-hidden="true">check_circle</span> Confirmado</span></div>
+                <div class="apptbar"><div class="abav">CS</div> Carlos Silva <span style="color:var(--mut)">·</span><span class="apptp">R$ 40,00</span></div></div>
               <div class="apptacts"><button class="btnalt">Alterar</button><button class="btncncl">Cancelar</button></div>
             </div>
             <div class="appt">
               <div class="apptdt"><div class="apptmon">jun</div><div class="apptday">22</div><div class="appttm">10:00</div></div>
-              <div><div class="appth">Barba Completa <span class="pbdg pbdgpnd"><span class="ms">schedule</span> Pendente</span></div>
-                <div class="apptbar"><div class="abav">RM</div> Rafael Mendes <span style="color:var(--dim)">·</span><span class="apptp">R$ 30,00</span></div></div>
+              <div><div class="appth">Barba Completa <span class="pbdg pbdgpnd"><span class="ms" aria-hidden="true">schedule</span> Pendente</span></div>
+                <div class="apptbar"><div class="abav">RM</div> Rafael Mendes <span style="color:var(--mut)">·</span><span class="apptp">R$ 30,00</span></div></div>
               <div class="apptacts"><button class="btnalt">Alterar</button><button class="btncncl">Cancelar</button></div>
             </div>
           </div>
@@ -552,13 +555,13 @@
             <div class="appt">
               <div class="apptdt"><div class="apptmon">mai</div><div class="apptday">28</div><div class="appttm">15:00</div></div>
               <div><div class="appth">Corte + Barba <span class="pbdg pbdgdn">Concluído</span></div>
-                <div class="apptbar"><div class="abav">CS</div> Carlos Silva <span style="color:var(--dim)">·</span><span class="apptp">R$ 55,00</span></div></div>
+                <div class="apptbar"><div class="abav">CS</div> Carlos Silva <span style="color:var(--mut)">·</span><span class="apptp">R$ 55,00</span></div></div>
               <div class="apptacts"><button class="btnalt">Repetir</button></div>
             </div>
             <div class="appt">
               <div class="apptdt"><div class="apptmon">mai</div><div class="apptday">10</div><div class="appttm">11:30</div></div>
               <div><div class="appth">Hidratação <span class="pbdg pbdgdn">Concluído</span></div>
-                <div class="apptbar"><div class="abav">DC</div> Diego Costa <span style="color:var(--dim)">·</span><span class="apptp">R$ 45,00</span></div></div>
+                <div class="apptbar"><div class="abav">DC</div> Diego Costa <span style="color:var(--mut)">·</span><span class="apptp">R$ 45,00</span></div></div>
               <div class="apptacts"><button class="btnalt">Repetir</button></div>
             </div>
           </div>
@@ -567,8 +570,8 @@
           <div class="mcal">
             <div class="mchdr"><span class="mcm">Junho 2024</span>
               <div class="mcnavs">
-                <button class="mcnav"><span class="ms">chevron_left</span></button>
-                <button class="mcnav"><span class="ms">chevron_right</span></button>
+                <button class="mcnav" aria-label="Mês anterior"><span class="ms" aria-hidden="true">chevron_left</span></button>
+                <button class="mcnav" aria-label="Próximo mês"><span class="ms" aria-hidden="true">chevron_right</span></button>
               </div>
             </div>
             <div class="mcgrid" id="mcgrid"></div>
@@ -578,7 +581,7 @@
             </div>
           </div>
           <div class="loy">
-            <div class="loyhdr"><div class="loytit"><span class="ms">star</span> Fidelidade</div><div class="loystamp"><span class="ms">military_tech</span></div></div>
+            <div class="loyhdr"><div class="loytit"><span class="ms" aria-hidden="true">star</span> Fidelidade</div><div class="loystamp"><span class="ms" aria-hidden="true">military_tech</span></div></div>
             <div class="loyn"><span class="n">0</span><span class="of">/10</span><span class="loylbl">cortes</span></div>
             <div class="loybar"><div class="loyf" style="width:0%"></div></div>
             <div class="loyms">Faltam <strong>10 cortes</strong> para um serviço gratuito.</div>
@@ -593,7 +596,7 @@
       <div class="cmodal">
         <div class="cmodal-hdr">
           <h3 id="qr-modal-title">QR Code do Agendamento</h3>
-          <button class="cmodal-x" onclick="closeQrModal()" aria-label="Fechar"><span class="ms">close</span></button>
+          <button class="cmodal-x" onclick="closeQrModal()" aria-label="Fechar"><span class="ms" aria-hidden="true">close</span></button>
         </div>
         <div class="cmodal-body" style="text-align:center">
           <div id="qr-modal-info" style="margin-bottom:14px;font-size:13px;color:var(--mut)"></div>
@@ -616,11 +619,11 @@
       <div class="cmodal">
         <div class="cmodal-hdr">
           <h3 id="rev-modal-title">Como foi seu atendimento?</h3>
-          <button class="cmodal-x" onclick="closeReviewModal()" aria-label="Fechar"><span class="ms">close</span></button>
+          <button class="cmodal-x" onclick="closeReviewModal()" aria-label="Fechar"><span class="ms" aria-hidden="true">close</span></button>
         </div>
         <div class="cmodal-body">
           <div id="rev-modal-info" style="margin-bottom:16px;font-size:13px;color:var(--mut);text-align:center"></div>
-          <div class="rstars" id="rev-stars" role="radiogroup" aria-label="Nota de 1 a 5 estrelas">
+          <div class="rstars-input" id="rev-stars" role="radiogroup" aria-label="Nota de 1 a 5 estrelas">
             <button type="button" class="rstar" data-star="1" role="radio" aria-checked="false" aria-label="1 estrela">★</button>
             <button type="button" class="rstar" data-star="2" role="radio" aria-checked="false" aria-label="2 estrelas">★</button>
             <button type="button" class="rstar" data-star="3" role="radio" aria-checked="false" aria-label="3 estrelas">★</button>
@@ -629,6 +632,7 @@
           </div>
           <div class="rstars-lbl" id="rev-stars-lbl">Toque nas estrelas para dar sua nota</div>
           <textarea id="rev-comment" class="afb-resp" rows="3" style="width:100%;margin-top:14px"
+                    aria-label="Comentário sobre o atendimento (opcional)"
                     placeholder="Quer contar algo? (opcional)" maxlength="500"></textarea>
           <div id="rev-err" class="cmodal-err" style="display:none"></div>
         </div>
@@ -652,12 +656,12 @@
             <div id="bksvclist"></div>
           </div>
           <div class="bkstep" id="bk2">
-            <button class="bkback" onclick="bkGo(1)"><i class="ti ti-arrow-left"></i> Voltar</button>
+            <button class="bkback" onclick="bkGo(1)"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>
             <div class="bktit">Escolha o barbeiro</div>
             <div class="bkbar" id="bkbar"></div>
           </div>
           <div class="bkstep" id="bk3">
-            <button class="bkback" onclick="bkGo(2)"><i class="ti ti-arrow-left"></i> Voltar</button>
+            <button class="bkback" onclick="bkGo(2)"><i class="ti ti-arrow-left" aria-hidden="true"></i> Voltar</button>
             <div class="bktit">Data e horário</div>
             <div class="bksub">Selecione uma data:</div>
             <div class="bkdts" id="bkdates"></div>
@@ -665,11 +669,11 @@
             <div class="bkhrs" id="bktimes"></div>
             <button class="btn btng" id="bkconfirm" onclick="bkConfirm()"
               style="width:100%;justify-content:center;margin-top:18px;display:none">
-              <i class="ti ti-check"></i> Confirmar agendamento
+              <i class="ti ti-check" aria-hidden="true"></i> Confirmar agendamento
             </button>
           </div>
           <div class="bkstep" id="bk4" style="text-align:center;padding:8px 0">
-            <div class="bkokico"><i class="ti ti-check"></i></div>
+            <div class="bkokico"><i class="ti ti-check" aria-hidden="true"></i></div>
             <div style="font-size:20px;font-weight:800;margin-bottom:8px;letter-spacing:-.02em">Agendamento confirmado!</div>
             <p style="font-size:13px;color:var(--mut);margin-bottom:20px">Você pode acompanhar o status em "Meus Agendamentos".</p>
             <div class="bksum" id="bksum"></div>
@@ -705,12 +709,12 @@
           </div>
           <div class="ptc on" id="pptcdados">
             <div class="pfg2">
-              <div class="pfld"><label>Nome completo</label><input type="text" id="pf-inp-name"></div>
-              <div class="pfld"><label>Data de nascimento</label><input type="text" id="pf-inp-birth" placeholder="Não informado"></div>
-              <div class="pfld"><label>E-mail</label><input type="email" id="pf-inp-email"></div>
-              <div class="pfld"><label>Telefone / WhatsApp</label><input type="text" id="pf-inp-phone" placeholder="Não informado"></div>
-              <div class="pfld"><label>CPF</label><input type="text" id="pf-inp-cpf" placeholder="Não informado"></div>
-              <div class="pfld"><label>Cidade</label><input type="text" id="pf-inp-city" placeholder="Não informado"></div>
+              <div class="pfld"><label for="pf-inp-name">Nome completo</label><input type="text" id="pf-inp-name"></div>
+              <div class="pfld"><label for="pf-inp-birth">Data de nascimento</label><input type="text" id="pf-inp-birth" placeholder="Não informado"></div>
+              <div class="pfld"><label for="pf-inp-email">E-mail</label><input type="email" id="pf-inp-email"></div>
+              <div class="pfld"><label for="pf-inp-phone">Telefone / WhatsApp</label><input type="text" id="pf-inp-phone" placeholder="Não informado"></div>
+              <div class="pfld"><label for="pf-inp-cpf">CPF</label><input type="text" id="pf-inp-cpf" placeholder="Não informado"></div>
+              <div class="pfld"><label for="pf-inp-city">Cidade</label><input type="text" id="pf-inp-city" placeholder="Não informado"></div>
             </div>
             <div class="saverow"><button class="pbtn pbtng">Salvar alterações</button></div>
           </div>
@@ -719,32 +723,32 @@
               <div style="font-size:14px;font-weight:700;margin-bottom:4px">Barbeiro favorito</div>
               <div style="font-size:12px;color:var(--mut);margin-bottom:12px">Selecionado para prioridade de agendamento.</div>
               <div class="bargrid">
-                <div class="baropt" onclick="selBar(this)"><div class="barav">CS</div><div class="barnm">Carlos Silva</div><div class="barsp">Degradê & Navalhado</div></div>
-                <div class="baropt" onclick="selBar(this)"><div class="barav">RM</div><div class="barnm">Rafael Mendes</div><div class="barsp">Barba Clássica</div></div>
-                <div class="baropt" onclick="selBar(this)"><div class="barav">DC</div><div class="barnm">Diego Costa</div><div class="barsp">Cortes Modernos</div></div>
-                <div class="baropt" onclick="selBar(this)"><div class="barav">LF</div><div class="barnm">Lucas Ferreira</div><div class="barsp">Coloração</div></div>
+                <button type="button" class="baropt" onclick="selBar(this)"><span class="barav">CS</span><span class="barnm">Carlos Silva</span><span class="barsp">Degradê & Navalhado</span></button>
+                <button type="button" class="baropt" onclick="selBar(this)"><span class="barav">RM</span><span class="barnm">Rafael Mendes</span><span class="barsp">Barba Clássica</span></button>
+                <button type="button" class="baropt" onclick="selBar(this)"><span class="barav">DC</span><span class="barnm">Diego Costa</span><span class="barsp">Cortes Modernos</span></button>
+                <button type="button" class="baropt" onclick="selBar(this)"><span class="barav">LF</span><span class="barnm">Lucas Ferreira</span><span class="barsp">Coloração</span></button>
               </div>
             </div>
             <div style="font-size:14px;font-weight:700;margin-bottom:12px">Notificações</div>
-            <div class="trow"><div class="trowi"><h4>WhatsApp</h4><p>Confirmações e lembretes por WhatsApp</p></div><label class="tog"><input type="checkbox" checked><span class="togsl"></span></label></div>
-            <div class="trow"><div class="trowi"><h4>E-mail</h4><p>Comprovantes e novidades por e-mail</p></div><label class="tog"><input type="checkbox" checked><span class="togsl"></span></label></div>
-            <div class="trow"><div class="trowi"><h4>Programa de Fidelidade</h4><p>Avisos sobre pontos e recompensas</p></div><label class="tog"><input type="checkbox"><span class="togsl"></span></label></div>
-            <div class="trow"><div class="trowi"><h4>Promoções</h4><p>Ofertas exclusivas e novos serviços</p></div><label class="tog"><input type="checkbox"><span class="togsl"></span></label></div>
+            <div class="trow"><div class="trowi"><h4>WhatsApp</h4><p>Confirmações e lembretes por WhatsApp</p></div><label class="tog"><input type="checkbox" aria-label="Notificações por WhatsApp" checked><span class="togsl"></span></label></div>
+            <div class="trow"><div class="trowi"><h4>E-mail</h4><p>Comprovantes e novidades por e-mail</p></div><label class="tog"><input type="checkbox" aria-label="Notificações por e-mail" checked><span class="togsl"></span></label></div>
+            <div class="trow"><div class="trowi"><h4>Programa de Fidelidade</h4><p>Avisos sobre pontos e recompensas</p></div><label class="tog"><input type="checkbox" aria-label="Avisos do programa de fidelidade"><span class="togsl"></span></label></div>
+            <div class="trow"><div class="trowi"><h4>Promoções</h4><p>Ofertas exclusivas e novos serviços</p></div><label class="tog"><input type="checkbox" aria-label="Avisos de promoções"><span class="togsl"></span></label></div>
             <div class="saverow"><button class="pbtn pbtng">Salvar preferências</button></div>
           </div>
           <div class="ptc" id="pptcseg">
             <div class="secsect"><h3>Alterar senha</h3><p>Use uma senha forte com pelo menos 8 caracteres.</p>
               <div class="pfg2">
-                <div class="pfld pffull"><label>Senha atual</label><input type="password" placeholder="••••••••"></div>
-                <div class="pfld"><label>Nova senha</label><input type="password" placeholder="••••••••"></div>
-                <div class="pfld"><label>Confirmar nova senha</label><input type="password" placeholder="••••••••"></div>
+                <div class="pfld pffull"><label for="pf-pw-atual">Senha atual</label><input type="password" id="pf-pw-atual" placeholder="••••••••"></div>
+                <div class="pfld"><label for="pf-pw-nova">Nova senha</label><input type="password" id="pf-pw-nova" placeholder="••••••••"></div>
+                <div class="pfld"><label for="pf-pw-conf">Confirmar nova senha</label><input type="password" id="pf-pw-conf" placeholder="••••••••"></div>
               </div>
               <div class="saverow"><button class="pbtn pbtng">Atualizar senha</button></div>
             </div>
             <div class="secdiv"></div>
             <div class="secsect"><h3>Sessões ativas</h3><p>Dispositivos conectados à sua conta.</p>
               <div class="sessitem">
-                <div class="sessl"><span class="ms" style="color:var(--acc)">computer</span>
+                <div class="sessl"><span class="ms" aria-hidden="true" style="color:var(--acc)">computer</span>
                   <div><div class="sessnm">Chrome · Windows 11</div><div class="sessloc">Natal, RN · Agora</div></div>
                 </div>
                 <span style="font-size:10px;font-weight:700;color:var(--ok)">SESSÃO ATUAL</span>
@@ -760,7 +764,7 @@
             <div class="sumr"><span>Status</span><span id="sum-status"></span></div>
           </div>
           <div class="loy">
-            <div class="loyhdr"><div class="loytit"><span class="ms">star</span> Fidelidade</div><div class="loystamp"><span class="ms">military_tech</span></div></div>
+            <div class="loyhdr"><div class="loytit"><span class="ms" aria-hidden="true">star</span> Fidelidade</div><div class="loystamp"><span class="ms" aria-hidden="true">military_tech</span></div></div>
             <div class="loyn"><span class="n">0</span><span class="of">/10</span><span class="loylbl">cortes</span></div>
             <div class="loybar"><div class="loyf" style="width:0%"></div></div>
             <div class="loyms">Faltam <strong>10 cortes</strong> para um serviço gratuito.</div>
@@ -781,9 +785,10 @@
 
 <!-- ══════════ VIEW: PAINEL ADMIN ══════════ -->
 <div id="va" class="view">
+  <a class="skip" href="#apmain">Pular para o conteúdo</a>
 
   <div class="mobtop">
-    <button class="mobtogbtn" onclick="toggleMobSb('asb')" aria-label="Abrir menu"><span class="ms">menu</span></button>
+    <button class="mobtogbtn" onclick="toggleMobSb('asb')" aria-label="Abrir menu"><span class="ms" aria-hidden="true">menu</span></button>
     <div class="mobtop-tt">Painel Administrativo</div>
   </div>
   <div class="sboverlay" id="asb-overlay" onclick="closeMobSb('asb')"></div>
@@ -792,45 +797,45 @@
   <aside class="sb" id="asb">
     <div class="sbhdr">
       <div class="sbbrand">
-        <div class="sblogo"><span class="ms">admin_panel_settings</span></div>
+        <div class="sblogo"><span class="ms" aria-hidden="true">admin_panel_settings</span></div>
         <div class="sbinf">
           <div class="sbn">Barbearia do Daniel</div>
           <div class="sbs" style="color:var(--acc);font-weight:700;font-size:9px;letter-spacing:.08em;text-transform:uppercase">ADMINISTRADOR</div>
         </div>
       </div>
       <button class="sbtog" onclick="togAdSb()" aria-label="Recolher menu">
-        <span class="ms" id="asbico">chevron_left</span>
+        <span class="ms" aria-hidden="true" id="asbico">chevron_left</span>
       </button>
     </div>
     <div class="sbctaw">
       <button class="sbnew" onclick="adminNewAppointment()">
-        <span class="ms" style="font-size:18px;flex-shrink:0">add</span>
+        <span class="ms" aria-hidden="true" style="font-size:18px;flex-shrink:0">add</span>
         <span class="lbl">Novo Agendamento</span>
       </button>
-      <button class="sbnew" onclick="aGo('scanner')" style="margin-top:8px;background:var(--ok)">
-        <span class="ms" style="font-size:18px;flex-shrink:0">qr_code_scanner</span>
+      <button class="sbnew" onclick="aGo('scanner')" style="margin-top:8px">
+        <span class="ms" aria-hidden="true" style="font-size:18px;flex-shrink:0">qr_code_scanner</span>
         <span class="lbl">Escanear QR Code</span>
       </button>
     </div>
     <nav class="sbnav">
-      <div class="ni on" id="ani-dash" onclick="aGo('dash')"><span class="ms">insights</span><span class="nlbl">Dashboard</span></div>
-      <div class="ni" id="ani-agenda" onclick="aGo('agenda')"><span class="ms">calendar_month</span><span class="nlbl">Agenda</span></div>
-      <div class="ni" id="ani-scanner" onclick="aGo('scanner')"><span class="ms">qr_code_scanner</span><span class="nlbl">Escanear QR</span></div>
-      <div class="ni" id="ani-clientes" onclick="aGo('clientes')"><span class="ms">group</span><span class="nlbl">Clientes</span></div>
-      <div class="ni" id="ani-feedbacks" onclick="aGo('feedbacks')"><span class="ms">star_half</span><span class="nlbl">Feedbacks</span></div>
-      <div class="ni" id="ani-notif" onclick="aGo('notif')"><span class="ms">notifications</span><span class="nlbl">Notificações</span></div>
-      <div class="ni" id="ani-hist" onclick="aGo('hist')"><span class="ms">history</span><span class="nlbl">Histórico</span></div>
-      <div class="ni" id="ani-config" onclick="aGo('config')"><span class="ms">tune</span><span class="nlbl">Configurações</span></div>
+      <button type="button" class="ni on" id="ani-dash" onclick="aGo('dash')"><span class="ms" aria-hidden="true">insights</span><span class="nlbl">Dashboard</span></button>
+      <button type="button" class="ni" id="ani-agenda" onclick="aGo('agenda')"><span class="ms" aria-hidden="true">calendar_month</span><span class="nlbl">Agenda</span></button>
+      <button type="button" class="ni" id="ani-scanner" onclick="aGo('scanner')"><span class="ms" aria-hidden="true">qr_code_scanner</span><span class="nlbl">Escanear QR</span></button>
+      <button type="button" class="ni" id="ani-clientes" onclick="aGo('clientes')"><span class="ms" aria-hidden="true">group</span><span class="nlbl">Clientes</span></button>
+      <button type="button" class="ni" id="ani-feedbacks" onclick="aGo('feedbacks')"><span class="ms" aria-hidden="true">star_half</span><span class="nlbl">Feedbacks</span></button>
+      <button type="button" class="ni" id="ani-notif" onclick="aGo('notif')"><span class="ms" aria-hidden="true">notifications</span><span class="nlbl">Notificações</span></button>
+      <button type="button" class="ni" id="ani-hist" onclick="aGo('hist')"><span class="ms" aria-hidden="true">history</span><span class="nlbl">Histórico</span></button>
+      <button type="button" class="ni" id="ani-config" onclick="aGo('config')"><span class="ms" aria-hidden="true">tune</span><span class="nlbl">Configurações</span></button>
     </nav>
     <div class="sbbot">
-      <div class="ni" onclick="showV('vs')"><span class="ms">home</span><span class="nlbl">Voltar ao site</span></div>
-      <div class="ni" onclick="handleAdminLogout()" style="color:var(--err)"><span class="ms" style="color:var(--err)">logout</span><span class="nlbl">Sair</span></div>
+      <button type="button" class="ni" onclick="showV('vs')"><span class="ms" aria-hidden="true">home</span><span class="nlbl">Voltar ao site</span></button>
+      <button type="button" class="ni" onclick="handleAdminLogout()" style="color:var(--err)"><span class="ms" aria-hidden="true" style="color:var(--err)">logout</span><span class="nlbl">Sair</span></button>
       <div style="margin-top:6px;border-top:1px solid var(--gbd);padding-top:8px">
         <div class="sbusr">
           <div class="sbav" id="a-sbav" style="background:linear-gradient(135deg,var(--acc2),var(--acc3));color:#1a1400;font-weight:800">DN</div>
           <div class="sbui"><div class="sbun" id="a-sbun">Daniel</div><div class="sbur" style="color:var(--acc)">Administrador</div></div>
         </div>
-        <div class="nlbl" style="font-size:9px;color:var(--dim);text-align:center;padding-top:4px">versão 20260813k</div>
+        <div class="nlbl" style="font-size:11px;color:var(--mut);text-align:center;padding-top:4px">versão 20260813k</div>
       </div>
     </div>
   </aside>
@@ -842,7 +847,7 @@
     <section class="asec on" id="asec-dash">
       <div class="awelc-row"><div class="notif-wrap">
   <button class="notif-btn" id="a-notif-btn" aria-label="Notificações" aria-expanded="false">
-    <span class="ms">notifications</span>
+    <span class="ms" aria-hidden="true">notifications</span>
     <span class="notif-badge" id="a-notif-badge" hidden>0</span>
   </button>
   <div class="notif-panel" id="a-notif-panel" hidden role="dialog" aria-label="Notificações">
@@ -855,8 +860,8 @@
 </div></div>
       <div class="awelc">
         <div>
-          <div class="admbadge"><span class="ms">admin_panel_settings</span> Administrador</div>
-          <h2>Olá, <span id="a-dname">Daniel</span> 👋</h2>
+          <div class="admbadge"><span class="ms" aria-hidden="true">admin_panel_settings</span> Administrador</div>
+          <h1>Olá, <span id="a-dname">Daniel</span> 👋</h1>
           <p>Aqui está o resumo financeiro e operacional da barbearia.</p>
         </div>
         <div style="text-align:right;flex-shrink:0">
@@ -866,28 +871,28 @@
       </div>
       <div class="akpis">
         <div class="akpi">
-          <div class="akpi-ico"><span class="ms">trending_up</span></div>
+          <div class="akpi-ico"><span class="ms" aria-hidden="true">trending_up</span></div>
           <div class="akpi-v" id="kpi-receita">—</div>
           <div class="akpi-l" id="kpi-receita-lbl">Receita do mês</div>
-          <div class="akpi-trend" id="kpi-receita-trend" style="color:var(--mut)"><span class="ms">schedule</span> carregando…</div>
+          <div class="akpi-trend" id="kpi-receita-trend" style="color:var(--mut)"><span class="ms" aria-hidden="true">schedule</span> carregando…</div>
         </div>
         <div class="akpi">
-          <div class="akpi-ico" style="background:linear-gradient(135deg,rgba(76,175,130,.18),rgba(76,175,130,.06));border-color:rgba(76,175,130,.2)"><span class="ms" style="color:var(--ok)">sell</span></div>
+          <div class="akpi-ico" style="background:linear-gradient(135deg,rgba(76,175,130,.18),rgba(76,175,130,.06));border-color:rgba(76,175,130,.2)"><span class="ms" aria-hidden="true" style="color:var(--ok)">sell</span></div>
           <div class="akpi-v akpi-vo" id="kpi-ticket">—</div>
           <div class="akpi-l">Ticket médio</div>
-          <div class="akpi-trend" style="color:var(--mut)"><span class="ms">calculate</span> receita ÷ atendimentos</div>
+          <div class="akpi-trend" style="color:var(--mut)"><span class="ms" aria-hidden="true">calculate</span> receita ÷ atendimentos</div>
         </div>
         <div class="akpi">
-          <div class="akpi-ico"><span class="ms">person_add</span></div>
+          <div class="akpi-ico"><span class="ms" aria-hidden="true">person_add</span></div>
           <div class="akpi-v" id="kpi-novos">—</div>
           <div class="akpi-l">Novos clientes no mês</div>
-          <div class="akpi-trend" style="color:var(--mut)"><span class="ms">group</span> cadastros reais</div>
+          <div class="akpi-trend" style="color:var(--mut)"><span class="ms" aria-hidden="true">group</span> cadastros reais</div>
         </div>
         <div class="akpi">
-          <div class="akpi-ico"><span class="ms">content_cut</span></div>
+          <div class="akpi-ico"><span class="ms" aria-hidden="true">content_cut</span></div>
           <div class="akpi-v" id="kpi-appts-count">—</div>
           <div class="akpi-l">Atendimentos este mês</div>
-          <div class="akpi-trend" style="color:var(--mut)"><span class="ms">event</span> dado real (agendamentos)</div>
+          <div class="akpi-trend" style="color:var(--mut)"><span class="ms" aria-hidden="true">event</span> dado real (agendamentos)</div>
         </div>
       </div>
       <div class="chart-row">
@@ -931,7 +936,7 @@
       <div class="cmodal">
         <div class="cmodal-hdr">
           <h3 id="na-modal-title">Novo Agendamento</h3>
-          <button class="cmodal-x" onclick="closeNewAppointmentModal()" aria-label="Fechar"><span class="ms">close</span></button>
+          <button class="cmodal-x" onclick="closeNewAppointmentModal()" aria-label="Fechar"><span class="ms" aria-hidden="true">close</span></button>
         </div>
         <div class="cmodal-body">
           <div class="na-field">
@@ -943,10 +948,10 @@
               <select class="acfg-inp" id="na-client"><option value="">Carregando…</option></select>
             </div>
             <div id="na-client-new" style="display:none">
-              <input type="text" class="acfg-inp" id="na-new-name" placeholder="Nome completo" autocomplete="off">
-              <input type="email" class="acfg-inp" id="na-new-email" placeholder="E-mail (cria o login do cliente)" autocomplete="off">
-              <input type="tel" class="acfg-inp" id="na-new-phone" placeholder="Telefone (opcional)" autocomplete="off">
-              <input type="password" class="acfg-inp" id="na-new-password" placeholder="Senha (opcional — mín. 8 caracteres)" autocomplete="new-password">
+              <input type="text" class="acfg-inp" id="na-new-name" aria-label="Nome completo do novo cliente" placeholder="Nome completo" autocomplete="off">
+              <input type="email" class="acfg-inp" id="na-new-email" aria-label="E-mail do novo cliente" placeholder="E-mail (cria o login do cliente)" autocomplete="off">
+              <input type="tel" class="acfg-inp" id="na-new-phone" aria-label="Telefone do novo cliente (opcional)" placeholder="Telefone (opcional)" autocomplete="off">
+              <input type="password" class="acfg-inp" id="na-new-password" aria-label="Senha inicial do novo cliente (opcional)" placeholder="Senha (opcional — mín. 8 caracteres)" autocomplete="new-password">
             </div>
           </div>
 
@@ -966,8 +971,8 @@
           </div>
 
           <div class="na-field">
-            <label class="na-label">Horário</label>
-            <div class="na-slots" id="na-slots"><span class="na-hint">Escolha serviço, barbeiro e data para ver os horários.</span></div>
+            <div class="na-label" id="na-slots-lbl">Horário</div>
+            <div class="na-slots" id="na-slots" role="group" aria-labelledby="na-slots-lbl"><span class="na-hint">Escolha serviço, barbeiro e data para ver os horários.</span></div>
           </div>
 
           <div id="na-err" class="cmodal-err" style="display:none"></div>
@@ -983,13 +988,13 @@
     <section class="asec" id="asec-agenda">
       <div class="aph">
         <div><h1>Agenda</h1><p>Todos os agendamentos da barbearia.</p></div>
-        <button class="abtn abtn-g" onclick="adminNewAppointment()" style="padding:10px 20px;border-radius:999px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:7px"><span class="ms" style="font-size:17px">add</span> Novo Agendamento</button>
+        <button class="abtn abtn-g" onclick="adminNewAppointment()" style="padding:10px 20px;border-radius:999px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:7px"><span class="ms" aria-hidden="true" style="font-size:17px">add</span> Novo Agendamento</button>
       </div>
       <div class="afbar">
-        <div class="asinp-w"><span class="ms asinp-ico">search</span><input type="text" class="asinp" placeholder="Buscar cliente ou serviço..." id="ag-search" oninput="renderAg()"></div>
-        <select class="afsel" id="ag-bar" onchange="renderAg()"><option value="">Todos os barbeiros</option></select>
-        <select class="afsel" id="ag-st" onchange="renderAg()"><option value="">Todos os status</option><option value="scheduled">Agendado</option><option value="confirmed">Confirmado</option><option value="completed">Concluído</option><option value="cancelled">Cancelado</option></select>
-        <select class="afsel" id="ag-dt" onchange="renderAg()"><option value="">Todas as datas</option></select>
+        <div class="asinp-w"><span class="ms asinp-ico" aria-hidden="true">search</span><input type="text" class="asinp" aria-label="Buscar cliente ou serviço" placeholder="Buscar cliente ou serviço..." id="ag-search" oninput="renderAg()"></div>
+        <select class="afsel" id="ag-bar" aria-label="Filtrar por barbeiro" onchange="renderAg()"><option value="">Todos os barbeiros</option></select>
+        <select class="afsel" id="ag-st" aria-label="Filtrar por status" onchange="renderAg()"><option value="">Todos os status</option><option value="scheduled">Agendado</option><option value="confirmed">Confirmado</option><option value="completed">Concluído</option><option value="cancelled">Cancelado</option></select>
+        <select class="afsel" id="ag-dt" aria-label="Filtrar por data" onchange="renderAg()"><option value="">Todas as datas</option></select>
       </div>
       <div class="atbl-w"><table class="atbl">
         <thead><tr><th>#</th><th>Cliente</th><th>Serviço</th><th>Barbeiro</th><th>Data</th><th>Hora</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
@@ -1009,9 +1014,9 @@
           <div class="qrsc-frame" id="qrsc-frame"><div class="qrsc-sweep"></div></div>
         </div>
         <div class="qrsc-ctrls">
-          <button class="qrsc-ctrl" id="qrsc-torch" style="display:none"><span class="ms">flashlight_on</span> Lanterna</button>
+          <button class="qrsc-ctrl" id="qrsc-torch" style="display:none"><span class="ms" aria-hidden="true">flashlight_on</span> Lanterna</button>
           <div class="qrsc-ctrl qrsc-zoomw" id="qrsc-zoom-wrap" style="display:none">
-            <span class="ms">zoom_in</span>
+            <span class="ms" aria-hidden="true">zoom_in</span>
             <input type="range" id="qrsc-zoom" aria-label="Zoom da câmera">
           </div>
         </div>
@@ -1021,14 +1026,14 @@
           Se não ler, use a lista abaixo.
         </div>
         <div class="qrsc-manual">
-          <div class="qrsc-sect-tt"><span class="ms" style="font-size:16px">today</span> Clientes de hoje</div>
+          <div class="qrsc-sect-tt"><span class="ms" aria-hidden="true" style="font-size:16px">today</span> Clientes de hoje</div>
           <p style="font-size:11px;color:var(--mut);margin-bottom:10px">Toque em "Confirmar" quando o cliente chegar — vale o mesmo que ler o QR Code.</p>
           <div id="qrsc-today"></div>
         </div>
         <div class="qrsc-manual">
           <p style="font-size:12px;color:var(--mut);margin-bottom:8px">Ou digite/cole o código do cliente:</p>
           <div style="display:flex;gap:8px">
-            <input type="text" class="acfg-inp" id="qrsc-manual-input" placeholder="Código do QR Code" style="flex:1">
+            <input type="text" class="acfg-inp" id="qrsc-manual-input" aria-label="Código do QR Code" placeholder="Código do QR Code" style="flex:1">
             <button class="abtn abtn-g" onclick="confirmQrManual()" style="padding:0 20px;border-radius:10px;white-space:nowrap">Confirmar</button>
           </div>
         </div>
@@ -1039,11 +1044,11 @@
     <section class="asec" id="asec-clientes">
       <div class="aph">
         <div><h1>Clientes</h1><p>Gestão completa da base de clientes.</p></div>
-        <button class="abtn abtn-g" onclick="openClientModal()" style="padding:10px 20px;border-radius:999px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:7px"><span class="ms" style="font-size:17px">person_add</span> Novo Cliente</button>
+        <button class="abtn abtn-g" onclick="openClientModal()" style="padding:10px 20px;border-radius:999px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:7px"><span class="ms" aria-hidden="true" style="font-size:17px">person_add</span> Novo Cliente</button>
       </div>
       <div class="afbar" style="margin-bottom:20px">
-        <div class="asinp-w" style="flex:1"><span class="ms asinp-ico">search</span><input type="text" class="asinp" placeholder="Buscar por nome ou e-mail..." id="cli-s" oninput="renderClis()"></div>
-        <select class="afsel" id="cli-b" onchange="renderClis()"><option value="">Todos os perfis</option><option>VIP</option><option>Regular</option><option>Novo</option></select>
+        <div class="asinp-w" style="flex:1"><span class="ms asinp-ico" aria-hidden="true">search</span><input type="text" class="asinp" aria-label="Buscar cliente por nome ou e-mail" placeholder="Buscar por nome ou e-mail..." id="cli-s" oninput="renderClis()"></div>
+        <select class="afsel" id="cli-b" aria-label="Filtrar por perfil de cliente" onchange="renderClis()"><option value="">Todos os perfis</option><option>VIP</option><option>Regular</option><option>Novo</option></select>
       </div>
       <div class="acli-grid" id="cli-grid"></div>
 
@@ -1052,7 +1057,7 @@
         <div class="cmodal">
           <div class="cmodal-hdr">
             <h3 id="cli-modal-title">Novo Cliente</h3>
-            <button class="cmodal-x" onclick="closeClientModal()" aria-label="Fechar"><span class="ms">close</span></button>
+            <button class="cmodal-x" onclick="closeClientModal()" aria-label="Fechar"><span class="ms" aria-hidden="true">close</span></button>
           </div>
           <div class="cmodal-body">
             <div class="cmodal-fg">
@@ -1101,26 +1106,26 @@
         <div class="anotif-c">
           <h3>Templates de Mensagem</h3>
           <p>Selecione um template para enviar aos seus clientes.</p>
-          <div class="atpl" onclick="selTpl(this,'Lembrete de Agendamento')">
-            <div class="atpl-tit">Lembrete de Agendamento</div>
-            <div class="atpl-txt">Oi {nome}! Seu corte está confirmado para {data} às {hora}. Esperamos por você! ✂️</div>
-            <div class="atpl-ft"><div class="atpl-ch"><span class="atag">E-mail</span><span class="atag">WhatsApp</span></div><span style="font-size:11px;color:var(--mut)">Automático</span></div>
-          </div>
-          <div class="atpl" onclick="selTpl(this,'Promoção Semanal')">
-            <div class="atpl-tit">Promoção Semanal</div>
-            <div class="atpl-txt">Olá {nome}! Esta semana: 15% de desconto no Corte + Barba. Agende já e garanta seu horário!</div>
-            <div class="atpl-ft"><div class="atpl-ch"><span class="atag">E-mail</span></div><span style="font-size:11px;color:var(--mut)">Manual</span></div>
-          </div>
-          <div class="atpl" onclick="selTpl(this,'Recompensa Fidelidade')">
-            <div class="atpl-tit">Recompensa Fidelidade</div>
-            <div class="atpl-txt">Parabéns {nome}! 🏆 Você atingiu 10 cortes e ganhou um serviço GRATUITO. Agende agora!</div>
-            <div class="atpl-ft"><div class="atpl-ch"><span class="atag">E-mail</span><span class="atag">WhatsApp</span></div><span style="font-size:11px;color:var(--mut)">Automático</span></div>
-          </div>
-          <div class="atpl" onclick="selTpl(this,'Avaliação Pós-Atendimento')">
-            <div class="atpl-tit">Avaliação Pós-Atendimento</div>
-            <div class="atpl-txt">Olá {nome}! Ficou satisfeito? Deixe sua avaliação e ganhe pontos extras no programa de fidelidade!</div>
-            <div class="atpl-ft"><div class="atpl-ch"><span class="atag">E-mail</span></div><span style="font-size:11px;color:var(--mut)">Automático</span></div>
-          </div>
+          <button type="button" class="atpl" onclick="selTpl(this,'Lembrete de Agendamento')">
+            <span class="atpl-tit">Lembrete de Agendamento</span>
+            <span class="atpl-txt">Oi {nome}! Seu corte está confirmado para {data} às {hora}. Esperamos por você! ✂️</span>
+            <span class="atpl-ft"><span class="atpl-ch"><span class="atag">E-mail</span><span class="atag">WhatsApp</span></span><span style="font-size:11px;color:var(--mut)">Automático</span></span>
+          </button>
+          <button type="button" class="atpl" onclick="selTpl(this,'Promoção Semanal')">
+            <span class="atpl-tit">Promoção Semanal</span>
+            <span class="atpl-txt">Olá {nome}! Esta semana: 15% de desconto no Corte + Barba. Agende já e garanta seu horário!</span>
+            <span class="atpl-ft"><span class="atpl-ch"><span class="atag">E-mail</span></span><span style="font-size:11px;color:var(--mut)">Manual</span></span>
+          </button>
+          <button type="button" class="atpl" onclick="selTpl(this,'Recompensa Fidelidade')">
+            <span class="atpl-tit">Recompensa Fidelidade</span>
+            <span class="atpl-txt">Parabéns {nome}! 🏆 Você atingiu 10 cortes e ganhou um serviço GRATUITO. Agende agora!</span>
+            <span class="atpl-ft"><span class="atpl-ch"><span class="atag">E-mail</span><span class="atag">WhatsApp</span></span><span style="font-size:11px;color:var(--mut)">Automático</span></span>
+          </button>
+          <button type="button" class="atpl" onclick="selTpl(this,'Avaliação Pós-Atendimento')">
+            <span class="atpl-tit">Avaliação Pós-Atendimento</span>
+            <span class="atpl-txt">Olá {nome}! Ficou satisfeito? Deixe sua avaliação e ganhe pontos extras no programa de fidelidade!</span>
+            <span class="atpl-ft"><span class="atpl-ch"><span class="atag">E-mail</span></span><span style="font-size:11px;color:var(--mut)">Automático</span></span>
+          </button>
         </div>
         <div class="anotif-c">
           <h3>Configurar Envio</h3>
@@ -1131,16 +1136,16 @@
           </div>
           <div style="margin-bottom:16px">
             <div class="acfg-lbl">Destinatários</div>
-            <select class="acfg-sel" style="margin-top:6px"><option>Todos os clientes (47)</option><option>Apenas VIPs (12)</option><option>Sem visita há +30 dias (8)</option><option>Agendamentos desta semana (15)</option></select>
+            <select class="acfg-sel" aria-label="Destinatários da mensagem" style="margin-top:6px"><option>Todos os clientes (47)</option><option>Apenas VIPs (12)</option><option>Sem visita há +30 dias (8)</option><option>Agendamentos desta semana (15)</option></select>
           </div>
           <div style="margin-bottom:20px">
             <div class="acfg-lbl">Canal de envio</div>
-            <div class="trow" style="padding:12px 0;border-color:rgba(255,255,255,.05)"><div class="trowi"><h4 style="font-size:13px">E-mail</h4></div><label class="tog"><input type="checkbox" checked><span class="togsl"></span></label></div>
-            <div class="trow" style="padding:12px 0;border-color:rgba(255,255,255,.05)"><div class="trowi"><h4 style="font-size:13px">WhatsApp</h4></div><label class="tog"><input type="checkbox"><span class="togsl"></span></label></div>
-            <div class="trow" style="padding:12px 0;border:none"><div class="trowi"><h4 style="font-size:13px">Push Notification</h4></div><label class="tog"><input type="checkbox"><span class="togsl"></span></label></div>
+            <div class="trow" style="padding:12px 0;border-color:rgba(255,255,255,.05)"><div class="trowi"><h4 style="font-size:13px">E-mail</h4></div><label class="tog"><input type="checkbox" aria-label="Enviar por e-mail" checked><span class="togsl"></span></label></div>
+            <div class="trow" style="padding:12px 0;border-color:rgba(255,255,255,.05)"><div class="trowi"><h4 style="font-size:13px">WhatsApp</h4></div><label class="tog"><input type="checkbox" aria-label="Enviar por WhatsApp"><span class="togsl"></span></label></div>
+            <div class="trow" style="padding:12px 0;border:none"><div class="trowi"><h4 style="font-size:13px">Push Notification</h4></div><label class="tog"><input type="checkbox" aria-label="Enviar por push notification"><span class="togsl"></span></label></div>
           </div>
-          <button class="abtn abtn-g" style="width:100%;padding:13px;border-radius:999px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px"><span class="ms" style="font-size:17px">send</span> Enviar Agora</button>
-          <button class="abtn-o" style="width:100%;padding:12px;border-radius:999px;font-size:13px;font-weight:600;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;transition:var(--tr)"><span class="ms" style="font-size:17px">schedule_send</span> Agendar Envio</button>
+          <button class="abtn abtn-g" style="width:100%;padding:13px;border-radius:999px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px"><span class="ms" aria-hidden="true" style="font-size:17px">send</span> Enviar Agora</button>
+          <button class="abtn-o" style="width:100%;padding:12px;border-radius:999px;font-size:13px;font-weight:600;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;transition:var(--tr)"><span class="ms" aria-hidden="true" style="font-size:17px">schedule_send</span> Agendar Envio</button>
         </div>
       </div>
     </section>
@@ -1150,8 +1155,8 @@
       <div class="aph">
         <div><h1>Histórico de Atividades</h1><p>Todas as ações registradas no sistema.</p></div>
         <div class="afbar" style="margin-bottom:0">
-          <select class="afsel"><option>Todas as ações</option><option>Agendamentos</option><option>Clientes</option><option>Configurações</option><option>Notificações</option></select>
-          <select class="afsel"><option>Últimos 7 dias</option><option>Últimos 30 dias</option><option>Este mês</option></select>
+          <select class="afsel" aria-label="Filtrar por tipo de ação"><option>Todas as ações</option><option>Agendamentos</option><option>Clientes</option><option>Configurações</option><option>Notificações</option></select>
+          <select class="afsel" aria-label="Filtrar por período"><option>Últimos 7 dias</option><option>Últimos 30 dias</option><option>Este mês</option></select>
         </div>
       </div>
       <div class="atl" id="atl-list"></div>
@@ -1171,25 +1176,25 @@
         <div class="acfg-tc on" id="cfg-geral">
           <div class="acfg-sect"><h3>Informações da Barbearia</h3><p>Dados exibidos no site e nas comunicações.</p>
             <div class="acfg-g">
-              <div><label class="acfg-lbl">Nome</label><input class="acfg-inp" value="Barbearia do Daniel"></div>
-              <div><label class="acfg-lbl">Telefone / WhatsApp</label><input class="acfg-inp" value="(84) 99999-0000"></div>
-              <div><label class="acfg-lbl">E-mail</label><input class="acfg-inp" value="contato@barbearia.com"></div>
-              <div><label class="acfg-lbl">Endereço</label><input class="acfg-inp" value="Rua das Palmeiras, 123 — Centro"></div>
+              <div><label class="acfg-lbl" for="cfg-nome">Nome</label><input id="cfg-nome" class="acfg-inp" value="Barbearia do Daniel"></div>
+              <div><label class="acfg-lbl" for="cfg-fone">Telefone / WhatsApp</label><input id="cfg-fone" class="acfg-inp" value="(84) 99999-0000"></div>
+              <div><label class="acfg-lbl" for="cfg-email">E-mail</label><input id="cfg-email" class="acfg-inp" value="contato@barbearia.com"></div>
+              <div><label class="acfg-lbl" for="cfg-end">Endereço</label><input id="cfg-end" class="acfg-inp" value="Rua das Palmeiras, 123 — Centro"></div>
             </div>
           </div>
           <div class="acfg-sect"><h3>Sistema</h3><p>Moeda, idioma e fuso horário.</p>
             <div class="acfg-g">
-              <div><label class="acfg-lbl">Moeda</label><select class="acfg-sel"><option>R$ — Real Brasileiro</option><option>US$ — Dólar</option></select></div>
-              <div><label class="acfg-lbl">Idioma</label><select class="acfg-sel"><option>Português (Brasil)</option><option>English</option></select></div>
-              <div><label class="acfg-lbl">Fuso horário</label><select class="acfg-sel"><option>America/Fortaleza (UTC-3)</option><option>America/Sao_Paulo (UTC-3)</option></select></div>
-              <div><label class="acfg-lbl">Intervalo de horários</label><select class="acfg-sel"><option>30 minutos</option><option>45 minutos</option><option>60 minutos</option></select></div>
+              <div><label class="acfg-lbl" for="cfg-moeda">Moeda</label><select id="cfg-moeda" class="acfg-sel"><option>R$ — Real Brasileiro</option><option>US$ — Dólar</option></select></div>
+              <div><label class="acfg-lbl" for="cfg-idioma">Idioma</label><select id="cfg-idioma" class="acfg-sel"><option>Português (Brasil)</option><option>English</option></select></div>
+              <div><label class="acfg-lbl" for="cfg-fuso">Fuso horário</label><select id="cfg-fuso" class="acfg-sel"><option>America/Fortaleza (UTC-3)</option><option>America/Sao_Paulo (UTC-3)</option></select></div>
+              <div><label class="acfg-lbl" for="cfg-interv">Intervalo de horários</label><select id="cfg-interv" class="acfg-sel"><option>30 minutos</option><option>45 minutos</option><option>60 minutos</option></select></div>
             </div>
           </div>
           <div class="acfg-sect"><h3>Horários de Funcionamento</h3><p>Dias e horários disponíveis para agendamento.</p>
             <div class="acfg-g">
-              <div><label class="acfg-lbl">Segunda a Sexta</label><input class="acfg-inp" value="09:00 — 20:00"></div>
-              <div><label class="acfg-lbl">Sábado</label><input class="acfg-inp" value="09:00 — 18:00"></div>
-              <div><label class="acfg-lbl">Domingo</label><input class="acfg-inp" value="Fechado"></div>
+              <div><label class="acfg-lbl" for="cfg-h-semana">Segunda a Sexta</label><input id="cfg-h-semana" class="acfg-inp" value="09:00 — 20:00"></div>
+              <div><label class="acfg-lbl" for="cfg-h-sab">Sábado</label><input id="cfg-h-sab" class="acfg-inp" value="09:00 — 18:00"></div>
+              <div><label class="acfg-lbl" for="cfg-h-dom">Domingo</label><input id="cfg-h-dom" class="acfg-inp" value="Fechado"></div>
             </div>
           </div>
           <div style="display:flex;justify-content:flex-end"><button class="abtn abtn-g" style="padding:11px 24px;border-radius:999px;font-size:13px;font-weight:700">Salvar alterações</button></div>
@@ -1198,7 +1203,7 @@
         <div class="acfg-tc" id="cfg-svc">
           <div class="acfg-sect"><h3>Tabela de Serviços e Preços</h3><p>Edite nomes, preços e duração dos serviços.</p>
             <div id="cfg-svc-list"></div>
-            <button class="abtn-o" onclick="addNewService()" style="margin-top:12px;display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;font-family:inherit;font-size:12px"><span class="ms" style="font-size:16px">add</span> Adicionar serviço</button>
+            <button class="abtn-o" onclick="addNewService()" style="margin-top:12px;display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;font-family:inherit;font-size:12px"><span class="ms" aria-hidden="true" style="font-size:16px">add</span> Adicionar serviço</button>
           </div>
           <div style="display:flex;justify-content:flex-end"><button class="abtn abtn-g" style="padding:11px 24px;border-radius:999px;font-size:13px;font-weight:700">Salvar serviços</button></div>
         </div>
@@ -1206,7 +1211,7 @@
         <div class="acfg-tc" id="cfg-equipe">
           <div class="acfg-sect"><h3>Gestão de Barbeiros</h3><p>Configure permissões e acesso de cada membro.</p>
             <div id="cfg-eq-list"></div>
-            <button class="abtn-o" onclick="addNewBarber()" style="margin-top:12px;display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;font-family:inherit;font-size:12px"><span class="ms" style="font-size:16px">person_add</span> Adicionar barbeiro</button>
+            <button class="abtn-o" onclick="addNewBarber()" style="margin-top:12px;display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;font-family:inherit;font-size:12px"><span class="ms" aria-hidden="true" style="font-size:16px">person_add</span> Adicionar barbeiro</button>
           </div>
         </div>
         <!-- INTEGRAÇÕES -->
@@ -1218,10 +1223,11 @@
             <div class="acfg-int"><div><h4>Google Analytics</h4><p>Monitoramento de acessos ao site</p></div><span class="int-off">Desconectado</span></div>
           </div>
           <div class="acfg-sect"><h3>Chave de API interna</h3><p>Use esta chave para integrar sistemas externos.</p>
-            <div style="display:flex;gap:8px">
+            <label class="acfg-lbl" for="api-key">Chave</label>
+            <div style="display:flex;gap:8px;margin-top:6px">
               <input class="acfg-inp" id="api-key" type="password" value="bdb_live_xK9m2pQr8..." style="flex:1;font-family:monospace">
-              <button onclick="document.getElementById('api-key').type=document.getElementById('api-key').type==='password'?'text':'password'" style="padding:0 16px;border-radius:12px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;font-family:inherit;font-size:12px">Mostrar</button>
-              <button style="padding:0 16px;border-radius:12px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;font-family:inherit;font-size:12px">Copiar</button>
+              <button type="button" aria-label="Mostrar ou ocultar a chave de API" onclick="document.getElementById('api-key').type=document.getElementById('api-key').type==='password'?'text':'password'" style="padding:0 16px;min-height:44px;border-radius:12px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;font-family:inherit;font-size:12px">Mostrar</button>
+              <button type="button" aria-label="Copiar a chave de API" style="padding:0 16px;min-height:44px;border-radius:12px;background:var(--gb);border:1px solid var(--gbd);color:var(--txt);cursor:pointer;font-family:inherit;font-size:12px">Copiar</button>
             </div>
           </div>
         </div>

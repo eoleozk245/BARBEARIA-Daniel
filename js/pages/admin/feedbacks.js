@@ -39,7 +39,7 @@ export async function renderAdminFeedbacks() {
         </div>
         <div style="text-align:right">
           <div style="color:var(--acc);font-size:13px;letter-spacing:2px">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
-          ${replied ? '<div class="afb-replied"><span class="ms">check_circle</span>Respondido</div>' : ''}
+          ${replied ? '<div class="afb-replied"><span class="ms" aria-hidden="true">check_circle</span>Respondido</div>' : ''}
         </div>
       </div>
       <div class="afb-txt">${escapeHtml(r.comment || '')}</div>
@@ -47,7 +47,7 @@ export async function renderAdminFeedbacks() {
         replied
           ? `<div style="font-size:12px;color:var(--mut);padding:8px 12px;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.06)">✓ ${escapeHtml(r.admin_reply)}</div>`
           : `<textarea class="afb-resp" rows="2" placeholder="Escreva uma resposta pública..." data-reply-input="${r.id}"></textarea>
-             <button class="abtn abtn-g" style="padding:8px 18px;border-radius:999px;font-size:12px;display:inline-flex;align-items:center;gap:6px" data-reply-btn="${r.id}"><span class="ms" style="font-size:15px">reply</span>Responder</button>`
+             <button class="abtn abtn-g" style="padding:8px 18px;border-radius:999px;font-size:12px;display:inline-flex;align-items:center;gap:6px" data-reply-btn="${r.id}"><span class="ms" aria-hidden="true" style="font-size:15px">reply</span>Responder</button>`
       }
     </div>`;
         })
