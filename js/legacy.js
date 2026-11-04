@@ -260,7 +260,7 @@ function toggleCpw2(){
    inventar esses números seria pior do que não mostrá-los.
 ════════════════════════════════════════ */
 const MONTHS_ABBR=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-const SVC_COLORS=['#e6c364','#c9a84c','rgba(230,195,100,.5)','rgba(230,195,100,.3)','rgba(230,195,100,.18)'];
+const SVC_COLORS=['#F5C542','#D6A928','rgba(245,197,66,.55)','rgba(245,197,66,.32)','rgba(245,197,66,.18)'];
 let ADM_DATA={
   monthly:{labels:[],rev:[]},
   weekly:{labels:[],rev:[]},
@@ -332,23 +332,29 @@ function renderRevChart(period){
   const rv=D.rev,ex=[],lb=D.labels,n=lb.length; // ex vazio: não há registro de despesas no sistema
   if(!n)return; // sem dados ainda
   const maxV=Math.max(...rv,0)*1.12||1;
-  const W=560,H=175,pX=18,pY=14,plotW=W-pX*2,plotH=H-pY*2-16;
+  const W=560,H=190,pL=44,pR=14,pY=14,plotW=W-pL-pR,plotH=H-pY*2-14;
   // Com um único ponto, i/(n-1) seria 0/0 = NaN e o SVG inteiro saía quebrado.
   // Nesse caso o ponto vai ao centro do gráfico.
-  const tx=n===1?()=>pX+plotW/2:i=>pX+(i/(n-1))*plotW;
+  const tx=n===1?()=>pL+plotW/2:i=>pL+(i/(n-1))*plotW;
   const ty=v=>pY+plotH-(v/maxV)*plotH;
-  const rpts=rv.map((v,i)=>tx(i)+','+ty(v)).join(' ');
-  const fX=tx(0),lX=tx(n-1),bY=pY+plotH;
-  const rarea=fX+','+bY+' '+rpts+' '+lX+','+bY;
-  let eSVG='';
-  if(ex.length){
-    const epts=ex.map((v,i)=>tx(i)+','+ty(v)).join(' ');
-    const earea=fX+','+bY+' '+epts+' '+lX+','+bY;
-    eSVG='<defs><linearGradient id="eg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(242,139,130,.28)"/><stop offset="100%" stop-color="rgba(242,139,130,.02)"/></linearGradient></defs><polygon points="'+earea+'" fill="url(#eg)"/><polyline points="'+epts+'" fill="none" stroke="#f28b82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>';
+  const P=rv.map((v,i)=>[tx(i),ty(v)]);
+  // Curva suave (Catmull-Rom → Bézier). Só visual: os pontos são os mesmos dados.
+  let d='M'+P[0][0]+','+P[0][1];
+  for(let i=0;i<P.length-1;i++){
+    const p0=P[i-1]||P[i],p1=P[i],p2=P[i+1],p3=P[i+2]||p2;
+    const c1x=p1[0]+(p2[0]-p0[0])/6,c1y=Math.min(Math.max(p1[1]+(p2[1]-p0[1])/6,pY),pY+plotH);
+    const c2x=p2[0]-(p3[0]-p1[0])/6,c2y=Math.min(Math.max(p2[1]-(p3[1]-p1[1])/6,pY),pY+plotH);
+    d+=' C'+c1x+','+c1y+' '+c2x+','+c2y+' '+p2[0]+','+p2[1];
   }
-  const dots=rv.map((v,i)=>'<circle cx="'+tx(i)+'" cy="'+ty(v)+'" r="3" fill="#e6c364"/>').join('');
-  const xlb=lb.map((l,i)=>'<text x="'+tx(i)+'" y="'+(H-3)+'" text-anchor="middle" fill="#99907e" font-size="9" font-family="Inter,sans-serif">'+l+'</text>').join('');
-  el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" class="svg-chart"><defs><linearGradient id="rg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(230,195,100,.32)"/><stop offset="100%" stop-color="rgba(230,195,100,.02)"/></linearGradient></defs>'+eSVG+'<polygon points="'+rarea+'" fill="url(#rg)"/><polyline points="'+rpts+'" fill="none" stroke="#e6c364" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+dots+xlb+'</svg>';
+  const bY=pY+plotH;
+  const area=d+' L'+P[P.length-1][0]+','+bY+' L'+P[0][0]+','+bY+' Z';
+  const grid=[0,.5,1].map(f=>{
+    const y=pY+plotH-f*plotH,v=Math.round(maxV*f);
+    return '<line class="gl" x1="'+pL+'" x2="'+(W-pR)+'" y1="'+y+'" y2="'+y+'"/><text x="'+(pL-8)+'" y="'+(y+3)+'" text-anchor="end" fill="#71717a" font-size="9" font-family="JetBrains Mono,monospace">'+(v>=1000?(v/1000).toFixed(v%1000?1:0)+'k':v)+'</text>';
+  }).join('');
+  const dots=n<=12?rv.map((v,i)=>'<circle class="fade-in" cx="'+tx(i)+'" cy="'+ty(v)+'" r="3" fill="#080808" stroke="#F5C542" stroke-width="1.8"/>').join(''):'';
+  const xlb=lb.map((l,i)=>'<text x="'+tx(i)+'" y="'+(H-2)+'" text-anchor="middle" fill="#71717a" font-size="9" font-family="JetBrains Mono,monospace">'+l+'</text>').join('');
+  el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" class="svg-chart" role="img" aria-label="Gráfico de receita"><defs><linearGradient id="rg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(245,197,66,.30)"/><stop offset="100%" stop-color="rgba(245,197,66,0)"/></linearGradient></defs>'+grid+(n>1?'<path class="fade-in" d="'+area+'" fill="url(#rg)"/><path class="line-glow draw" pathLength="1" style="--len:1" d="'+d+'" fill="none" stroke="#F5C542" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>':'')+dots+xlb+'</svg>';
 }
 function swChartPeriod(p,btn){
   btn.closest('.ctabs').querySelectorAll('.ctab').forEach(b=>b.classList.remove('on'));
@@ -362,7 +368,7 @@ function renderDonut(){
     const da=(d.p/100)*C,doff=-(cum/100)*C;cum+=d.p;
     return '<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="'+d.c+'" stroke-width="'+SW+'" stroke-dasharray="'+da+' '+(C-da)+'" stroke-dashoffset="'+(C/4+doff)+'" transform="rotate(-90 '+CX+' '+CY+')"/>';
   }).join('');
-  el.innerHTML='<svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" class="svg-chart"><circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="'+SW+'"/>'+segs+'<text x="'+CX+'" y="'+(CY-5)+'" text-anchor="middle" fill="#e5e2e1" font-size="14" font-weight="800" font-family="Inter,sans-serif">'+(ADM_DATA.svcs[0]?ADM_DATA.svcs[0].p+'%':'—')+'</text><text x="'+CX+'" y="'+(CY+10)+'" text-anchor="middle" fill="#99907e" font-size="9" font-family="Inter,sans-serif">top serviço</text></svg>';
+  el.innerHTML='<svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" class="svg-chart"><circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="'+SW+'"/>'+segs+'<text x="'+CX+'" y="'+(CY-5)+'" text-anchor="middle" fill="#F5F5F5" font-size="15" font-weight="600" font-family="JetBrains Mono,monospace">'+(ADM_DATA.svcs[0]?ADM_DATA.svcs[0].p+'%':'—')+'</text><text x="'+CX+'" y="'+(CY+10)+'" text-anchor="middle" fill="#A1A1AA" font-size="9" font-family="JetBrains Mono,monospace">top serviço</text></svg>';
   lg.innerHTML=ADM_DATA.svcs.map(d=>'<div style="display:flex;align-items:center;gap:8px;margin-bottom:9px"><div style="width:10px;height:10px;border-radius:3px;background:'+d.c+';flex-shrink:0"></div><span style="font-size:12px;color:var(--mut);flex:1">'+d.l+'</span><span style="font-size:12px;font-weight:700;color:var(--txt)">'+d.p+'%</span></div>').join('');
 }
 function renderWeekly(){
@@ -373,10 +379,10 @@ function renderWeekly(){
   const bars=D.rev.map((v,i)=>{
     const x=pX+i*(bW+gap),h=v>0?(v/maxV)*(H-pY*2-18):2,y=pY+(H-pY*2-18)-h;
     const hoje=(new Date().getDay()+6)%7; // ADM_DATA.weekly começa na segunda
-    const col=i===hoje?'url(#bg)':'rgba(230,195,100,.28)';
-    return '<rect x="'+x+'" y="'+y+'" width="'+bW+'" height="'+h+'" rx="7" fill="'+col+'"/>'+(v>0?'<text x="'+(x+bW/2)+'" y="'+(y-5)+'" text-anchor="middle" fill="#99907e" font-size="8" font-family="Inter,sans-serif">R$'+v+'</text>':'')+'<text x="'+(x+bW/2)+'" y="'+(H-3)+'" text-anchor="middle" fill="#99907e" font-size="9" font-family="Inter,sans-serif">'+D.labels[i]+'</text>';
+    const col=i===hoje?'url(#bg)':'rgba(255,255,255,.09)';
+    return '<rect x="'+x+'" y="'+y+'" width="'+bW+'" height="'+h+'" rx="'+(bW/2)+'" class="bar" style="animation-delay:'+(i*60)+'ms" fill="'+col+'"/>'+(v>0?'<text x="'+(x+bW/2)+'" y="'+(y-5)+'" text-anchor="middle" fill="#A1A1AA" font-size="8" font-family="JetBrains Mono,monospace">R$'+v+'</text>':'')+'<text x="'+(x+bW/2)+'" y="'+(H-3)+'" text-anchor="middle" fill="#71717a" font-size="9" font-family="JetBrains Mono,monospace">'+String(D.labels[i]).toUpperCase()+'</text>';
   }).join('');
-  el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" class="svg-chart"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f1d885"/><stop offset="100%" stop-color="#c9a84c"/></linearGradient></defs>'+bars+'</svg>';
+  el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" class="svg-chart"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFD86B"/><stop offset="100%" stop-color="#D6A928"/></linearGradient></defs>'+bars+'</svg>';
 }
 /* CONFIG — troca de aba (as listas de Serviços/Equipe são reais, ver pages/admin/configuracoes.js) */
 function cfgT(id,btn){

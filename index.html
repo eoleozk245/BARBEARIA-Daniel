@@ -45,7 +45,9 @@
       integrity="sha384-UsOvy6Miuagj2Q/9aXCTRHaUDZjxTxMGk9ZsU2m0MDw8eIOyV129Qd9NszbyyFQM"
       crossorigin="anonymous" referrerpolicy="no-referrer">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=20260813k">
+<link rel="stylesheet" href="redesign.css?v=20260813k">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 </head>
 <body>
@@ -458,6 +460,7 @@
       </button>
     </div>
     <nav class="sbnav">
+      <div class="sbsec">Menu</div>
       <div class="ni on" id="nid" onclick="pGo('dashboard')"><span class="ms">grid_view</span><span class="nlbl">Dashboard</span></div>
       <div class="ni" id="nia" onclick="pGo('agendamentos')"><span class="ms">calendar_month</span><span class="nlbl">Meus Agendamentos</span></div>
       <div class="ni" id="nino" onclick="pGo('novo-agendamento')"><span class="ms">add_circle</span><span class="nlbl">Novo Agendamento</span></div>
@@ -813,13 +816,16 @@
       </button>
     </div>
     <nav class="sbnav">
+      <div class="sbsec">Operação</div>
       <div class="ni on" id="ani-dash" onclick="aGo('dash')"><span class="ms">insights</span><span class="nlbl">Dashboard</span></div>
       <div class="ni" id="ani-agenda" onclick="aGo('agenda')"><span class="ms">calendar_month</span><span class="nlbl">Agenda</span></div>
       <div class="ni" id="ani-scanner" onclick="aGo('scanner')"><span class="ms">qr_code_scanner</span><span class="nlbl">Escanear QR</span></div>
+      <div class="sbsec">Relacionamento</div>
       <div class="ni" id="ani-clientes" onclick="aGo('clientes')"><span class="ms">group</span><span class="nlbl">Clientes</span></div>
       <div class="ni" id="ani-feedbacks" onclick="aGo('feedbacks')"><span class="ms">star_half</span><span class="nlbl">Feedbacks</span></div>
       <div class="ni" id="ani-notif" onclick="aGo('notif')"><span class="ms">notifications</span><span class="nlbl">Notificações</span></div>
       <div class="ni" id="ani-hist" onclick="aGo('hist')"><span class="ms">history</span><span class="nlbl">Histórico</span></div>
+      <div class="sbsec">Sistema</div>
       <div class="ni" id="ani-config" onclick="aGo('config')"><span class="ms">tune</span><span class="nlbl">Configurações</span></div>
     </nav>
     <div class="sbbot">
@@ -902,7 +908,6 @@
           <div id="chart-rev" style="width:100%;min-height:175px"></div>
           <div class="cleg">
             <div class="cleg-i"><div class="cleg-d" style="background:var(--acc)"></div>Receita</div>
-            <div class="cleg-i"><div class="cleg-d" style="background:var(--err)"></div>Despesas</div>
           </div>
         </div>
         <div class="cbox">
