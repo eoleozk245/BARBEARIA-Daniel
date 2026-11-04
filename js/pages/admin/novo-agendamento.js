@@ -1,9 +1,9 @@
-import { listClientStats, createClientAccount } from '../../services/profiles.js?v=20260813k';
-import { listServices } from '../../services/services.js?v=20260813k';
-import { listBarbers } from '../../services/barbers.js?v=20260813k';
-import { getAvailableSlots, createAppointment, todayLocalDate } from '../../services/appointments.js?v=20260813k';
-import { formatCurrency, formatDuration } from '../../utils/format.js?v=20260813k';
-import { escapeHtml, showToast } from '../../utils/dom.js?v=20260813k';
+import { listClientStats, createClientAccount } from '../../services/profiles.js?v=20261104a';
+import { listServices } from '../../services/services.js?v=20261104a';
+import { listBarbers } from '../../services/barbers.js?v=20261104a';
+import { getAvailableSlots, createAppointment, todayLocalDate } from '../../services/appointments.js?v=20261104a';
+import { formatCurrency, formatDuration } from '../../utils/format.js?v=20261104a';
+import { escapeHtml, showToast } from '../../utils/dom.js?v=20261104a';
 
 /**
  * Agendamento pelo painel do administrador.

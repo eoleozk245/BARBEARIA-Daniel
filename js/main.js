@@ -1,5 +1,5 @@
-import { signUp, signIn, signInAdmin, signOut, resetPassword, getCurrentProfile } from './auth/auth.js?v=20260813k';
-import { renderPublicServices, renderPublicTeam } from './pages/public.js?v=20260813k';
+import { signUp, signIn, signInAdmin, signOut, resetPassword, getCurrentProfile } from './auth/auth.js?v=20261104a';
+import { renderPublicServices, renderPublicTeam } from './pages/public.js?v=20261104a';
 import {
   renderPortalServices,
   applyClientProfileToUI,
@@ -9,25 +9,25 @@ import {
   renderClientDashboardExtras,
   renderClientProfileExtras,
   subscribeClientAppointments,
-} from './pages/portal.js?v=20260813k';
-import { setBookingSession } from './pages/booking.js?v=20260813k';
+} from './pages/portal.js?v=20261104a';
+import { setBookingSession } from './pages/booking.js?v=20261104a';
 import {
   renderCfgSvcReal,
   renderCfgEqReal,
   addNewService,
   addNewBarber,
   applyAdminProfileToUI,
-} from './pages/admin/configuracoes.js?v=20260813k';
-import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi, renderFinanceKpis } from './pages/admin/agenda.js?v=20260813k';
-import { renderAdminClients, renderTopClients } from './pages/admin/clientes.js?v=20260813k';
-import { renderAdminFeedbacks } from './pages/admin/feedbacks.js?v=20260813k';
-import { renderAdminHistorico } from './pages/admin/historico.js?v=20260813k';
-import './pages/admin/scanner.js?v=20260813k';
-import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js?v=20260813k';
-import { enablePullToRefresh } from './utils/pulltorefresh.js?v=20260813k';
-import { setupNotifications } from './pages/notifications.js?v=20260813k';
-import { emptyState, showToast } from './utils/dom.js?v=20260813k';
-import { openNewAppointmentModal } from './pages/admin/novo-agendamento.js?v=20260813k';
+} from './pages/admin/configuracoes.js?v=20261104a';
+import { renderAdminAgenda, subscribeAdminAgenda, renderAppointmentsKpi, renderFinanceKpis } from './pages/admin/agenda.js?v=20261104a';
+import { renderAdminClients, renderTopClients } from './pages/admin/clientes.js?v=20261104a';
+import { renderAdminFeedbacks } from './pages/admin/feedbacks.js?v=20261104a';
+import { renderAdminHistorico } from './pages/admin/historico.js?v=20261104a';
+import './pages/admin/scanner.js?v=20261104a';
+import { rvObs, showV, pGo, aGo, adminInit } from './legacy.js?v=20261104a';
+import { enablePullToRefresh } from './utils/pulltorefresh.js?v=20261104a';
+import { setupNotifications } from './pages/notifications.js?v=20261104a';
+import { emptyState, showToast } from './utils/dom.js?v=20261104a';
+import { openNewAppointmentModal } from './pages/admin/novo-agendamento.js?v=20261104a';
 
 function showError(id, message) {
   const el = document.getElementById(id);

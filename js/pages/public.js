@@ -1,7 +1,7 @@
-import { listServices } from '../services/services.js?v=20260813k';
-import { listBarbers } from '../services/barbers.js?v=20260813k';
-import { formatCurrency, formatDuration } from '../utils/format.js?v=20260813k';
-import { escapeHtml } from '../utils/dom.js?v=20260813k';
+import { listServices } from '../services/services.js?v=20261104a';
+import { listBarbers } from '../services/barbers.js?v=20261104a';
+import { formatCurrency, formatDuration } from '../utils/format.js?v=20261104a';
+import { escapeHtml } from '../utils/dom.js?v=20261104a';
 
 /** Renderiza a grid de serviços do site público (#srvgrid) a partir do banco real. */
 export async function renderPublicServices(rvObs) {
