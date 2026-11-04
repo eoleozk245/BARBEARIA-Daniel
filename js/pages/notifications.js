@@ -3,8 +3,8 @@ import {
   markNotificationRead,
   markAllNotificationsRead,
   subscribeNotifications,
-} from '../services/notifications.js?v=20260813k';
-import { escapeHtml, emptyState, showToast } from '../utils/dom.js?v=20260813k';
+} from '../services/notifications.js?v=20261104a';
+import { escapeHtml, emptyState, showToast } from '../utils/dom.js?v=20261104a';
 
 /**
  * Sininho de notificações — o mesmo componente serve ao portal do cliente e ao

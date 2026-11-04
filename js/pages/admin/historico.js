@@ -1,5 +1,5 @@
-import { listActivity } from '../../services/activity.js?v=20260813k';
-import { escapeHtml, emptyState, skeletonRows } from '../../utils/dom.js?v=20260813k';
+import { listActivity } from '../../services/activity.js?v=20261104a';
+import { escapeHtml, emptyState, skeletonRows } from '../../utils/dom.js?v=20261104a';
 
 /**
  * Aparência de cada tipo de evento gravado em `activity_log`.
